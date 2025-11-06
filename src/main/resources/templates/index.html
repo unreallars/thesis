@@ -1,38 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Thesis</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thesis Project</title>
-
     <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css " rel="stylesheet">
 </head>
 <body>
-<div class="container">
-<div class="row">
-    <div class="col">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <h1>Thesis</h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Suche</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Account</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="col">
-        <h1>Find your Thesis</h1>
-        <h2>Recommended Topics</h2>
-        <ul>
-            <li>Programming</li>
-            <li>Databases</li>
-            <li>Algorithms</li>
-        </ul>
-        <h2>Search for topics</h2>
-        <form>
-            <label for="interests">Interests:</label><br>
-            <input type="text" id="interests" name="interests"><br>
-            <label for="filter">Filter:</label><br>
-            <input type="text" id="filter" name="filter"><br><br>
-            <input class="btn btn-primary" type="submit" value="Submit">
-        </form>
+</nav>
+<header class="bg-light text-center py-5">
+    <div class="container">
+        <h1 class="display-4">Finde die passende Betreuung für deine Abschlussarbeit</h1>
+        <p class="lead">Durchsuche Betreuer-Profile, entdecke Themen und finde passende Matches basierend auf
+            deinen Interessen und abgeschlossenen Veranstaltungen.</p>
+        <a href="#topics" class="btn btn-primary btn-lg">Zur Übersicht</a>
     </div>
-    <div class="col">
-    </div>
+</header>
+
+<div class="container" id="content">
+    <section id="topics">
+        <h2 class="mb-4 mt-4">Themenübersicht</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/topics/0"><h3>Programmierung in Spring</h3></a>
+                        <p>Voraussetzungen: Programmierung</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/topics/1"><h3>Mikroarchitektur CPU</h3></a>
+                        <p>Voraussetzungen: Rechnerarchitektur</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/topics/2"><h3>HTTP3</h3></a>
+                        <p>Voraussetzungen: Computernetze</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="profiles">
+        <h2 class="mb-4 mt-4">Betreuer-Profile</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/supervisors/0"><h3>Prof. Dr. Hacker</h3></a>
+                        <p>Fachgebiete: KI</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/supervisors/1"><h3>Dr. Test</h3></a>
+                        <p>Fachgebiete: Programmierung, Datenbanken</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/supervisors/2"><h3>Schmidt</h3></a>
+                        <p>Fachgebiete: Computernetze</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br><br><br><br><br><br><br><br>
 </div>
-</div>
-    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
