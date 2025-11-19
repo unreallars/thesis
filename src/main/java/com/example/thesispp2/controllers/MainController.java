@@ -4,6 +4,7 @@ import com.example.thesispp2.data.Supervisor;
 import com.example.thesispp2.data.Topic;
 import com.example.thesispp2.services.SupervisorService;
 import com.example.thesispp2.services.TopicService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +30,9 @@ public class MainController {
     return "match";
   }
 
-  @GetMapping("/login")
-  public String login() {
-    return "login";
+  @GetMapping("/account")
+  public String account() {
+    return "account";
   }
 
   @GetMapping("/topics/{id}")
