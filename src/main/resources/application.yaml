@@ -7,3 +7,6 @@ spring:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
             scope: read:public_repo
+app:
+  admins:
+    - 184363268
