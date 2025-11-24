@@ -8,5 +8,4 @@ spring:
             client-secret: ${CLIENT_SECRET}
             scope: read:public_repo
 app:
-  admins:
-    - 184363268
+  admins: 184363268, 1010

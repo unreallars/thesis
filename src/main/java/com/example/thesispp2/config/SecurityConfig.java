@@ -22,7 +22,7 @@ public class SecurityConfig {
             config ->
                 config.userInfoEndpoint(info -> info.userService(appUserService))
                     .loginPage("/login")
-        );
+        ).logout(l -> l.logoutSuccessUrl("/").permitAll());
     return chainBuilder.build();
   }
 }

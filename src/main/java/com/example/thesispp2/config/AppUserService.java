@@ -1,8 +1,9 @@
 package com.example.thesispp2.config;
 
-import com.example.thesispp2.services.RoleService;
+import com.example.thesispp2.services.SupervisorService;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,11 +18,14 @@ import org.springframework.stereotype.Component;
 public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
-  private final RoleService roleService;
+  private final SupervisorService supervisorService;
 
-  public AppUserService(RoleService roleService) {
-    this.roleService = roleService;
+  public AppUserService(SupervisorService supervisorService) {
+    this.supervisorService = supervisorService;
   }
+
+  @Value("${app.admins}")
+  private Set<Integer> admins;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -29,10 +33,10 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
     Integer id = originalUser.getAttribute("id");
-    if (roleService.isSupervisor(id)) {
+    if (supervisorService.isSupervisor(id)) {
       authorities.add(new SimpleGrantedAuthority("ROLE_SUPERVISOR"));
     }
-    if (roleService.isAdmin(id)) {
+    if (admins.contains(id)) {
       authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
     System.out.println("USER ID: " + id);
