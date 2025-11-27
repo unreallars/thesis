@@ -38,14 +38,12 @@
     <div class="card-body">
         <h3 class="card-title">Account Information</h3>
         <p class="card-text">
-            <strong>Benutzername:</strong> <span th:text="${user.attributes['login']}">Username</span>
+            <strong>Benutzername:</strong> <span th:text="${user}">Username</span>
         </p>
-
-        <p class="card-text"><strong>Rollen:</strong></p>
-        <ul>
-            <li th:each="role : ${user.authorities}" th:text="${role.authority}">ROLE</li>
-        </ul>
     </div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout">
+    </form>
 </div>
 
 </body>
