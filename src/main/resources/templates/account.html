@@ -16,16 +16,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{~/}">Home</a>
+                    <a class="nav-link" th:href="@{/}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{~/match}">Suche</a>
+                    <a class="nav-link" th:href="@{/match}">Suche</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')">
-                    <a class="nav-link" th:href="@{~/dashboard}">Dashboard</a>
+                    <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                    <a class="nav-link" th:href="@{~/manage}">Verwaltung</a>
+                    <a class="nav-link" th:href="@{/manage}">Verwaltung</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Account</a>
@@ -34,16 +34,16 @@
         </div>
     </div>
 </nav>
-<div class="card container mt-5">
+<div class="card container">
     <div class="card-body">
         <h3 class="card-title">Account Information</h3>
         <p class="card-text">
-            <strong>Benutzername:</strong> <span th:text="${user}">Username</span>
+            <strong>Github-Benutzername:</strong> <span th:text="${user}">Username</span>
         </p>
+        <form th:action="@{/logout}" method="post">
+            <input class="btn btn-primary" type="submit" value="Logout">
+        </form>
     </div>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout">
-    </form>
 </div>
 
 </body>

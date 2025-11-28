@@ -1,7 +1,5 @@
 package thesis.web;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -39,15 +37,6 @@ public class MainController {
   public String account(@AuthenticationPrincipal OAuth2User user, Model model) {
     model.addAttribute("user", user != null ? user.getAttribute("login") : null);
     return "account";
-  }
-
-  @GetMapping("/login")
-  public String login(Authentication authentication) {
-    if (authentication != null && authentication.isAuthenticated()
-        && !(authentication instanceof AnonymousAuthenticationToken)) {
-      return "redirect:/";
-    }
-    return "login";
   }
 
   @GetMapping("/topics/{id}")

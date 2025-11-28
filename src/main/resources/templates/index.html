@@ -20,16 +20,16 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
-                    <a class="nav-link" th:href="@{~/match}">Suche</a>
+                    <a class="nav-link" th:href="@{/match}">Suche</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')">
-                    <a class="nav-link" th:href="@{~/dashboard}">Dashboard</a>
+                    <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                    <a class="nav-link" th:href="@{~/manage}">Verwaltung</a>
+                    <a class="nav-link" th:href="@{/manage}">Verwaltung</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
-                    <a class="nav-link" th:href="@{~/account}">Account</a>
+                    <a class="nav-link" th:href="@{/account}">Account</a>
                 </li>
             </ul>
         </div>
@@ -41,7 +41,7 @@
         <p class="lead">Durchsuche Betreuer-Profile, entdecke Themen und finde passende Matches basierend auf
             deinen Interessen und abgeschlossenen Veranstaltungen.</p>
         <div sec:authorize="isAnonymous()">
-            <a th:href="@{/login}" class="btn btn-primary btn-lg">Anmelden</a>
+            <a th:href="@{/oauth2/authorization/github}" class="btn btn-primary btn-lg">Anmelden</a>
         </div>
         <div sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
             <a href="#topics" class="btn btn-primary btn-lg">Zur Übersicht</a>
@@ -76,7 +76,7 @@
                     <div class="card">
                         <div class="card-body">
                             <a th:href="@{/supervisors/{id}(id=${supervisor.id})}"><h3
-                                    th:text="${supervisor.name}">Prof. Dr. Hacker</h3></a>
+                                    th:text="${supervisor.username}">Prof. Dr. Hacker</h3></a>
                             <strong>Fachgebiete: </strong>
                             <span th:each="specialField, iter : ${supervisor.specialFields}">
                                 <span th:text="${specialField.name}">KI</span><span th:if="!${iter.last}">, </span>

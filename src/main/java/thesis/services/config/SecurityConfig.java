@@ -16,12 +16,12 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain configure(HttpSecurity chainBuilder) throws Exception {
     chainBuilder.authorizeHttpRequests(
-            configurer -> configurer.requestMatchers("/", "/login").permitAll().anyRequest()
+            configurer -> configurer.requestMatchers("/").permitAll().anyRequest()
                 .authenticated())
         .oauth2Login(
             config ->
                 config.userInfoEndpoint(info -> info.userService(appUserService))
-                    .loginPage("/login")
+                    .loginPage("/")
         ).logout(l -> l.logoutSuccessUrl("/").permitAll());
     return chainBuilder.build();
   }
