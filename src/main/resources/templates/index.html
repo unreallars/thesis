@@ -4,7 +4,7 @@
     <title>Thesis</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css " rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -55,10 +55,13 @@
 
             <h2 class="mb-4 mt-4">Themenübersicht</h2>
             <div class="row g-4">
+                <p th:if="${topics == null or #lists.isEmpty(topics)}">
+                    Es sind keine Themen vorhanden.
+                </p>
                 <div class="col-md-6" th:each="topic : ${topics}">
                     <div class="card">
                         <div class="card-body">
-                            <a th:href="@{/topics/{id}(id=${topic.id})}"><h3
+                            <a th:href="@{/topic/{id}(id=${topic.id})}"><h3
                                     th:text="${topic.title}">Programmierung Java</h3></a>
                             <strong>Voraussetzungen: </strong>
                             <span th:each="requierement, iter : ${topic.requirements}">
@@ -72,10 +75,13 @@
         <section id="supervisors">
             <h2 class="mb-4 mt-4">Betreuer-Profile</h2>
             <div class="row g-4">
+                <p th:if="${supervisors == null or #lists.isEmpty(supervisors)}">
+                    Es sind keine Betreuer vorhanden.
+                </p>
                 <div class="col-md-6" th:each="supervisor : ${supervisors}">
                     <div class="card">
                         <div class="card-body">
-                            <a th:href="@{/supervisors/{id}(id=${supervisor.id})}"><h3
+                            <a th:href="@{/supervisor/{id}(id=${supervisor.id})}"><h3
                                     th:text="${supervisor.username}">Prof. Dr. Hacker</h3></a>
                             <strong>Fachgebiete: </strong>
                             <span th:each="specialField, iter : ${supervisor.specialFields}">
@@ -90,6 +96,6 @@
 
     <br><br><br><br><br><br><br><br>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

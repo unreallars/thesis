@@ -19,11 +19,11 @@ public class OnionArchitectureTest {
   @DisplayName("Thesis hat eine Onion-Architektur")
   public void rule1() {
     ArchRule rule = onionArchitecture()
-        .domainModels("thesis.domain..")
-        .domainServices("thesis.services..")
-        .applicationServices("thesis.services..")
-        .adapter("web", "thesis.web")
-        .adapter("persistence", "thesis.repositories");
+        .domainModels("..domain..")
+        .domainServices("..services..")
+        .applicationServices("..services..")
+        .adapter("web", "..web..")
+        .adapter("persistence", "..repositories..");
 
     rule.check(klassen);
   }

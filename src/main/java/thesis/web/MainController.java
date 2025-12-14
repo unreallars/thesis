@@ -1,5 +1,6 @@
 package thesis.web;
 
+import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -44,21 +45,24 @@ public class MainController {
     return "account";
   }
 
-  @GetMapping("/topics/{id}")
-  public String getTopics(@PathVariable int id, Model model) {
+  @GetMapping("/topic/{id}")
+  public String getTopic(@PathVariable int id, Model model) {
     Topic topic = topicService.getTopicById(id);
-    model.addAttribute("topic", topic);
-    return "topics";
+    if (topic != null) {
+      model.addAttribute("topic", topic);
+      return "topic";
+    }
+    return "redirect:/";
   }
 
-  @GetMapping("/supervisors/{id}")
-  public String getSupervisors(@PathVariable int id, Model model) {
+  @GetMapping("/supervisor/{id}")
+  public String getSupervisor(@PathVariable int id, Model model) {
     Supervisor supervisor = supervisorService.getSupervisorById(id);
     if (supervisor != null) {
       model.addAttribute("supervisor", supervisor);
       List<InformationFile> files = informationFileService.getBySupervisor(id);
       model.addAttribute("files", files);
-      return "supervisors";
+      return "supervisor";
     }
     return "redirect:/";
   }

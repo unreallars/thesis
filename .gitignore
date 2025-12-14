@@ -38,3 +38,4 @@ out/
 
 ### Other ###
 /uploads/
+/src/main/resources/static/bootstrap/

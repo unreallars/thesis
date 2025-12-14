@@ -16,7 +16,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain configure(HttpSecurity chainBuilder) throws Exception {
     chainBuilder.authorizeHttpRequests(
-            configurer -> configurer.requestMatchers("/").permitAll().anyRequest()
+            configurer -> configurer.requestMatchers("/", "/bootstrap/**").permitAll().anyRequest()
                 .authenticated())
         .oauth2Login(
             config ->
