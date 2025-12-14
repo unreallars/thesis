@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import thesis.services.SupervisorService;
 
 @Controller
-@Secured({"ROLE_ADMIN", "ROLE_SUPERVISOR"})
+@Secured("ROLE_SUPERVISOR")
 public class SupervisorController {
-  @GetMapping("/upload")
-  public String upload() {
-    return "upload";
+  private final SupervisorService supervisorService;
+
+  public SupervisorController(SupervisorService supervisorService) {
+
+    this.supervisorService = supervisorService;
   }
 
 

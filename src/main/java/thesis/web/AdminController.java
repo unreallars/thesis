@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@Secured({"ROLE_ADMIN", "ROLE_SUPERVISOR"})
+@Secured("ROLE_ADMIN")
 public class AdminController {
 
   @GetMapping("/manage")

@@ -3,6 +3,7 @@ package thesis.web;
 import java.io.IOException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.services.InformationFileService;
 
 @Controller
+@Secured("ROLE_SUPERVISOR")
 public class InformationFileController {
   private final InformationFileService informationFileService;
 
@@ -39,11 +41,5 @@ public class InformationFileController {
           "Fehler: " + e.getMessage());
     }
     return "redirect:/upload";
-  }
-
-  @GetMapping("/dl/{id}")
-  public ResponseEntity<Resource> download(
-      @PathVariable String id) {
-    return informationFileService.getById(id);
   }
 }

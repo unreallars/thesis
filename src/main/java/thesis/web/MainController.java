@@ -1,6 +1,8 @@
 package thesis.web;
 
 import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -65,5 +67,10 @@ public class MainController {
       return "supervisor";
     }
     return "redirect:/";
+  }
+  @GetMapping("/dl/{id}")
+  public ResponseEntity<Resource> download(
+      @PathVariable String id) {
+    return informationFileService.getById(id);
   }
 }
