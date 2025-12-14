@@ -3,19 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css " rel="stylesheet">
-    <title>Dateiupload</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Datei-Upload</title>
 </head>
 <body>
-<div class="container text-center">
-    <h1>Hier können Dateien hochgeladen werden</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-body">
 
-    <h2>Unterstützte Formate: PDF, ZIP und Markdown</h2>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" id="file" accept="application/pdf, application/zip, text/markdown"><br><br>
-        <button type="submit" class="btn btn-primary">Datei hochladen</button>
-    </form>
+                    <div class="text-center">
+                        <h1 class="mb-4">Datei-Upload</h1>
 
+                        <a th:href="@{/dashboard}" class="btn btn-outline-primary mb-4">
+                            ← Zurück
+                        </a>
+
+                        <h5 class="text-muted mb-4">
+                            Unterstützte Formate: PDF, ZIP und Markdown
+                        </h5>
+                    </div>
+
+                    <div th:if="${message}">
+                        <div class="alert alert-info" th:text="${message}"></div>
+                    </div>
+
+                    <form method="POST" th:action="@{/upload}" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Titel (Pflichtfeld)</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="title"
+                                   name="title"
+                                   placeholder="Titel eingeben..."
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Beschreibung (optional)</label>
+                            <textarea class="form-control"
+                                      id="description"
+                                      name="description"
+                                      rows="3"
+                                      placeholder="Beschreibung eingeben..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="file" class="form-label">Datei auswählen</label>
+                            <input type="file"
+                                   class="form-control"
+                                   name="file"
+                                   id="file"
+                                   accept="application/pdf, application/zip, text/markdown, .md, .markdown"
+                                   required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Datei hochladen
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

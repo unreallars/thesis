@@ -17,16 +17,6 @@ public class SupervisorController {
     return "upload";
   }
 
-  @PostMapping("/upload")
-  public String upload(@RequestParam("file") MultipartFile file) {
-    try {
-      String name = file.getOriginalFilename();
-      file.transferTo(Path.of("./upload_" + name));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    return "redirect:/";
-  }
 
   @GetMapping("/dashboard")
   public String dashboard() {

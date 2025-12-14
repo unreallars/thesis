@@ -8,8 +8,25 @@
 </head>
 <body th:object="${supervisor}">
 <div class="container text-center">
-    <h1>Name des Betreuers: <span th:text="*{name}">Name</span></h1>
-    <h2>Kontakt-Email: <span th:text="*{mail}">Kontakt-Email</span></h2>
+    <h1>Allgemeine Infos:</h1>
+    <h2>Benutzername: <span th:text="*{username}">Benutzername</span></h2>
+    <h2>Email: <span th:text="*{mail}">Email</span></h2>
+    <h1>Dateien:</h1>
+    <div class="card-container">
+        <div class="card" th:each="file : ${files}">
+            <div class="card-header">
+                <a th:href="@{/dl/{id}(id=${file.id})}"><span
+                        th:text="${file.title}+'.'+${file.fileType}">Titel.Typ</span></a>
+            </div>
+            <div class="card-body">
+                <span th:text="${file.description}">Beschreibung</span>
+            </div>
+            <div class="card-footer">
+                <span class="date"
+                      th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:12</span>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
