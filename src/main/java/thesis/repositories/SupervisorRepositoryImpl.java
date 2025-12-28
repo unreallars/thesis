@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import thesis.domain.SpecialField;
 import thesis.domain.Supervisor;
-import thesis.domain.SupervisorRepository;
+import thesis.services.SupervisorRepository;
 
 @Repository
 public class SupervisorRepositoryImpl implements SupervisorRepository {
@@ -14,15 +14,16 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
 
   public SupervisorRepositoryImpl() {
     List<Supervisor> supervisorList = List.of(
-        new Supervisor(1, "Prof. Dr. Hacker", "hacker@b.de", List.of(new SpecialField("KI")), null,
+        new Supervisor(1, "Prof. Dr. Hacker", "hacker@b.de", List.of(new SpecialField("KI")),
             null, null),
         new Supervisor(4501, "Dr. Test", "test@b.de",
-            List.of(new SpecialField("Programmierung"), new SpecialField("Datenbanken")), null,
+            List.of(new SpecialField("Programmierung"), new SpecialField("Datenbanken")),
             null,
             null),
         new Supervisor(456, "Schmidt", "schmidt@b.de",
-            List.of(new SpecialField("Computernetze")), null, null,
-            null)
+            List.of(new SpecialField("Computernetze")), null,
+            null),
+        new Supervisor(184363268, "unrealLars", null, null, null, null)
     );
     for (Supervisor supervisor : supervisorList) {
       supervisorMap.put(supervisor.getId(), supervisor);

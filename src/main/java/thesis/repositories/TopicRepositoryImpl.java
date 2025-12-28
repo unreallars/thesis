@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import thesis.domain.Requirement;
 import thesis.domain.Topic;
-import thesis.domain.TopicRepository;
+import thesis.services.TopicRepository;
 
 @Repository
 public class TopicRepositoryImpl implements TopicRepository {

@@ -3,7 +3,6 @@ package thesis.services;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import thesis.domain.Supervisor;
-import thesis.domain.SupervisorRepository;
 
 @Service
 public class SupervisorService {
@@ -24,5 +23,9 @@ public class SupervisorService {
 
   public List<Supervisor> getAllSupervisors() {
     return supervisorRepository.getAllSupervisors();
+  }
+
+  public void updateSupervisor(Integer id, String username, String mail) {
+    supervisorRepository.save(new Supervisor(id, username, mail, null, null, null));
   }
 }

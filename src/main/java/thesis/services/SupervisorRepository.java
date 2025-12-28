@@ -1,6 +1,7 @@
-package thesis.domain;
+package thesis.services;
 
 import java.util.List;
+import thesis.domain.Supervisor;
 
 public interface SupervisorRepository {
   Supervisor findSupervisorById(Integer id);

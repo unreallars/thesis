@@ -3,7 +3,6 @@ package thesis.services;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import thesis.domain.Topic;
-import thesis.domain.TopicRepository;
 
 @Service
 public class TopicService {
