@@ -39,3 +39,5 @@ out/
 ### Other ###
 /uploads/
 /src/main/resources/static/bootstrap/
+/.env
+/data/

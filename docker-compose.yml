@@ -1,0 +1,11 @@
+services:
+  database:
+    image: postgres:18-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/thesis:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=thesis
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
