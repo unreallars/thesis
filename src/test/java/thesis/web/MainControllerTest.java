@@ -1,10 +1,13 @@
 package thesis.web;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import thesis.services.InformationFileService;
 import thesis.services.config.AppUserService;
 import thesis.services.config.MethodSecurityConfig;
 import thesis.services.config.SecurityConfig;
@@ -31,9 +35,11 @@ public class MainControllerTest {
   SupervisorService supervisorService;
   @MockitoBean
   TopicService topicService;
+  @MockitoBean
+  InformationFileService informationFileService;
 
   @Test
-  @DisplayName("Startseite ist für jeden erreichbar")
+  @DisplayName("Startseite ist unangemeldet erreichbar")
   void test_1() throws Exception {
     mockMvc.perform(get("/")).andExpect(view().name("index")).andExpect(status().isOk());
   }
@@ -44,14 +50,21 @@ public class MainControllerTest {
   }
   @Test
   @DisplayName("Account-Seite ist angemeldet erreichbar")
-  @WithMockUser()
+  @WithMockUser(roles = "STUDENT")
   void test_3() throws Exception {
     mockMvc.perform(get("/account")).andExpect(status().isOk());
   }
 
   @Test
-  @DisplayName("Startseite enthält die richtigen Daten")
-  void test_4() {
-    throw new RuntimeException("Not implemented yet");
+  @WithMockUser(roles = "STUDENT")
+  @DisplayName("Startseite zeigt angemeldeten Benutzern Themen und Profile")
+  void test_4() throws Exception {
+    String htmlText = mockMvc.perform(get("/"))
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
+    Document html = Jsoup.parse(htmlText);
+    assertThat(html.select("section#topics")).isNotEmpty();
+    assertThat(html.select("section#supervisors")).isNotEmpty();
   }
 }
