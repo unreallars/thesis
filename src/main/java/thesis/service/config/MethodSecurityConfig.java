@@ -1,4 +1,4 @@
-package thesis.services.config;
+package thesis.service.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

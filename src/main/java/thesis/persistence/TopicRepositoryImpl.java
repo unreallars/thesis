@@ -1,4 +1,4 @@
-package thesis.repositories;
+package thesis.persistence;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import thesis.domain.Requirement;
 import thesis.domain.Topic;
-import thesis.services.TopicRepository;
+import thesis.service.TopicRepository;
 
 @Repository
 public class TopicRepositoryImpl implements TopicRepository {

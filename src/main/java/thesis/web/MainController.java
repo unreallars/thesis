@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import thesis.domain.InformationFile;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
-import thesis.services.InformationFileService;
-import thesis.services.SupervisorService;
-import thesis.services.TopicService;
+import thesis.service.InformationFileService;
+import thesis.service.SupervisorService;
+import thesis.service.TopicService;
 
 @Controller
 public class MainController {

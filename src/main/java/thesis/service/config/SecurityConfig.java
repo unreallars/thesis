@@ -1,4 +1,4 @@
-package thesis.services.config;
+package thesis.service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

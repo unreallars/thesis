@@ -2,7 +2,6 @@ package thesis.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import thesis.services.SupervisorService;
-import thesis.services.config.AppUserService;
-import thesis.services.config.MethodSecurityConfig;
-import thesis.services.config.SecurityConfig;
+import thesis.service.SupervisorService;
+import thesis.service.config.AppUserService;
+import thesis.service.config.MethodSecurityConfig;
+import thesis.service.config.SecurityConfig;
 
 @WebMvcTest(SupervisorController.class)
 @Import({SecurityConfig.class, MethodSecurityConfig.class})

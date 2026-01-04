@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import thesis.services.config.AppUserService;
-import thesis.services.config.MethodSecurityConfig;
-import thesis.services.config.SecurityConfig;
+import thesis.service.config.AppUserService;
+import thesis.service.config.MethodSecurityConfig;
+import thesis.service.config.SecurityConfig;
 
 @WebMvcTest(AdminController.class)
 @Import({SecurityConfig.class, MethodSecurityConfig.class})

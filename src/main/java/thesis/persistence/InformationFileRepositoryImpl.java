@@ -1,11 +1,11 @@
-package thesis.repositories;
+package thesis.persistence;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 import thesis.domain.InformationFile;
-import thesis.services.InformationFileRepository;
+import thesis.service.InformationFileRepository;
 
 @Repository
 public class InformationFileRepositoryImpl implements InformationFileRepository {

@@ -7,5 +7,9 @@ spring:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
             scope: read:public_repo
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    url: jdbc:postgresql://localhost:5432/postgres
 app:
   admins: 184363268, 1010

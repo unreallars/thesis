@@ -40,14 +40,21 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.flywaydb:flyway-core:11.20.0'
-    runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.20.0'
+    implementation 'org.jsoup:jsoup:1.22.1'
+    implementation 'org.commonmark:commonmark:0.27.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'org.jsoup:jsoup:1.22.1'
     testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.1'
-    implementation 'org.commonmark:commonmark:0.27.0'
+
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql:11.20.0'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testRuntimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     compileOnly 'com.github.spotbugs:spotbugs-annotations:4.9.8'
 }
 

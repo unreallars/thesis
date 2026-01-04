@@ -1,4 +1,4 @@
-package thesis.services;
+package thesis.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

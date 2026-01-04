@@ -1,4 +1,4 @@
-package thesis.services.config;
+package thesis.service.config;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
-import thesis.services.SupervisorService;
+import thesis.service.SupervisorService;
 
 @Component
 public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {

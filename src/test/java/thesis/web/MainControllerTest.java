@@ -16,12 +16,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import thesis.services.InformationFileService;
-import thesis.services.config.AppUserService;
-import thesis.services.config.MethodSecurityConfig;
-import thesis.services.config.SecurityConfig;
-import thesis.services.SupervisorService;
-import thesis.services.TopicService;
+import thesis.service.InformationFileService;
+import thesis.service.config.AppUserService;
+import thesis.service.config.MethodSecurityConfig;
+import thesis.service.config.SecurityConfig;
+import thesis.service.SupervisorService;
+import thesis.service.TopicService;
 
 @WebMvcTest(MainController.class)
 @Import({SecurityConfig.class, MethodSecurityConfig.class})

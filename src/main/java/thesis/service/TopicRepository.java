@@ -1,4 +1,4 @@
-package thesis.services;
+package thesis.service;
 
 import java.util.List;
 import thesis.domain.Topic;
