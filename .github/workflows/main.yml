@@ -17,5 +17,7 @@ jobs:
       with:
         java-version: '25'
         distribution: 'temurin'
+    - name: Berechtigung für Gradle
+      run: chmod +x ./gradlew
     - name: Run Gradle
       run: ./gradlew check
