@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import thesis.helper.WithMockOAuth2User;
 import thesis.service.InformationFileService;
 import thesis.service.config.AppUserService;
 import thesis.service.config.MethodSecurityConfig;
@@ -50,13 +50,13 @@ public class MainControllerTest {
   }
   @Test
   @DisplayName("Account-Seite ist angemeldet erreichbar")
-  @WithMockUser(roles = "STUDENT")
+  @WithMockOAuth2User(roles = "STUDENT")
   void test_3() throws Exception {
     mockMvc.perform(get("/account")).andExpect(status().isOk());
   }
 
   @Test
-  @WithMockUser(roles = "STUDENT")
+  @WithMockOAuth2User(roles = "STUDENT")
   @DisplayName("Startseite zeigt angemeldeten Benutzern Themen und Profile")
   void test_4() throws Exception {
     String htmlText = mockMvc.perform(get("/"))

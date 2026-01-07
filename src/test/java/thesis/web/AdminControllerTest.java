@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import thesis.helper.WithMockOAuth2User;
 import thesis.service.config.AppUserService;
 import thesis.service.config.MethodSecurityConfig;
 import thesis.service.config.SecurityConfig;
@@ -29,13 +29,13 @@ public class AdminControllerTest {
   }
   @Test
   @DisplayName("Die Verwaltungsseite ist für Admins erreichbar")
-  @WithMockUser(roles = "ADMIN")
+  @WithMockOAuth2User(roles = "ADMIN")
   void test_2() throws Exception {
     mockMvc.perform(get("/manage")).andExpect(status().isOk());
   }
   @Test
   @DisplayName("Die Verwaltungsseite ist für Studenten und Supervisor nicht erreichbar")
-  @WithMockUser(roles = {"STUDENT","SUPERVISOR"})
+  @WithMockOAuth2User(roles = {"STUDENT","SUPERVISOR"})
   void test_3() throws Exception {
     mockMvc.perform(get("/manage")).andExpect(status().isForbidden());
   }
