@@ -1,24 +1,26 @@
 package thesis.domain;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class InformationFile {
-  private final String id;
-  private final Integer supervisorId;
-  private final LocalDateTime uploadTime;
+  private final UUID id;
+  private final LocalDateTime uploadTime = LocalDateTime.now();
   private final String fileType;
   private final String title;
   private final String description;
+  private final Integer supervisorId;
+  private final UUID topicId;
 
-  public InformationFile(String id, Integer supervisorId, LocalDateTime uploadTime, String fileType,
+  public InformationFile(UUID id, String fileType,
                          String title,
-                         String description) {
+                         String description, Integer supervisorId, UUID topicId) {
     this.id = id;
-    this.supervisorId = supervisorId;
-    this.uploadTime = uploadTime;
     this.fileType = fileType;
     this.title = title;
     this.description = description;
+    this.supervisorId = supervisorId;
+    this.topicId = topicId;
   }
 
   public String getDescription() {
@@ -37,11 +39,16 @@ public class InformationFile {
     return uploadTime;
   }
 
+
+  public UUID getId() {
+    return id;
+  }
+
   public Integer getSupervisorId() {
     return supervisorId;
   }
 
-  public String getId() {
-    return id;
+  public UUID getTopicId() {
+    return topicId;
   }
 }

@@ -31,7 +31,7 @@ public class InformationFileController {
                        OAuth2User user,
                        RedirectAttributes redirectAttributes) {
     try {
-      informationFileService.store(file, title, description, user);
+      informationFileService.uploadFile(file, title, description, user);
       redirectAttributes.addFlashAttribute("message", "Upload erfolgreich");
     } catch (IOException e) {
       redirectAttributes.addFlashAttribute("message",

@@ -30,7 +30,7 @@ public class InformationFileService {
   }
 
 
-  public void store(MultipartFile file, String title, String description, OAuth2User user)
+  public void uploadFile(MultipartFile file, String title, String description, OAuth2User user)
       throws IOException {
     String filename = file.getOriginalFilename();
     if (filename == null || filename.isEmpty() || title.isEmpty()) {
@@ -41,36 +41,38 @@ public class InformationFileService {
     if (!fileType.matches("pdf|zip|md")) {
       throw new IOException("Ungültiger Dateityp");
     }
-    String id = UUID.randomUUID().toString();
+    UUID id = UUID.randomUUID();
     String storedFilename = id + "." + fileType;
     Path filePath = Path.of("./uploads/" + storedFilename);
 
     Integer supervisorId = user.getAttribute("id");
     InformationFile informationFile =
-        new InformationFile(id, supervisorId, LocalDateTime.now(), fileType, title, description);
+        new InformationFile(id, fileType, title, description, supervisorId,
+            null);
     informationFileRepository.save(informationFile);
     file.transferTo(filePath);
   }
 
-  public List<InformationFile> getBySupervisor(Integer supervisorId) {
-    return informationFileRepository.findFileBySupervisorId(supervisorId);
-  }
-
-  public ResponseEntity<Resource> getById(String id) {
+  public ResponseEntity<Resource> downloadFile(UUID id) {
     try {
-      InformationFile informationFile = informationFileRepository.findFileById(id);
+      InformationFile informationFile = informationFileRepository.findById(id);
       if (informationFile == null) {
         return ResponseEntity.notFound().build();
       }
 
       Path filePath =
           Path.of("./uploads/" + informationFile.getId() + "." + informationFile.getFileType());
-      ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(filePath));
+      byte[] fileContent = Files.readAllBytes(filePath);
+      ByteArrayResource resource = new ByteArrayResource(fileContent);
       HttpHeaders headers = new HttpHeaders();
 
       if (informationFile.getFileType().equals("md")) {
 
-        String html = markdownToHtml(new String(Files.readAllBytes(filePath)));
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(new String(fileContent, StandardCharsets.UTF_8));
+        String html = HtmlRenderer.builder().build().render(document);
+        html = Jsoup.clean(html, Safelist.relaxed());
+
         resource = new ByteArrayResource(html.getBytes(StandardCharsets.UTF_8));
 
         headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
@@ -89,10 +91,7 @@ public class InformationFileService {
     }
   }
 
-  String markdownToHtml(String markdown) {
-    Parser parser = Parser.builder().build();
-    Node document = parser.parse(markdown);
-    String html = HtmlRenderer.builder().build().render(document);
-    return Jsoup.clean(html, Safelist.relaxed());
+  public List<InformationFile> findBySupervisorId(Integer id) {
+    return informationFileRepository.findBySupervisorId(id);
   }
 }

@@ -4,26 +4,63 @@
     <title>Betreuer-Profil</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
-<body th:object="${supervisor}">
-<div class="container text-center">
-    <h1>Allgemeine Infos:</h1>
-    <h2>Benutzername: <span th:text="*{username}">Benutzername</span></h2>
-    <h2>Email: <span th:text="*{mail}">Email</span></h2>
-    <h1>Dateien:</h1>
-    <div class="card-container">
-        <div class="card" th:each="file : ${files}">
-            <div class="card-header">
-                <a th:href="@{/dl/{id}(id=${file.id})}"><span
-                        th:text="${file.title}+'.'+${file.fileType}">Titel.Typ</span></a>
+<body th:object="${supervisorprofile}" class="p-4">
+<div class="container">
+    <a th:href="@{/}" class="btn btn-outline-primary mb-4">
+        ← Zurück
+    </a>
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5">Profil: <span th:text="*{supervisor.username}">Name</span></h1>
+            <p class="lead"><strong>E-Mail:</strong> <span th:text="*{supervisor.mail}">mail@example.com</span></p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <span>Dateien:</span>
+        <div class="col-md-6 col-lg-4" th:each="file : *{files}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <a class="h6 text-decoration-none" th:href="@{/dl/{id}(id=${file.id})}"
+                       th:text="${file.title}+'.' + ${file.fileType}">Datei</a>
+                </div>
+                <div class="card-body">
+                    <p class="card-text small" th:text="${file.description}">Beschreibung</p>
+                    <small class="text-muted" th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
+                </div>
             </div>
-            <div class="card-body">
-                <span th:text="${file.description}">Beschreibung</span>
+        </div>
+        <span>Links:</span>
+        <div class="col-md-6 col-lg-4" th:each="link : *{links}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <a class="btn btn-outline-primary stretched-link"
+                       th:href="${link.url}"
+                       th:text="${link.text}"
+                       target="_blank">Link</a>
+                </div>
             </div>
-            <div class="card-footer">
-                <span class="date"
-                      th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">01.01.2025 12:12</span>
+        </div>
+        <span>Fachgebiete:</span>
+        <div class="col-md-6 col-lg-4" th:each="tag : *{supervisor.tags}">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body text-center">
+                    <span class="badge bg-primary fs-6" th:text="${tag.tag}">Tag</span>
+                </div>
+            </div>
+        </div>
+        <span>Themen:</span>
+        <div class="col-12" th:each="topic : *{topics}">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0" th:text="${topic.title}">Thema</h5>
+                </div>
+                <div class="card-body">
+                    <p th:text="${topic.description}">Beschreibung</p>
+                </div>
             </div>
         </div>
     </div>

@@ -1,31 +1,28 @@
 package thesis.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Repository;
-import thesis.domain.Requirement;
 import thesis.domain.Topic;
 import thesis.service.TopicRepository;
 
 @Repository
 public class TopicRepositoryImpl implements TopicRepository {
-  private final Map<Integer, Topic> topicMap = new HashMap<>();
+  private final Map<UUID, Topic> topicMap = new HashMap<>();
 
   public TopicRepositoryImpl() {
-    List<Topic> topicList = List.of(
-        new Topic(2, "Programmierung in Spring", "Spring 3.x",
-            List.of(new Requirement("Programmierung"))),
-        new Topic(35, "Mikroarchitektur", "CPU+GPU",
-            List.of(new Requirement("Mikroarchitektur"), new Requirement("Programmierung")))
-    );
-    for (Topic topic : topicList) {
-      topicMap.put(topic.getId(), topic);
-    }
+    List.of(
+        new Topic(UUID.randomUUID(), "Programmierung in Spring", "Spring 3.x", 1,
+            new ArrayList<>(), new ArrayList<>()),
+        new Topic(UUID.randomUUID(), "Mikroarchitektur", "CPU+GPU", 1, new ArrayList<>(),
+            new ArrayList<>())
+    ).forEach(this::save);
   }
 
-  @Override
-  public Topic findTopicById(Integer id) {
+  public Topic findById(UUID id) {
     return topicMap.get(id);
   }
 
@@ -35,7 +32,13 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
-  public List<Topic> getAllTopics() {
+  public List<Topic> findAll() {
     return topicMap.values().stream().toList();
+  }
+
+  @Override
+  public List<Topic> findBySupervisorId(Integer supervisorId) {
+    return topicMap.values().stream().filter(topic -> topic.getSupervisorId().equals(supervisorId))
+        .toList();
   }
 }

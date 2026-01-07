@@ -23,7 +23,7 @@ public class SupervisorController {
 
   @GetMapping("/dashboard")
   public String dashboard(@AuthenticationPrincipal OAuth2User user, Model model) {
-    Supervisor supervisor = supervisorService.getSupervisorById(user.getAttribute("id"));
+    Supervisor supervisor = supervisorService.findById(user.getAttribute("id"));
     model.addAttribute("supervisor", supervisor);
     return "dashboard";
   }

@@ -33,7 +33,7 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
     Integer id = originalUser.getAttribute("id");
-    if (supervisorService.isSupervisor(id)) {
+    if (supervisorService.findById(id) != null) {
       authorities.add(new SimpleGrantedAuthority("ROLE_SUPERVISOR"));
     }
     if (admins.contains(id)) {

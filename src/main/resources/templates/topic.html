@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Thema-Details</title>
+    <title>Betreuer-Profil</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
-<body th:object="${topic}">
-<div class="container text-center">
-    <h1>Titel: <span th:text="*{title}">Titel</span></h1>
-    <h2>Beschreibung: <span th:text="*{description}">Beschreibung</span></h2>
+<body th:object="${topicprofile}" class="p-4">
+<div class="container">
+    <a th:href="@{/}" class="btn btn-outline-primary mb-4">
+        ← Zurück
+    </a>
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5">Thema: <span th:text="*{topic.title}">Titel</span></h1>
+            <p class="lead"><strong>Beschreibung:</strong> <span th:text="*{topic.description}">Beschreibung</span></p>
+            <p class="lead"><strong>Betreuer-ID:</strong> <span th:text="*{topic.supervisorId}">ID</span></p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <span>Dateien:</span>
+        <div class="col-md-6 col-lg-4" th:each="file : *{files}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <a class="h6 text-decoration-none" th:href="@{/dl/{id}(id=${file.id})}"
+                       th:text="${file.title}+'.' + ${file.fileType}">Datei</a>
+                </div>
+                <div class="card-body">
+                    <p class="card-text small" th:text="${file.description}">Beschreibung</p>
+                    <small class="text-muted" th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
+                </div>
+            </div>
+        </div>
+        <span>Links:</span>
+        <div class="col-md-6 col-lg-4" th:each="link : *{links}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <a class="btn btn-outline-primary stretched-link"
+                       th:href="${link.url}"
+                       th:text="${link.text}"
+                       target="_blank">Link</a>
+                </div>
+            </div>
+        </div>
+        <span>Fachgebiete:</span>
+        <div class="col-md-6 col-lg-4" th:each="tag : *{topic.tags}">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body text-center">
+                    <span class="badge bg-primary fs-6" th:text="${tag.tag}">Tag</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

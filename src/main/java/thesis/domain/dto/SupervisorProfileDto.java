@@ -1,0 +1,11 @@
+package thesis.domain.dto;
+
+import java.util.List;
+import thesis.domain.InformationFile;
+import thesis.domain.Link;
+import thesis.domain.Supervisor;
+import thesis.domain.Topic;
+
+public record SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
+                                   List<InformationFile> files, List<Link> links) {
+}

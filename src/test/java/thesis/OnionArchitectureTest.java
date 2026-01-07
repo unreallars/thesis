@@ -20,10 +20,10 @@ public class OnionArchitectureTest {
   public void rule1() {
     ArchRule rule = onionArchitecture()
         .domainModels("..domain..")
-        .domainServices("..services..")
-        .applicationServices("..services..")
+        .domainServices("..service..")
+        .applicationServices("..service..")
         .adapter("web", "..web..")
-        .adapter("persistence", "..repositories..");
+        .adapter("persistence", "..persistence..");
 
     rule.check(klassen);
   }

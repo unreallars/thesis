@@ -1,6 +1,6 @@
 package thesis.web;
 
-import java.util.List;
+import java.util.UUID;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import thesis.domain.InformationFile;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
+import thesis.domain.dto.SupervisorProfileDto;
+import thesis.domain.dto.TopicProfileDto;
 import thesis.service.InformationFileService;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
@@ -31,8 +32,8 @@ public class MainController {
 
   @GetMapping("/")
   public String index(Model model) {
-    model.addAttribute("supervisors", supervisorService.getAllSupervisors());
-    model.addAttribute("topics", topicService.getAllTopics());
+    model.addAttribute("supervisors", supervisorService.findAll());
+    model.addAttribute("topics", topicService.findAll());
     return "index";
   }
 
@@ -48,29 +49,30 @@ public class MainController {
   }
 
   @GetMapping("/topic/{id}")
-  public String getTopic(@PathVariable int id, Model model) {
-    Topic topic = topicService.getTopicById(id);
+  public String getTopic(@PathVariable UUID id, Model model) {
+    Topic topic = topicService.findById(id);
     if (topic != null) {
-      model.addAttribute("topic", topic);
+      TopicProfileDto topicProfile = topicService.getTopic(id);
+      model.addAttribute("topicprofile", topicProfile);
       return "topic";
     }
     return "redirect:/";
   }
 
   @GetMapping("/supervisor/{id}")
-  public String getSupervisor(@PathVariable int id, Model model) {
-    Supervisor supervisor = supervisorService.getSupervisorById(id);
+  public String getSupervisor(@PathVariable Integer id, Model model) {
+    Supervisor supervisor = supervisorService.findById(id);
     if (supervisor != null) {
-      model.addAttribute("supervisor", supervisor);
-      List<InformationFile> files = informationFileService.getBySupervisor(id);
-      model.addAttribute("files", files);
+      SupervisorProfileDto supervisorProfile = supervisorService.getSupervisorProfile(id);
+      model.addAttribute("supervisorprofile", supervisorProfile);
       return "supervisor";
     }
     return "redirect:/";
   }
+
   @GetMapping("/dl/{id}")
   public ResponseEntity<Resource> download(
-      @PathVariable String id) {
-    return informationFileService.getById(id);
+      @PathVariable UUID id) {
+    return informationFileService.downloadFile(id);
   }
 }
