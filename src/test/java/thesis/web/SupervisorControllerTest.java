@@ -4,7 +4,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class SupervisorControllerTest {
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_3() throws Exception {
     when(supervisorService.findById(666666)).thenReturn(
-        new Supervisor(666666, "Test", "test@example.com", new ArrayList<>()));
+        new Supervisor(666666, "Test", "test@example.com"));
     mockMvc.perform(get("/dashboard")).andExpect(status().isOk());
   }
 }

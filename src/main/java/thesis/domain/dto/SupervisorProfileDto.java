@@ -8,4 +8,12 @@ import thesis.domain.Topic;
 
 public record SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
                                    List<InformationFile> files, List<Link> links) {
+  public SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
+                              List<InformationFile> files,
+                              List<Link> links) {
+    this.supervisor = supervisor;
+    this.topics = List.copyOf(topics);
+    this.files = List.copyOf(files);
+    this.links = List.copyOf(links);
+  }
 }

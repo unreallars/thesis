@@ -1,5 +1,7 @@
 package thesis.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,8 +13,8 @@ public class Topic {
   private final List<TopicRequirement> requirements;
   private final List<TopicTag> tags;
 
-  public Topic(UUID uuid, String title, String description, Integer supervisorId,
-               List<TopicRequirement> requirements, List<TopicTag> tags) {
+  private Topic(UUID uuid, String title, String description, Integer supervisorId,
+                List<TopicRequirement> requirements, List<TopicTag> tags) {
     this.uuid = uuid;
     this.title = title;
     this.description = description;
@@ -21,12 +23,16 @@ public class Topic {
     this.tags = tags;
   }
 
+  public Topic(UUID uuid, String title, String description, Integer supervisorId) {
+    this(uuid, title, description, supervisorId, new ArrayList<>(), new ArrayList<>());
+  }
+
   public List<TopicTag> getTags() {
-    return tags;
+    return Collections.unmodifiableList(tags);
   }
 
   public List<TopicRequirement> getRequirements() {
-    return requirements;
+    return Collections.unmodifiableList(requirements);
   }
 
   public UUID getId() {

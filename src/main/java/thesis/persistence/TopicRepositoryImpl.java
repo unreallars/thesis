@@ -1,6 +1,5 @@
 package thesis.persistence;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +14,8 @@ public class TopicRepositoryImpl implements TopicRepository {
 
   public TopicRepositoryImpl() {
     List.of(
-        new Topic(UUID.randomUUID(), "Programmierung in Spring", "Spring 3.x", 1,
-            new ArrayList<>(), new ArrayList<>()),
-        new Topic(UUID.randomUUID(), "Mikroarchitektur", "CPU+GPU", 1, new ArrayList<>(),
-            new ArrayList<>())
+        new Topic(UUID.randomUUID(), "Programmierung in Spring", "Spring 3.x", 1),
+        new Topic(UUID.randomUUID(), "Mikroarchitektur", "CPU+GPU", 1)
     ).forEach(this::save);
   }
 

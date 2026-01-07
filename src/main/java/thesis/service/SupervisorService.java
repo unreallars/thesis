@@ -39,9 +39,6 @@ public class SupervisorService {
   }
 
   public void updateSupervisor(Integer id, String username, String mail) {
-    Supervisor supervisor = supervisorRepository.findById(id);
-    supervisor.setMail(mail);
-    supervisor.setUsername(username);
-    supervisorRepository.save(supervisor);
+    supervisorRepository.save(new Supervisor(id, username, mail));
   }
 }

@@ -1,6 +1,5 @@
 package thesis.persistence;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +13,10 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
 
   public SupervisorRepositoryImpl() {
     List.of(
-        new Supervisor(1, "Prof. Dr. Hacker", "hacker@b.de", new ArrayList<>()),
-        new Supervisor(4501, "Dr. Test", "test@b.de", new ArrayList<>()),
-        new Supervisor(456, "Schmidt", "schmidt@b.de", new ArrayList<>()),
-        new Supervisor(184363268, "unrealLars", "noreply@b.de", new ArrayList<>())
+        new Supervisor(1, "Prof. Dr. Hacker", "hacker@b.de"),
+        new Supervisor(4501, "Dr. Test", "test@b.de"),
+        new Supervisor(456, "Schmidt", "schmidt@b.de"),
+        new Supervisor(184363268, "unrealLars", "noreply@b.de")
     ).forEach(this::save);
   }
 

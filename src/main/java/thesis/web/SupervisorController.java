@@ -31,6 +31,9 @@ public class SupervisorController {
   @PostMapping("/updateSupervisor")
   public String updateSupervisors(@AuthenticationPrincipal OAuth2User user, String username,
                                   String mail) {
+    if (user == null || user.getAttribute("id") == null || username == null || mail == null) {
+      return "redirect:/";
+    }
     supervisorService.updateSupervisor(user.getAttribute("id"), username, mail);
     System.out.println("updateSupervisors: " + username);
     return "redirect:/dashboard";
