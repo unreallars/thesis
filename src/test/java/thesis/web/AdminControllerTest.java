@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import thesis.helper.WithMockOAuth2User;
+import thesis.service.SupervisorService;
+import thesis.service.UserService;
 import thesis.service.config.AppUserService;
 import thesis.service.config.MethodSecurityConfig;
 import thesis.service.config.SecurityConfig;
@@ -22,6 +24,10 @@ public class AdminControllerTest {
   MockMvc mockMvc;
   @MockitoBean
   AppUserService appUserService;
+  @MockitoBean
+  SupervisorService supervisorService;
+  @MockitoBean
+  UserService userService;
   @Test
   @DisplayName("Die Verwaltungsseite ist unangemeldet nicht erreichbar")
   void test_1() throws Exception {

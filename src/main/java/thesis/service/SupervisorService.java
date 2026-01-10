@@ -38,7 +38,7 @@ public class SupervisorService {
         linkRepository.findBySupervisorId(supervisorId));
   }
 
-  public void updateSupervisor(Integer id, String username, String mail) {
-    supervisorRepository.save(new Supervisor(id, username, mail));
+  public void save(Supervisor supervisor) {
+    supervisorRepository.save(supervisor);
   }
 }

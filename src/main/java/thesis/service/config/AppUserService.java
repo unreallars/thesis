@@ -12,16 +12,20 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
+import thesis.domain.User;
 import thesis.service.SupervisorService;
+import thesis.service.UserService;
 
 @Component
 public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   private final DefaultOAuth2UserService defaultService = new DefaultOAuth2UserService();
   private final SupervisorService supervisorService;
+  private final UserService userService;
 
-  public AppUserService(SupervisorService supervisorService) {
+  public AppUserService(SupervisorService supervisorService, UserService userService) {
     this.supervisorService = supervisorService;
+    this.userService = userService;
   }
 
   @Value("${app.admins}")
@@ -33,11 +37,15 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
     Integer id = originalUser.getAttribute("id");
+    String username = originalUser.getAttribute("login");
     if (supervisorService.findById(id) != null) {
       authorities.add(new SimpleGrantedAuthority("ROLE_SUPERVISOR"));
     }
     if (admins.contains(id)) {
       authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+    if (userService.findById(id) == null) {
+      userService.save(new User(id, username));
     }
     System.out.println("USER ID: " + id);
     return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");

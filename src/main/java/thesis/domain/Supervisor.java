@@ -36,5 +36,4 @@ public class Supervisor {
   public List<SupervisorTag> getTags() {
     return Collections.unmodifiableList(tags);
   }
-
 }

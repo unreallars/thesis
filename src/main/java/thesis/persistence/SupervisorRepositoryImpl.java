@@ -15,8 +15,7 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
     List.of(
         new Supervisor(1, "Prof. Dr. Hacker", "hacker@b.de"),
         new Supervisor(4501, "Dr. Test", "test@b.de"),
-        new Supervisor(456, "Schmidt", "schmidt@b.de"),
-        new Supervisor(184363268, "unrealLars", "noreply@b.de")
+        new Supervisor(456, "Schmidt", "schmidt@b.de")
     ).forEach(this::save);
   }
 

@@ -28,14 +28,14 @@ public class SupervisorController {
     return "dashboard";
   }
 
-  @PostMapping("/updateSupervisor")
-  public String updateSupervisors(@AuthenticationPrincipal OAuth2User user, String username,
-                                  String mail) {
-    if (user == null || user.getAttribute("id") == null || username == null || mail == null) {
-      return "redirect:/";
+  @PostMapping("/updateMail")
+  public String updateSupervisors(@AuthenticationPrincipal OAuth2User user, String mail) {
+    Supervisor supervisor = supervisorService.findById(user.getAttribute("id"));
+    if (supervisor == null
+        || supervisor.getMail().equals(mail)) {
+      return "redirect:/dashboard";
     }
-    supervisorService.updateSupervisor(user.getAttribute("id"), username, mail);
-    System.out.println("updateSupervisors: " + username);
+    supervisorService.save(new Supervisor(supervisor.getId(), supervisor.getMail(), mail));
     return "redirect:/dashboard";
   }
 }

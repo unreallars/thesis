@@ -37,9 +37,7 @@
 <div class="container">
     <h1>Dashboard</h1>
     <h2>Profil-Informationen</h2>
-    <form method="POST" th:action="@{/updateSupervisor}" th:object="${supervisor}">
-        <label for="username">Profil-Name</label>
-        <input type="text" id="username" th:field="*{username}" required/><br>
+    <form method="POST" th:action="@{/updateMail}" th:object="${supervisor}">
         <label for="mail">Kontakt-Mail</label>
         <input type="email" id="mail" th:field="*{mail}"/><br>
         <button type="submit">Speichern</button>

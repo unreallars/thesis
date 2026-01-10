@@ -34,7 +34,37 @@
         </div>
     </div>
 </nav>
-<h1>Manage users</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Verwaltung</h2>
+                </div>
+                <div class="card-body">
+                    <div th:if="${message}">
+                        <div class="alert alert-info" th:text="${message}"></div>
+                    </div>
+
+                    <form th:action="@{/manage}" method="post">
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">User ID eingeben</label>
+                            <input type="number"
+                                   name="userId"
+                                   class="form-control"
+                                   id="userId"
+                                   placeholder="z.B. 123"
+                                   required>
+                            <div class="form-text">Gib die ID des Users ein, den du zum Betreuer machen möchtest.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Zum Betreuer befördern</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
