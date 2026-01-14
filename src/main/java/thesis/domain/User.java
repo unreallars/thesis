@@ -1,14 +1,15 @@
 package thesis.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+
 public class User {
-  final Integer id;
+  @Id
+  private final Integer id;
 
-  public void setSupervisor(boolean supervisor) {
-    isSupervisor = supervisor;
-  }
 
-  boolean isSupervisor;
-  final String username;
+  private final Integer githubId;
+  private final String username;
 
   public String getUsername() {
     return username;
@@ -18,12 +19,21 @@ public class User {
     return id;
   }
 
-  public boolean isSupervisor() {
-    return isSupervisor;
+  public Integer getGithubId() {
+    return githubId;
   }
 
-  public User(Integer id, String username) {
+
+  public User(Integer githubId, String username) {
+    this.id = null;
+    this.githubId = githubId;
+    this.username = username;
+  }
+
+  @PersistenceCreator
+  public User(Integer id, Integer githubId, String username) {
     this.id = id;
+    this.githubId = githubId;
     this.username = username;
   }
 }

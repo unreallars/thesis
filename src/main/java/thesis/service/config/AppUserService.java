@@ -38,13 +38,13 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
     Integer id = originalUser.getAttribute("id");
     String username = originalUser.getAttribute("login");
-    if (supervisorService.findById(id) != null) {
+    if (supervisorService.findByGithubId(id) != null) {
       authorities.add(new SimpleGrantedAuthority("ROLE_SUPERVISOR"));
     }
     if (admins.contains(id)) {
       authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
-    if (userService.findById(id) == null) {
+    if (userService.findByGithubId(id) == null) {
       userService.save(new User(id, username));
     }
     System.out.println("USER ID: " + id);

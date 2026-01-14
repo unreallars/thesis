@@ -1,6 +1,7 @@
 package thesis.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.Topic;
@@ -22,15 +23,21 @@ public class TopicService {
   }
 
   public Topic findById(UUID id) {
-    return topicRepository.findById(id);
+    return topicRepository.findById(id).orElse(null);
   }
 
   public List<Topic> findAll() {
     return topicRepository.findAll();
   }
+
   public TopicProfileDto getTopic(UUID topicId) {
-    return new TopicProfileDto(topicRepository.findById(topicId),
-        informationFileRepository.findByTopicId(topicId),
-        linkRepository.findByTopicId(topicId));
+    Optional<Topic> topic = topicRepository.findById(topicId);
+    return topic.map(
+        value -> new TopicProfileDto(value, informationFileRepository.findByTopicId(topicId),
+            linkRepository.findByTopicId(topicId))).orElse(null);
+  }
+
+  public void save(Topic topic) {
+    topicRepository.save(topic);
   }
 }

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -20,13 +18,17 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import thesis.domain.InformationFile;
+import thesis.domain.Supervisor;
 
 @Service
 public class InformationFileService {
   private final InformationFileRepository informationFileRepository;
+  private final SupervisorService supervisorService;
 
-  public InformationFileService(InformationFileRepository informationFileRepository) {
+  public InformationFileService(InformationFileRepository informationFileRepository,
+                                SupervisorService supervisorService) {
     this.informationFileRepository = informationFileRepository;
+    this.supervisorService = supervisorService;
   }
 
 
@@ -37,31 +39,30 @@ public class InformationFileService {
       throw new IOException("Ungültiger Eingabe");
     }
     String fileType = filename.substring(filename.lastIndexOf('.') + 1);
-    System.out.println(fileType);
     if (!fileType.matches("pdf|zip|md")) {
       throw new IOException("Ungültiger Dateityp");
     }
-    UUID id = UUID.randomUUID();
-    String storedFilename = id + "." + fileType;
+    String storedFilename = UUID.randomUUID() + "." + fileType;
     Path filePath = Path.of("./uploads/" + storedFilename);
 
-    Integer supervisorId = user.getAttribute("id");
+    Integer supervisorGithubId = user.getAttribute("id");
+    Supervisor supervisor = supervisorService.findByGithubId(supervisorGithubId);
+
     InformationFile informationFile =
-        new InformationFile(id, fileType, title, description, supervisorId,
-            null);
+        new InformationFile(fileType, filePath.toString(), title, description, supervisor.getId());
     informationFileRepository.save(informationFile);
     file.transferTo(filePath);
   }
 
   public ResponseEntity<Resource> downloadFile(UUID id) {
     try {
-      InformationFile informationFile = informationFileRepository.findById(id);
+      InformationFile informationFile = informationFileRepository.findById(id).orElse(null);
       if (informationFile == null) {
         return ResponseEntity.notFound().build();
       }
 
       Path filePath =
-          Path.of("./uploads/" + informationFile.getId() + "." + informationFile.getFileType());
+          Path.of(informationFile.getFilePath());
       byte[] fileContent = Files.readAllBytes(filePath);
       ByteArrayResource resource = new ByteArrayResource(fileContent);
       HttpHeaders headers = new HttpHeaders();
@@ -89,9 +90,5 @@ public class InformationFileService {
     } catch (IOException e) {
       return ResponseEntity.notFound().build();
     }
-  }
-
-  public List<InformationFile> findBySupervisorId(Integer id) {
-    return informationFileRepository.findBySupervisorId(id);
   }
 }

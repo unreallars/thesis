@@ -1,6 +1,7 @@
 package thesis.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import thesis.domain.Supervisor;
 import thesis.domain.dto.SupervisorProfileDto;
@@ -24,7 +25,7 @@ public class SupervisorService {
   }
 
   public Supervisor findById(Integer id) {
-    return supervisorRepository.findById(id);
+    return supervisorRepository.findById(id).orElse(null);
   }
 
   public List<Supervisor> findAll() {
@@ -32,13 +33,18 @@ public class SupervisorService {
   }
 
   public SupervisorProfileDto getSupervisorProfile(Integer supervisorId) {
-    return new SupervisorProfileDto(supervisorRepository.findById(supervisorId),
+    Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
+    return supervisor.map(value -> new SupervisorProfileDto(value,
         topicRepository.findBySupervisorId(supervisorId),
         informationFileRepository.findBySupervisorId(supervisorId),
-        linkRepository.findBySupervisorId(supervisorId));
+        linkRepository.findBySupervisorId(supervisorId))).orElse(null);
   }
 
   public void save(Supervisor supervisor) {
     supervisorRepository.save(supervisor);
+  }
+
+  public Supervisor findByGithubId(Integer id) {
+    return supervisorRepository.findByGithubId(id).orElse(null);
   }
 }

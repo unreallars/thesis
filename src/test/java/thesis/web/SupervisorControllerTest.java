@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import thesis.domain.Supervisor;
 import thesis.helper.WithMockOAuth2User;
 import thesis.service.SupervisorService;
+import thesis.service.TopicService;
 import thesis.service.config.AppUserService;
 import thesis.service.config.MethodSecurityConfig;
 import thesis.service.config.SecurityConfig;
@@ -27,6 +28,8 @@ public class SupervisorControllerTest {
   AppUserService appUserService;
   @MockitoBean
   SupervisorService supervisorService;
+  @MockitoBean
+  TopicService topicService;
 
   @Test
   @DisplayName("Die Dashboardseite ist unangemeldet nicht erreichbar")
@@ -45,7 +48,7 @@ public class SupervisorControllerTest {
   @DisplayName("Die Dashboardseite ist für Supervisor erreichbar")
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_3() throws Exception {
-    when(supervisorService.findById(666666)).thenReturn(
+    when(supervisorService.findByGithubId(666666)).thenReturn(
         new Supervisor(666666, "Test", "test@example.com"));
     mockMvc.perform(get("/dashboard")).andExpect(status().isOk());
   }

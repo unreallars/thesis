@@ -46,7 +46,7 @@
             </div>
         </div>
         <span>Fachgebiete:</span>
-        <div class="col-md-6 col-lg-4" th:each="tag : *{topic.tags}">
+        <div class="col-md-6 col-lg-4" th:each="tag : *{topic.topicTags}">
             <div class="card h-100 shadow-sm border-primary">
                 <div class="card-body text-center">
                     <span class="badge bg-primary fs-6" th:text="${tag.tag}">Tag</span>

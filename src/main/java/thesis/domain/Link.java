@@ -1,20 +1,11 @@
 package thesis.domain;
 
 import java.util.UUID;
+import org.springframework.data.annotation.Id;
 
 public class Link {
-  public UUID getId() {
-    return id;
-  }
 
-  public Integer getSupervisorId() {
-    return supervisorId;
-  }
-
-  public UUID getTopicId() {
-    return topicId;
-  }
-
+  @Id
   private final UUID id;
   private final String url;
   private final String text;
@@ -35,6 +26,18 @@ public class Link {
 
   public String getText() {
     return text;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public Integer getSupervisorId() {
+    return supervisorId;
+  }
+
+  public UUID getTopicId() {
+    return topicId;
   }
 
 }

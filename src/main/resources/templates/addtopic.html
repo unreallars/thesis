@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Thema hinzufügen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <div class="text-center">
+                        <h1 class="mb-4">Thema hinzufügen</h1>
+
+                        <a th:href="@{/dashboard}" class="btn btn-outline-primary mb-4">
+                            ← Zurück
+                        </a>
+                    </div>
+
+                    <div th:if="${message}">
+                        <div class="alert alert-info" th:text="${message}"></div>
+                    </div>
+
+                    <form method="POST" th:action="@{/addTopic}" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Titel (Pflichtfeld)</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="title"
+                                   name="title"
+                                   placeholder="Titel eingeben..."
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Beschreibung (optional)</label>
+                            <textarea class="form-control"
+                                      id="description"
+                                      name="description"
+                                      rows="3"
+                                      placeholder="Beschreibung eingeben..."></textarea>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                               Thema hinzufügen
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
