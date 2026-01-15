@@ -1,8 +1,10 @@
 package thesis.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import thesis.domain.Link;
 import thesis.domain.Supervisor;
 import thesis.domain.dto.SupervisorProfileDto;
 
@@ -47,4 +49,21 @@ public class SupervisorService {
   public Supervisor findByGithubId(Integer id) {
     return supervisorRepository.findByGithubId(id).orElse(null);
   }
+
+  public void addLink(Integer supervisorId, String url, String linktext) {
+    Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
+    if (supervisor.isPresent()) {
+      linkRepository.save(new Link(url, linktext, supervisorId));
+    }
+  }
+
+  public void addTags(Supervisor supervisor, String tags) {
+    List<String> extractedTags = Arrays.stream(tags.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .toList();
+    extractedTags.forEach(supervisor::addTag);
+    supervisorRepository.save(supervisor);
+  }
 }
+

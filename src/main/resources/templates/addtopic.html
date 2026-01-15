@@ -25,7 +25,7 @@
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form method="POST" th:action="@{/addTopic}" enctype="multipart/form-data">
+                    <form method="POST" th:action="@{/addTopic}">
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Titel (Pflichtfeld)</label>
@@ -44,6 +44,16 @@
                                       name="description"
                                       rows="3"
                                       placeholder="Beschreibung eingeben..."></textarea>
+                        </div>
+                        <div>
+                            <label for="tags">Tags / Fachgebiete (kommagetrennt):</label>
+                            <input id="tags" name="tags" type="text"
+                                   placeholder="java, spring, backend">
+                        </div>
+                        <div>
+                            <label for="requirements">Vorraussetzungen (kommagetrennt):</label>
+                            <input id="requirements" name="requirements" type="text"
+                                   placeholder="propra, database">
                         </div>
 
                         <div class="d-grid">

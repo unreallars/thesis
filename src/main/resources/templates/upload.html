@@ -59,6 +59,29 @@
                                    accept="application/pdf, application/zip, text/markdown, .md, .markdown"
                                    required>
                         </div>
+                        <div>
+                            <span>Verknüpfen mit:</span><br>
+
+                            <label>
+                                <input type="radio"
+                                       name="targetType"
+                                       value="SUPERVISOR"
+                                       checked="checked">
+                                Eigenes Betreuer-Profil
+                            </label><br>
+
+                            <label>
+                                <input type="radio"
+                                       name="targetType"
+                                       value="TOPIC">
+                                Topic
+                            </label>
+                        </div>
+
+                        <div>
+                            <label for="topicId">Topic-ID (nur wenn Topic ausgewählt):</label>
+                            <input id="topicId" name="topicId" type="text">
+                        </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">

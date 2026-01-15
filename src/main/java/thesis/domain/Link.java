@@ -2,6 +2,7 @@ package thesis.domain;
 
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 
 public class Link {
 
@@ -12,12 +13,21 @@ public class Link {
   private final Integer supervisorId;
   private final UUID topicId;
 
+  @PersistenceCreator
   public Link(UUID id, String url, String text, Integer supervisorId, UUID topicId) {
     this.id = id;
     this.url = url;
     this.text = text;
     this.supervisorId = supervisorId;
     this.topicId = topicId;
+  }
+
+  public Link(String url, String text, Integer supervisorId) {
+    this(null, url, text, supervisorId, null);
+  }
+
+  public Link(String url, String text, UUID topicId) {
+    this(null, url, text, null, topicId);
   }
 
   public String getUrl() {

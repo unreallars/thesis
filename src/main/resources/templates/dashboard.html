@@ -73,6 +73,32 @@
                         </div>
                     </form>
                 </div>
+                <div class="card-body p-4">
+                    <form method="POST" th:action="@{/addTag}">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           id="tags"
+                                           name="tags"
+                                           placeholder="newtag1, newtag2, newtag3">
+                                    <label for="tags" class="text-muted">
+                                        <i class="bi bi-envelope me-1"></i>
+                                        Fachgebite / Tags hinzufügen
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save me-2"></i>
+                                Speichern
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="row g-3">
@@ -91,15 +117,6 @@
                         <div class="text-center">
                             <i class="bi bi-link-45deg display-4 text-success mb-3 d-block"></i>
                             <span class="fs-5 fw-bold d-block">Links</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <a th:href="@{/addTag}" class="btn btn-outline-info btn-lg w-100 h-100 p-4 text-decoration-none">
-                        <div class="text-center">
-                            <i class="bi bi-tags display-4 text-info mb-3 d-block"></i>
-                            <span class="fs-5 fw-bold d-block">Tags</span>
                         </div>
                     </a>
                 </div>

@@ -56,7 +56,8 @@
         <div class="col-12" th:each="topic : *{topics}">
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
-                    <h5 class="mb-0" th:text="${topic.title}">Thema</h5>
+                    <a class="h5 text-decoration-none" th:href="@{/topic/{id}(id=${topic.id})}"
+                       th:text="${topic.title}">Thema</a>
                 </div>
                 <div class="card-body">
                     <p th:text="${topic.description}">Beschreibung</p>

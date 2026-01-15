@@ -19,39 +19,70 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import thesis.domain.InformationFile;
 import thesis.domain.Supervisor;
+import thesis.domain.Topic;
 
 @Service
 public class InformationFileService {
   private final InformationFileRepository informationFileRepository;
   private final SupervisorService supervisorService;
+  private final TopicService topicService;
 
   public InformationFileService(InformationFileRepository informationFileRepository,
-                                SupervisorService supervisorService) {
+                                SupervisorService supervisorService, TopicService topicService) {
     this.informationFileRepository = informationFileRepository;
     this.supervisorService = supervisorService;
+    this.topicService = topicService;
   }
 
 
-  public void uploadFile(MultipartFile file, String title, String description, OAuth2User user)
-      throws IOException {
+  public void uploadFile(MultipartFile file, String title, String description, OAuth2User user,
+                         String targetType, String topicId) throws IOException {
+
     String filename = file.getOriginalFilename();
     if (filename == null || filename.isEmpty() || title.isEmpty()) {
       throw new IOException("Ungültiger Eingabe");
     }
+
     String fileType = filename.substring(filename.lastIndexOf('.') + 1);
     if (!fileType.matches("pdf|zip|md")) {
       throw new IOException("Ungültiger Dateityp");
     }
+
     String storedFilename = UUID.randomUUID() + "." + fileType;
     Path filePath = Path.of("./uploads/" + storedFilename);
 
-    Integer supervisorGithubId = user.getAttribute("id");
-    Supervisor supervisor = supervisorService.findByGithubId(supervisorGithubId);
+    Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
+    if (supervisor == null) {
+      throw new IOException("Betreuer nicht gefunden");
+    }
+    if ("SUPERVISOR".equals(targetType)) {
+      InformationFile informationFile =
+          new InformationFile(fileType, filePath.toString(), title, description,
+              supervisor.getId());
+      informationFileRepository.save(informationFile);
+      file.transferTo(filePath);
 
-    InformationFile informationFile =
-        new InformationFile(fileType, filePath.toString(), title, description, supervisor.getId());
-    informationFileRepository.save(informationFile);
-    file.transferTo(filePath);
+    } else if ("TOPIC".equals(targetType) && topicId != null) {
+      try {
+        UUID uuid = UUID.fromString(topicId);
+        Topic topic = topicService.findById(uuid);
+        if (topic == null) {
+          throw new IOException("Das Thema existiert nicht");
+        }
+        if (!topic.getSupervisorId().equals(supervisor.getId())) {
+          throw new IOException("Das angegebene Thema ist von einem anderen Betreuer");
+        }
+        InformationFile informationFile =
+            new InformationFile(fileType, filePath.toString(), title, description, topic.getId());
+        informationFileRepository.save(informationFile);
+        file.transferTo(filePath);
+
+      } catch (IllegalArgumentException e) {
+        throw new IOException("Die eingegebene Id ist ungültig");
+      }
+    } else {
+      throw new IOException("Es ist ein Fehler aufgetreten");
+    }
   }
 
   public ResponseEntity<Resource> downloadFile(UUID id) {
@@ -61,8 +92,7 @@ public class InformationFileService {
         return ResponseEntity.notFound().build();
       }
 
-      Path filePath =
-          Path.of(informationFile.getFilePath());
+      Path filePath = Path.of(informationFile.getFilePath());
       byte[] fileContent = Files.readAllBytes(filePath);
       ByteArrayResource resource = new ByteArrayResource(fileContent);
       HttpHeaders headers = new HttpHeaders();

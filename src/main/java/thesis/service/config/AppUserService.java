@@ -47,7 +47,7 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
     if (userService.findByGithubId(id) == null) {
       userService.save(new User(id, username));
     }
-    System.out.println("USER ID: " + id);
+    System.out.println("USER-ID: " + id);
     return new DefaultOAuth2User(authorities, originalUser.getAttributes(), "id");
   }
 }

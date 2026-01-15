@@ -4,7 +4,8 @@
     <title>Suche</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -34,9 +35,14 @@
         </div>
     </div>
 </nav>
-<div class="container" id="content">
-    <h1>Suchfunktion</h1>
-    <h2>Kommt Bald</h2>
+<div class="container mt-5">
+
+    <form th:action="@{/match}" th:object="${matchingForm}" method="post">
+
+        <h5>Match kommt bald</h5>
+
+        <button class="btn btn-primary mt-3">Suchen</button>
+    </form>
 </div>
 <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>

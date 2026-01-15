@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Link hinzufügen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <div class="text-center">
+                        <h1 class="mb-4">Link hinzufügen</h1>
+
+                        <a th:href="@{/dashboard}" class="btn btn-outline-primary mb-4">
+                            ← Zurück
+                        </a>
+                    </div>
+
+                    <div th:if="${message}">
+                        <div class="alert alert-info" th:text="${message}"></div>
+                    </div>
+
+                    <form method="POST" th:action="@{/addLink}">
+
+                        <div class="mb-3">
+                            <label for="url" class="form-label">Url eingeben (Pflichtfeld)</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="url"
+                                   name="url"
+                                   placeholder="Url eingeben..."
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="linkText" class="form-label">Link-Text (Pflichtfeld)</label>
+                            <input type="text" class="form-control"
+                                      id="linkText"
+                                      name="linkText"
+                                      placeholder="Linktext eingeben..."
+                                      required>
+                        </div>
+
+                        <div>
+                            <span>Verknüpfen mit:</span><br>
+
+                            <label>
+                                <input type="radio"
+                                       name="targetType"
+                                       value="SUPERVISOR"
+                                       checked="checked">
+                                Eigenes Betreuer-Profil
+                            </label><br>
+
+                            <label>
+                                <input type="radio"
+                                       name="targetType"
+                                       value="TOPIC">
+                                Topic
+                            </label>
+                        </div>
+
+                        <div>
+                            <label for="topicId">Topic-ID (nur wenn Topic ausgewählt):</label>
+                            <input id="topicId" name="topicId" type="text">
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Link hinzufügen
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
