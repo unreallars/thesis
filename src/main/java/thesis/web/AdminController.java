@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import thesis.domain.Supervisor;
 import thesis.domain.User;
 import thesis.service.SupervisorService;
 import thesis.service.UserService;
@@ -37,11 +36,13 @@ public class AdminController {
       return "redirect:/manage";
     }
     User user = userService.findByGithubId(userId);
-    Supervisor supervisor =
-        new Supervisor(user.getGithubId(), user.getUsername(), "Nicht angegeben");
-    supervisorService.save(supervisor);
+    supervisorService.createSupervisor(user.getGithubId(), user.getUsername(), "Nicht angegeben");
     redirectAttributes.addFlashAttribute("message",
         "User wurde erfolgreich die Rolle Betreuer zugewiesen");
+
+
     return "redirect:/manage";
+
+
   }
 }

@@ -1,7 +1,6 @@
 package thesis.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
@@ -23,8 +22,8 @@ public class Topic {
     this.title = title;
     this.description = description;
     this.supervisorId = supervisorId;
-    this.requirements = requirements;
-    this.topicTags = topicTags;
+    this.requirements = List.copyOf(requirements);
+    this.topicTags = List.copyOf(topicTags);
   }
 
   public Topic(String title, String description, Integer supervisorId) {
@@ -32,19 +31,11 @@ public class Topic {
   }
 
   public List<TopicTag> getTopicTags() {
-    return Collections.unmodifiableList(topicTags);
-  }
-
-  public void addRequirement(String requirement) {
-    this.requirements.add(new TopicRequirement(requirement));
-  }
-
-  public void addTag(String tag) {
-    this.topicTags.add(new TopicTag(tag));
+    return topicTags;
   }
 
   public List<TopicRequirement> getRequirements() {
-    return Collections.unmodifiableList(requirements);
+    return requirements;
   }
 
   public UUID getId() {

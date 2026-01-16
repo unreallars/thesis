@@ -1,7 +1,6 @@
 package thesis.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
@@ -21,7 +20,7 @@ public class Supervisor {
     this.username = username;
     this.githubId = githubId;
     this.mail = mail;
-    this.supervisorTags = supervisorTags;
+    this.supervisorTags = List.copyOf(supervisorTags);
   }
 
   public Supervisor(Integer githubId, String username, String mail) {
@@ -45,10 +44,6 @@ public class Supervisor {
   }
 
   public List<SupervisorTag> getSupervisorTags() {
-    return Collections.unmodifiableList(supervisorTags);
-  }
-
-  public void addTag(String tag) {
-    this.supervisorTags.add(new SupervisorTag(tag));
+    return supervisorTags;
   }
 }

@@ -11,9 +11,17 @@ public record SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
   public SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
                               List<InformationFile> files,
                               List<Link> links) {
-    this.supervisor = supervisor;
+    this.supervisor =
+        new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
+            supervisor.getMail(), List.copyOf(supervisor.getSupervisorTags()));
     this.topics = List.copyOf(topics);
     this.files = List.copyOf(files);
     this.links = List.copyOf(links);
+  }
+
+  @Override
+  public Supervisor supervisor() {
+    return new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
+        supervisor.getMail(), List.copyOf(supervisor.getSupervisorTags()));
   }
 }

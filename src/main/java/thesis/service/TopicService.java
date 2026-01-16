@@ -1,5 +1,6 @@
 package thesis.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.Link;
 import thesis.domain.Topic;
+import thesis.domain.TopicRequirement;
+import thesis.domain.TopicTag;
+import thesis.domain.dto.MatchResultDto;
 import thesis.domain.dto.TopicProfileDto;
 
 @Service
@@ -39,35 +43,45 @@ public class TopicService {
             linkRepository.findByTopicId(topicId))).orElse(null);
   }
 
-  public Topic save(Topic topic) {
-    return topicRepository.save(topic);
+  public Topic createTopic(String title, String description, int supervisorId) {
+    return topicRepository.save(new Topic(title, description, supervisorId));
   }
 
-  public void addTagsAndReq(Topic topic, String tags, String requirements) {
+  public void createTagsAndReq(UUID topicId, String tags, String requirements) {
+    Optional<Topic> topic = topicRepository.findById(topicId);
+    topic.ifPresent(topicPresent -> {
+      List<String> extractedTags =
+          Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
+      List<TopicTag> topicTags = new ArrayList<>(topicPresent.getTopicTags());
+      extractedTags.stream().map(TopicTag::new).forEach(topicTags::add);
+      List<String> extractedReq =
+          Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+              .toList();
+      List<TopicRequirement> topicReq = new ArrayList<>(topicPresent.getRequirements());
+      extractedReq.stream().map(TopicRequirement::new).forEach(topicReq::add);
 
-    List<String> extractedTags = extractCommaSeparated(tags);
-    extractedTags.forEach(topic::addTag);
-
-    List<String> extractedReq = extractCommaSeparated(requirements);
-    extractedReq.forEach(topic::addRequirement);
-    topicRepository.save(topic);
+      topicRepository.save(
+          new Topic(topicPresent.getId(), topicPresent.getTitle(),
+              topicPresent.getDescription(), topicPresent.getSupervisorId(),
+              topicReq, topicTags));
+    });
   }
 
-  private List<String> extractCommaSeparated(String input) {
-    if (input == null || input.isBlank()) {
-      return List.of();
-    }
-
-    return Arrays.stream(input.split(","))
-        .map(String::trim)
-        .filter(s -> !s.isEmpty())
-        .toList();
-  }
-
-  public void addLink(UUID topicId, String url, String linktext) {
+  public void createLink(UUID topicId, String url, String linktext) {
     Optional<Topic> topic = topicRepository.findById(topicId);
     if (topic.isPresent()) {
       linkRepository.save(new Link(url, linktext, topicId));
     }
+  }
+
+
+  public List<String> findAllRequirements() {
+    return topicRepository.findAllDistinctTopicRequirementNames();
+  }
+
+  public List<MatchResultDto> findMatchingTopics(List<String> studentTags,
+                                                 List<String> completedRequirements) {
+    return topicRepository.findMatchingTopics(String.join(",", studentTags),
+    String.join(",", completedRequirements));
   }
 }

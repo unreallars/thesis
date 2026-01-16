@@ -42,9 +42,7 @@ public class SupervisorController {
         || supervisor.getMail().equals(mail)) {
       return "redirect:/dashboard";
     }
-    supervisorService.save(
-        new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(), mail,
-            supervisor.getSupervisorTags()));
+    supervisorService.updateMail(supervisor.getId(), mail);
     return "redirect:/dashboard";
   }
 
@@ -63,8 +61,8 @@ public class SupervisorController {
       return "redirect:/addTopic";
     }
     redirectAttributes.addFlashAttribute("message", "Thema erfolgreich hinzugefügt");
-    Topic topic = topicService.save(new Topic(title, description, supervisor.getId()));
-    topicService.addTagsAndReq(topic, tags, requirements);
+    Topic topic = topicService.createTopic(title, description, supervisor.getId());
+    topicService.createTagsAndReq(topic.getId(), tags, requirements);
 
     return "redirect:/addTopic";
   }
@@ -76,7 +74,7 @@ public class SupervisorController {
         || tags == null || tags.isBlank()) {
       return "redirect:/dashboard";
     }
-    supervisorService.addTags(supervisor, tags);
+    supervisorService.createTags(supervisor.getId(), tags);
     return "redirect:/dashboard";
   }
 
@@ -101,7 +99,7 @@ public class SupervisorController {
     if ("SUPERVISOR".equals(targetType)) {
       redirectAttributes.addFlashAttribute("message",
           "Link erfolgreich zum Betreuer-Profil hinzugefügt");
-      supervisorService.addLink(supervisor.getId(), url, linkText);
+      supervisorService.createLink(supervisor.getId(), url, linkText);
       return "redirect:/addLink";
 
     } else if ("TOPIC".equals(targetType) && topicId != null) {
@@ -119,7 +117,7 @@ public class SupervisorController {
           return "redirect:/addLink";
         }
         redirectAttributes.addFlashAttribute("message", "Link erfolgreich zum Thema hinzugefügt");
-        topicService.addLink(uuid, url, linkText);
+        topicService.createLink(uuid, url, linkText);
         return "redirect:/addLink";
 
       } catch (IllegalArgumentException e) {

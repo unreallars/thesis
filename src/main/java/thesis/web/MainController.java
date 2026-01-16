@@ -1,5 +1,7 @@
 package thesis.web;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
+import thesis.domain.dto.MatchResultDto;
+import thesis.domain.dto.SupervisorMatchDto;
 import thesis.domain.dto.SupervisorProfileDto;
 import thesis.domain.dto.TopicProfileDto;
 import thesis.service.InformationFileService;
@@ -38,8 +45,33 @@ public class MainController {
   }
 
   @GetMapping("/match")
-  public String match() {
+  public String match(Model model) {
+    model.addAttribute("requirements", topicService.findAllRequirements());
     return "match";
+  }
+
+  @PostMapping("/match")
+  public String match(@RequestParam(value = "completedRequirements", required = false)
+                      List<String> completedRequirements,
+                      @RequestParam("interestsInput") String interestsInput,
+                      RedirectAttributes redirectAttributes) {
+    List<String> studentTags = List.of();
+    if (completedRequirements == null) {
+      completedRequirements = List.of();
+    }
+    if (interestsInput != null && !interestsInput.isBlank()) {
+      studentTags = Arrays.stream(interestsInput.split(","))
+          .map(String::trim).filter(s -> !s.isEmpty()).toList();
+    }
+
+    List<MatchResultDto> matches =
+        topicService.findMatchingTopics(studentTags, completedRequirements);
+    List<SupervisorMatchDto> matches2 =
+        supervisorService.findMatchingSupervisors(studentTags);
+    redirectAttributes.addFlashAttribute("result", true);
+    redirectAttributes.addFlashAttribute("matches", matches);
+    redirectAttributes.addFlashAttribute("matches2", matches2);
+    return "redirect:/match";
   }
 
   @GetMapping("/account")
