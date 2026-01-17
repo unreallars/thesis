@@ -1,16 +1,19 @@
 package thesis.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
 import thesis.domain.InformationFile;
 
-public interface InformationFileRepository extends CrudRepository<InformationFile, UUID> {
+public interface InformationFileRepository {
   List<InformationFile> findAll();
 
-  List<InformationFile> findBySupervisorId(Integer supervisorId);
+  List<InformationFile> findBySupervisorId(UUID supervisorId);
 
   List<InformationFile> findByTopicId(UUID topicId);
 
 
+  Optional<InformationFile> findById(UUID id);
+
+  void save(InformationFile informationFile);
 }

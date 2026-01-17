@@ -3,22 +3,18 @@ package thesis.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
 
 public class Topic {
-  @Id
   private final UUID uuid;
   private final String title;
   private final String description;
-  private final Integer supervisorId;
+  private final UUID supervisorId;
   private final List<TopicRequirement> requirements;
   private final List<TopicTag> topicTags;
 
-  @PersistenceCreator
-  public Topic(UUID uuid, String title, String description, Integer supervisorId,
+  public Topic(UUID id, String title, String description, UUID supervisorId,
                List<TopicRequirement> requirements, List<TopicTag> topicTags) {
-    this.uuid = uuid;
+    this.uuid = id;
     this.title = title;
     this.description = description;
     this.supervisorId = supervisorId;
@@ -26,8 +22,13 @@ public class Topic {
     this.topicTags = List.copyOf(topicTags);
   }
 
-  public Topic(String title, String description, Integer supervisorId) {
-    this(null, title, description, supervisorId, new ArrayList<>(), new ArrayList<>());
+  public Topic(String title, String description, UUID supervisorId) {
+    this(UUID.randomUUID(), title, description, supervisorId, new ArrayList<>(), new ArrayList<>());
+  }
+
+  public Topic(String title, String description, UUID supervisorId, List<TopicTag> extractedTags,
+               List<TopicRequirement> extractedReq) {
+    this(UUID.randomUUID(), title, description, supervisorId, extractedReq, extractedTags);
   }
 
   public List<TopicTag> getTopicTags() {
@@ -50,7 +51,7 @@ public class Topic {
     return title;
   }
 
-  public Integer getSupervisorId() {
+  public UUID getSupervisorId() {
     return supervisorId;
   }
 }

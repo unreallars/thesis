@@ -38,11 +38,9 @@ public class SupervisorController {
   @PostMapping("/updateMail")
   public String updateSupervisors(@AuthenticationPrincipal OAuth2User user, String mail) {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
-    if (supervisor == null
-        || supervisor.getMail().equals(mail)) {
-      return "redirect:/dashboard";
+    if (supervisor != null && !supervisor.getMail().equals(mail)) {
+      supervisorService.updateMail(supervisor.getId(), mail);
     }
-    supervisorService.updateMail(supervisor.getId(), mail);
     return "redirect:/dashboard";
   }
 
@@ -52,17 +50,15 @@ public class SupervisorController {
   }
 
   @PostMapping("/addTopic")
-  public String addTopic(@AuthenticationPrincipal OAuth2User user, String title,
-                         String description, RedirectAttributes redirectAttributes, String tags,
-                         String requirements) {
+  public String addTopic(@AuthenticationPrincipal OAuth2User user, String title, String description,
+                         RedirectAttributes redirectAttributes, String tags, String requirements) {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
     if (supervisor == null) {
       redirectAttributes.addFlashAttribute("message", "Betreuer nicht gefunden");
       return "redirect:/addTopic";
     }
     redirectAttributes.addFlashAttribute("message", "Thema erfolgreich hinzugefügt");
-    Topic topic = topicService.createTopic(title, description, supervisor.getId());
-    topicService.createTagsAndReq(topic.getId(), tags, requirements);
+    topicService.createTopic(title, description, supervisor.getId(), tags, requirements);
 
     return "redirect:/addTopic";
   }
@@ -70,11 +66,10 @@ public class SupervisorController {
   @PostMapping("/addTag")
   public String addTags(@AuthenticationPrincipal OAuth2User user, String tags) {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
-    if (supervisor == null
-        || tags == null || tags.isBlank()) {
-      return "redirect:/dashboard";
+    if (supervisor != null && tags != null && !tags.isBlank()) {
+      supervisorService.createTags(supervisor.getId(), tags);
     }
-    supervisorService.createTags(supervisor.getId(), tags);
+
     return "redirect:/dashboard";
   }
 
@@ -84,12 +79,11 @@ public class SupervisorController {
   }
 
   @PostMapping("/addLink")
-  public String submitForm(
-      @RequestParam String url,
-      @RequestParam String linkText,
-      @RequestParam String targetType,
-      @RequestParam(required = false) String topicId, RedirectAttributes redirectAttributes,
-      @AuthenticationPrincipal OAuth2User user) {
+  public String submitForm(@RequestParam String url, @RequestParam String linkText,
+                           @RequestParam String targetType,
+                           @RequestParam(required = false) String topicId,
+                           RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal OAuth2User user) {
 
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
     if (supervisor == null) {
@@ -100,33 +94,27 @@ public class SupervisorController {
       redirectAttributes.addFlashAttribute("message",
           "Link erfolgreich zum Betreuer-Profil hinzugefügt");
       supervisorService.createLink(supervisor.getId(), url, linkText);
-      return "redirect:/addLink";
 
     } else if ("TOPIC".equals(targetType) && topicId != null) {
       try {
         UUID uuid = UUID.fromString(topicId);
         Topic topic = topicService.findById(uuid);
-        if (topic == null) {
-          redirectAttributes.addFlashAttribute("message",
-              "Das angegebene Thema existiert nicht");
-          return "redirect:/addLink";
-        }
-        if (!topic.getSupervisorId().equals(supervisor.getId())) {
+        if (topic == null || topic.getSupervisorId() == null) {
+          redirectAttributes.addFlashAttribute("message", "Das angegebene Thema existiert nicht");
+        } else if (!topic.getSupervisorId().equals(supervisor.getId())) {
           redirectAttributes.addFlashAttribute("message",
               "Das angegebene Thema ist von einem anderen Betreuer");
-          return "redirect:/addLink";
+        } else {
+          topicService.createLink(uuid, url, linkText);
+          redirectAttributes.addFlashAttribute("message", "Link erfolgreich zum Thema hinzugefügt");
         }
-        redirectAttributes.addFlashAttribute("message", "Link erfolgreich zum Thema hinzugefügt");
-        topicService.createLink(uuid, url, linkText);
-        return "redirect:/addLink";
-
       } catch (IllegalArgumentException e) {
         redirectAttributes.addFlashAttribute("message", "Die eingegebene Id ist ungültig");
-        return "redirect:/addLink";
-
       }
+    } else {
+      redirectAttributes.addFlashAttribute("message", "Es ist ein Fehler aufgetreten.");
     }
-    redirectAttributes.addFlashAttribute("message", "Es ist ein Fehler aufgetreten.");
+
     return "redirect:/addLink";
   }
 }

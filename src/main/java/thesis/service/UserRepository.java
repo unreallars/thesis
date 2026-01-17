@@ -2,11 +2,15 @@ package thesis.service;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.repository.CrudRepository;
+import java.util.UUID;
 import thesis.domain.User;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository {
   List<User> findAll();
 
   Optional<User> findByGithubId(Integer githubId);
+
+  Optional<User> findById(UUID id);
+
+  void save(User user);
 }

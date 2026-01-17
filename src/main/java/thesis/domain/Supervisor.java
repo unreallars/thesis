@@ -2,19 +2,16 @@ package thesis.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
+import java.util.UUID;
 
 public class Supervisor {
-  @Id
-  private final Integer id;
+  private final UUID id;
   private final String username;
   private final Integer githubId;
   private final String mail;
   private final List<SupervisorTag> supervisorTags;
 
-  @PersistenceCreator
-  public Supervisor(Integer id, String username, Integer githubId, String mail,
+  public Supervisor(UUID id, String username, Integer githubId, String mail,
                     List<SupervisorTag> supervisorTags) {
     this.id = id;
     this.username = username;
@@ -24,10 +21,10 @@ public class Supervisor {
   }
 
   public Supervisor(Integer githubId, String username, String mail) {
-    this(null, username, githubId, mail, new ArrayList<>());
+    this(UUID.randomUUID(), username, githubId, mail, new ArrayList<>());
   }
 
-  public int getId() {
+  public UUID getId() {
     return id;
   }
 

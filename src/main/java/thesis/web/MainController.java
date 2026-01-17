@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
-import thesis.domain.dto.MatchResultDto;
-import thesis.domain.dto.SupervisorMatchDto;
-import thesis.domain.dto.SupervisorProfileDto;
-import thesis.domain.dto.TopicProfileDto;
+import thesis.domain.dto.MatchResult;
+import thesis.domain.dto.SupervisorMatch;
+import thesis.domain.dto.SupervisorProfile;
+import thesis.domain.dto.TopicProfile;
 import thesis.service.InformationFileService;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
@@ -64,9 +64,9 @@ public class MainController {
           .map(String::trim).filter(s -> !s.isEmpty()).toList();
     }
 
-    List<MatchResultDto> matches =
+    List<MatchResult> matches =
         topicService.findMatchingTopics(studentTags, completedRequirements);
-    List<SupervisorMatchDto> matches2 =
+    List<SupervisorMatch> matches2 =
         supervisorService.findMatchingSupervisors(studentTags);
     redirectAttributes.addFlashAttribute("result", true);
     redirectAttributes.addFlashAttribute("matches", matches);
@@ -84,7 +84,7 @@ public class MainController {
   public String getTopic(@PathVariable UUID id, Model model) {
     Topic topic = topicService.findById(id);
     if (topic != null) {
-      TopicProfileDto topicProfile = topicService.getTopic(id);
+      TopicProfile topicProfile = topicService.getTopic(id);
       model.addAttribute("topicprofile", topicProfile);
       return "topic";
     }
@@ -92,10 +92,10 @@ public class MainController {
   }
 
   @GetMapping("/supervisor/{id}")
-  public String getSupervisor(@PathVariable Integer id, Model model) {
+  public String getSupervisor(@PathVariable UUID id, Model model) {
     Supervisor supervisor = supervisorService.findById(id);
     if (supervisor != null) {
-      SupervisorProfileDto supervisorProfile = supervisorService.getSupervisorProfile(id);
+      SupervisorProfile supervisorProfile = supervisorService.getSupervisorProfile(id);
       model.addAttribute("supervisorprofile", supervisorProfile);
       return "supervisor";
     }

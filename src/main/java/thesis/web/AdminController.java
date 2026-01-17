@@ -29,20 +29,15 @@ public class AdminController {
   public String makeSupervisor(Integer userId, RedirectAttributes redirectAttributes) {
     if (userService.findByGithubId(userId) == null) {
       redirectAttributes.addFlashAttribute("message", "User nicht gefunden");
-      return "redirect:/manage";
-    }
-    if (supervisorService.findByGithubId(userId) != null) {
+    } else if (supervisorService.findByGithubId(userId) != null) {
       redirectAttributes.addFlashAttribute("message", "User ist bereits Betreuer");
-      return "redirect:/manage";
+    } else {
+      User user = userService.findByGithubId(userId);
+      supervisorService.createSupervisor(user.getGithubId(), user.getUsername(), "Nicht angegeben");
+      redirectAttributes.addFlashAttribute("message",
+          "User wurde erfolgreich die Rolle Betreuer zugewiesen");
     }
-    User user = userService.findByGithubId(userId);
-    supervisorService.createSupervisor(user.getGithubId(), user.getUsername(), "Nicht angegeben");
-    redirectAttributes.addFlashAttribute("message",
-        "User wurde erfolgreich die Rolle Betreuer zugewiesen");
-
-
     return "redirect:/manage";
-
 
   }
 }

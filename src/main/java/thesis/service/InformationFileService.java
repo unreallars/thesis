@@ -57,7 +57,8 @@ public class InformationFileService {
     }
     if ("SUPERVISOR".equals(targetType)) {
       InformationFile informationFile =
-          new InformationFile(fileType, filePath.toString(), title, description,
+          InformationFile.createSupervisorInformationFile(fileType, filePath.toString(), title,
+              description,
               supervisor.getId());
       informationFileRepository.save(informationFile);
       file.transferTo(filePath);
@@ -73,7 +74,8 @@ public class InformationFileService {
           throw new IOException("Das angegebene Thema ist von einem anderen Betreuer");
         }
         InformationFile informationFile =
-            new InformationFile(fileType, filePath.toString(), title, description, topic.getId());
+            InformationFile.createTopicInformationFile(fileType, filePath.toString(), title,
+                description, topic.getId());
         informationFileRepository.save(informationFile);
         file.transferTo(filePath);
 

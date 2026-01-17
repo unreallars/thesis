@@ -1,6 +1,5 @@
 package thesis.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +9,8 @@ import thesis.domain.Link;
 import thesis.domain.Topic;
 import thesis.domain.TopicRequirement;
 import thesis.domain.TopicTag;
-import thesis.domain.dto.MatchResultDto;
-import thesis.domain.dto.TopicProfileDto;
+import thesis.domain.dto.MatchResult;
+import thesis.domain.dto.TopicProfile;
 
 @Service
 public class TopicService {
@@ -36,41 +35,30 @@ public class TopicService {
     return topicRepository.findAll();
   }
 
-  public TopicProfileDto getTopic(UUID topicId) {
+  public TopicProfile getTopic(UUID topicId) {
     Optional<Topic> topic = topicRepository.findById(topicId);
     return topic.map(
-        value -> new TopicProfileDto(value, informationFileRepository.findByTopicId(topicId),
+        value -> new TopicProfile(value, informationFileRepository.findByTopicId(topicId),
             linkRepository.findByTopicId(topicId))).orElse(null);
   }
 
-  public Topic createTopic(String title, String description, int supervisorId) {
-    return topicRepository.save(new Topic(title, description, supervisorId));
-  }
+  public void createTopic(String title, String description, UUID supervisorId, String tags,
+                          String requirements) {
+    List<TopicTag> extractedTags =
+        Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .map(TopicTag::new).toList();
+    List<TopicRequirement> extractedReq =
+        Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .map(TopicRequirement::new).toList();
+    Topic topic = new Topic(title, description, supervisorId, extractedTags, extractedReq);
 
-  public void createTagsAndReq(UUID topicId, String tags, String requirements) {
-    Optional<Topic> topic = topicRepository.findById(topicId);
-    topic.ifPresent(topicPresent -> {
-      List<String> extractedTags =
-          Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
-      List<TopicTag> topicTags = new ArrayList<>(topicPresent.getTopicTags());
-      extractedTags.stream().map(TopicTag::new).forEach(topicTags::add);
-      List<String> extractedReq =
-          Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-              .toList();
-      List<TopicRequirement> topicReq = new ArrayList<>(topicPresent.getRequirements());
-      extractedReq.stream().map(TopicRequirement::new).forEach(topicReq::add);
-
-      topicRepository.save(
-          new Topic(topicPresent.getId(), topicPresent.getTitle(),
-              topicPresent.getDescription(), topicPresent.getSupervisorId(),
-              topicReq, topicTags));
-    });
+    topicRepository.save(topic);
   }
 
   public void createLink(UUID topicId, String url, String linktext) {
     Optional<Topic> topic = topicRepository.findById(topicId);
     if (topic.isPresent()) {
-      linkRepository.save(new Link(url, linktext, topicId));
+      linkRepository.save(Link.createTopicLink(url, linktext, topicId));
     }
   }
 
@@ -79,9 +67,9 @@ public class TopicService {
     return topicRepository.findAllDistinctTopicRequirementNames();
   }
 
-  public List<MatchResultDto> findMatchingTopics(List<String> studentTags,
-                                                 List<String> completedRequirements) {
+  public List<MatchResult> findMatchingTopics(List<String> studentTags,
+                                              List<String> completedRequirements) {
     return topicRepository.findMatchingTopics(String.join(",", studentTags),
-    String.join(",", completedRequirements));
+        String.join(",", completedRequirements));
   }
 }

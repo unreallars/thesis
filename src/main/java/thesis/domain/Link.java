@@ -1,20 +1,15 @@
 package thesis.domain;
 
 import java.util.UUID;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
 
 public class Link {
-
-  @Id
   private final UUID id;
   private final String url;
   private final String text;
-  private final Integer supervisorId;
+  private final UUID supervisorId;
   private final UUID topicId;
 
-  @PersistenceCreator
-  public Link(UUID id, String url, String text, Integer supervisorId, UUID topicId) {
+  public Link(UUID id, String url, String text, UUID supervisorId, UUID topicId) {
     this.id = id;
     this.url = url;
     this.text = text;
@@ -22,12 +17,12 @@ public class Link {
     this.topicId = topicId;
   }
 
-  public Link(String url, String text, Integer supervisorId) {
-    this(null, url, text, supervisorId, null);
+  public static Link createSupervisorLink(String url, String text, UUID supervisorId) {
+    return new Link(UUID.randomUUID(), url, text, supervisorId, null);
   }
 
-  public Link(String url, String text, UUID topicId) {
-    this(null, url, text, null, topicId);
+  public static Link createTopicLink(String url, String text, UUID topicId) {
+    return new Link(UUID.randomUUID(), url, text, null, topicId);
   }
 
   public String getUrl() {
@@ -42,7 +37,7 @@ public class Link {
     return id;
   }
 
-  public Integer getSupervisorId() {
+  public UUID getSupervisorId() {
     return supervisorId;
   }
 

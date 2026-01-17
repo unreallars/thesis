@@ -1,5 +1,6 @@
 package thesis.service;
 
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.User;
 
@@ -11,7 +12,7 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public User findById(Integer id) {
+  public User findById(UUID id) {
     return userRepository.findById(id).orElse(null);
   }
 

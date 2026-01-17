@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.Link;
 import thesis.domain.Supervisor;
 import thesis.domain.SupervisorTag;
-import thesis.domain.dto.SupervisorMatchDto;
-import thesis.domain.dto.SupervisorProfileDto;
+import thesis.domain.dto.SupervisorMatch;
+import thesis.domain.dto.SupervisorProfile;
 
 @Service
 public class SupervisorService {
@@ -29,7 +30,7 @@ public class SupervisorService {
     this.informationFileRepository = informationFileRepository;
   }
 
-  public Supervisor findById(Integer id) {
+  public Supervisor findById(UUID id) {
     return supervisorRepository.findById(id).orElse(null);
   }
 
@@ -37,10 +38,10 @@ public class SupervisorService {
     return supervisorRepository.findAll();
   }
 
-  public SupervisorProfileDto getSupervisorProfile(Integer supervisorId) {
+  public SupervisorProfile getSupervisorProfile(UUID supervisorId) {
     Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
     return supervisor.map(
-        value -> new SupervisorProfileDto(value, topicRepository.findBySupervisorId(supervisorId),
+        value -> new SupervisorProfile(value, topicRepository.findBySupervisorId(supervisorId),
             informationFileRepository.findBySupervisorId(supervisorId),
             linkRepository.findBySupervisorId(supervisorId))).orElse(null);
   }
@@ -50,7 +51,7 @@ public class SupervisorService {
     supervisorRepository.save(supervisor);
   }
 
-  public void updateMail(Integer supervisorId, String mail) {
+  public void updateMail(UUID supervisorId, String mail) {
     Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
     supervisor.ifPresent(value -> supervisorRepository.save(
         new Supervisor(supervisorId, value.getUsername(), value.getGithubId(), mail,
@@ -61,14 +62,15 @@ public class SupervisorService {
     return supervisorRepository.findByGithubId(id).orElse(null);
   }
 
-  public void createLink(Integer supervisorId, String url, String linktext) {
+  public void createLink(UUID supervisorId, String url, String linktext) {
     Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
     if (supervisor.isPresent()) {
-      linkRepository.save(new Link(url, linktext, supervisorId));
+
+      linkRepository.save(Link.createSupervisorLink(url, linktext, supervisorId));
     }
   }
 
-  public void createTags(Integer supervisorId, String tags) {
+  public void createTags(UUID supervisorId, String tags) {
     Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
     supervisor.ifPresent(supervisorPresent -> {
       List<String> extractedTags =
@@ -82,7 +84,7 @@ public class SupervisorService {
     });
   }
 
-  public List<SupervisorMatchDto> findMatchingSupervisors(List<String> studentTags) {
+  public List<SupervisorMatch> findMatchingSupervisors(List<String> studentTags) {
     return supervisorRepository.findMatchingSupervisors(String.join(",", studentTags));
   }
 }

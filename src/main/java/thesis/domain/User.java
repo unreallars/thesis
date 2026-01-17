@@ -1,12 +1,9 @@
 package thesis.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
+import java.util.UUID;
 
 public class User {
-  @Id
-  private final Integer id;
-
+  private final UUID id;
 
   private final Integer githubId;
   private final String username;
@@ -15,7 +12,7 @@ public class User {
     return username;
   }
 
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
@@ -25,13 +22,10 @@ public class User {
 
 
   public User(Integer githubId, String username) {
-    this.id = null;
-    this.githubId = githubId;
-    this.username = username;
+    this(UUID.randomUUID(), githubId, username);
   }
 
-  @PersistenceCreator
-  public User(Integer id, Integer githubId, String username) {
+  public User(UUID id, Integer githubId, String username) {
     this.id = id;
     this.githubId = githubId;
     this.username = username;

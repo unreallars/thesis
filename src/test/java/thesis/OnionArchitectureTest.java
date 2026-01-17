@@ -5,7 +5,6 @@ import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,6 @@ public class OnionArchitectureTest {
       new ClassFileImporter().importPackagesOf(Thesispp2Application.class);
 
   @Test
-  @Disabled
   @DisplayName("Thesis hat eine Onion-Architektur")
   public void rule1() {
     ArchRule rule = onionArchitecture()

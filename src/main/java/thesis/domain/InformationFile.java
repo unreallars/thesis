@@ -2,24 +2,20 @@ package thesis.domain;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
 
 public class InformationFile {
-  @Id
   private final UUID id;
   private final LocalDateTime uploadTime;
   private final String fileType;
   private final String filePath;
   private final String title;
   private final String description;
-  private final Integer supervisorId;
+  private final UUID supervisorId;
   private final UUID topicId;
 
-  @PersistenceCreator
   public InformationFile(UUID id, LocalDateTime uploadTime, String fileType, String filePath,
                          String title,
-                         String description, Integer supervisorId, UUID topicId) {
+                         String description, UUID supervisorId, UUID topicId) {
     this.uploadTime = uploadTime;
     this.filePath = filePath;
     this.id = id;
@@ -30,28 +26,22 @@ public class InformationFile {
     this.topicId = topicId;
   }
 
-  public InformationFile(String fileType, String filePath, String title, String description,
-                         Integer supervisorId) {
-    this.filePath = filePath;
-    this.id = null;
-    this.fileType = fileType;
-    this.title = title;
-    this.description = description;
-    this.supervisorId = supervisorId;
-    this.topicId = null;
-    this.uploadTime = LocalDateTime.now();
+  public static InformationFile createSupervisorInformationFile(String fileType, String filePath,
+                                                                String title,
+                                                                String description,
+                                                                UUID supervisorId) {
+    return new InformationFile(UUID.randomUUID(), LocalDateTime.now(), fileType, filePath, title,
+        description,
+        supervisorId, null);
   }
 
-  public InformationFile(String fileType, String filePath, String title, String description,
-                         UUID topicId) {
-    this.filePath = filePath;
-    this.id = null;
-    this.fileType = fileType;
-    this.title = title;
-    this.description = description;
-    this.supervisorId = null;
-    this.topicId = topicId;
-    this.uploadTime = LocalDateTime.now();
+  public static InformationFile createTopicInformationFile(String fileType, String filePath,
+                                                           String title,
+                                                           String description,
+                                                           UUID topicId) {
+    return new InformationFile(UUID.randomUUID(), LocalDateTime.now(), fileType, filePath, title,
+        description, null,
+        topicId);
   }
 
 
@@ -75,7 +65,7 @@ public class InformationFile {
     return id;
   }
 
-  public Integer getSupervisorId() {
+  public UUID getSupervisorId() {
     return supervisorId;
   }
 

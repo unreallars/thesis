@@ -6,11 +6,11 @@ import thesis.domain.Link;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
 
-public record SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
-                                   List<InformationFile> files, List<Link> links) {
-  public SupervisorProfileDto(Supervisor supervisor, List<Topic> topics,
-                              List<InformationFile> files,
-                              List<Link> links) {
+public record SupervisorProfile(Supervisor supervisor, List<Topic> topics,
+                                List<InformationFile> files, List<Link> links) {
+  public SupervisorProfile(Supervisor supervisor, List<Topic> topics,
+                           List<InformationFile> files,
+                           List<Link> links) {
     this.supervisor =
         new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
             supervisor.getMail(), List.copyOf(supervisor.getSupervisorTags()));
