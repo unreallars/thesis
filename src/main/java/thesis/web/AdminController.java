@@ -27,17 +27,14 @@ public class AdminController {
 
   @PostMapping("/manage")
   public String makeSupervisor(Integer userId, RedirectAttributes redirectAttributes) {
-    if (userService.findByGithubId(userId) == null) {
-      redirectAttributes.addFlashAttribute("message", "User nicht gefunden");
-    } else if (supervisorService.findByGithubId(userId) != null) {
-      redirectAttributes.addFlashAttribute("message", "User ist bereits Betreuer");
+    String message;
+    User user = userService.findByGithubId(userId);
+    if (user == null) {
+      message = "User nicht gefunden";
     } else {
-      User user = userService.findByGithubId(userId);
-      supervisorService.createSupervisor(user.getGithubId(), user.getUsername(), "Nicht angegeben");
-      redirectAttributes.addFlashAttribute("message",
-          "User wurde erfolgreich die Rolle Betreuer zugewiesen");
+      message = supervisorService.createSupervisor(user.getGithubId(), user.getUsername());
     }
+    redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/manage";
-
   }
 }

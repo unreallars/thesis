@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import thesis.domain.Link;
 import thesis.domain.Supervisor;
 import thesis.domain.SupervisorTag;
+import thesis.domain.Topic;
+import thesis.domain.TopicRequirement;
+import thesis.domain.TopicTag;
 import thesis.domain.dto.SupervisorMatch;
 import thesis.domain.dto.SupervisorProfile;
 
@@ -30,6 +33,24 @@ public class SupervisorService {
     this.informationFileRepository = informationFileRepository;
   }
 
+  public String createTopic(String title, String description, Integer supervisorGithubId,
+                            String tags, String requirements) {
+    Supervisor supervisor = findByGithubId(supervisorGithubId);
+    if (supervisor == null) {
+      return "Betreuer nicht gefunden";
+    }
+    List<TopicTag> extractedTags =
+        Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .map(TopicTag::new).toList();
+    List<TopicRequirement> extractedReq =
+        Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .map(TopicRequirement::new).toList();
+    Topic topic = new Topic(title, description, supervisor.getId(), extractedTags, extractedReq);
+
+    topicRepository.save(topic);
+    return "Thema erfolgreich hinzugefügt";
+  }
+
   public Supervisor findById(UUID id) {
     return supervisorRepository.findById(id).orElse(null);
   }
@@ -46,45 +67,58 @@ public class SupervisorService {
             linkRepository.findBySupervisorId(supervisorId))).orElse(null);
   }
 
-  public void createSupervisor(Integer githubId, String username, String mail) {
-    Supervisor supervisor = new Supervisor(githubId, username, mail);
+  public String createSupervisor(Integer githubId, String username) {
+    if (findByGithubId(githubId) != null) {
+      return "User ist bereits Betreuer";
+    }
+    Supervisor supervisor = new Supervisor(githubId, username, "Nicht angegeben");
     supervisorRepository.save(supervisor);
+    return "User wurde erfolgreich die Rolle Betreuer zugewiesen";
   }
 
-  public void updateMail(UUID supervisorId, String mail) {
-    Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-    supervisor.ifPresent(value -> supervisorRepository.save(
-        new Supervisor(supervisorId, value.getUsername(), value.getGithubId(), mail,
-            value.getSupervisorTags())));
+  public void updateMail(Integer supervisorGithubId, String mail) {
+
+    Supervisor supervisor = findByGithubId(supervisorGithubId);
+    if (supervisor != null) {
+      supervisorRepository.save(
+          new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
+              mail, supervisor.getSupervisorTags()));
+    }
   }
 
   public Supervisor findByGithubId(Integer id) {
     return supervisorRepository.findByGithubId(id).orElse(null);
   }
 
-  public void createLink(UUID supervisorId, String url, String linktext) {
-    Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-    if (supervisor.isPresent()) {
+  public String createLink(Integer supervisorGithubId, String url, String linktext) {
+    Supervisor supervisor = findByGithubId(supervisorGithubId);
+    if (supervisor != null) {
+      linkRepository.save(Link.createSupervisorLink(url, linktext, supervisor.getId()));
+      return "Link erfolgreich zum Betreuer-Profil hinzugefügt";
+    }
+    return "Betreuer nicht gefunden";
+  }
 
-      linkRepository.save(Link.createSupervisorLink(url, linktext, supervisorId));
+  public void createTags(Integer supervisorGithubId, String tags) {
+    Supervisor supervisor = findByGithubId(supervisorGithubId);
+    if (supervisor != null && tags != null && !tags.isBlank()) {
+      List<String> extractedTags =
+          Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
+      List<SupervisorTag> supervisorTags = new ArrayList<>(supervisor.getSupervisorTags());
+      extractedTags.stream().map(SupervisorTag::new).forEach(supervisorTags::add);
+      supervisorRepository.save(
+          new Supervisor(supervisor.getId(), supervisor.getUsername(),
+              supervisor.getGithubId(), supervisor.getMail(), supervisorTags));
     }
   }
 
-  public void createTags(UUID supervisorId, String tags) {
-    Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-    supervisor.ifPresent(supervisorPresent -> {
-      List<String> extractedTags =
-          Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
-      List<SupervisorTag> supervisorTags = new ArrayList<>(supervisorPresent.getSupervisorTags());
-      extractedTags.stream().map(SupervisorTag::new).forEach(supervisorTags::add);
-      supervisorRepository.save(
-          new Supervisor(supervisorPresent.getId(), supervisorPresent.getUsername(),
-              supervisorPresent.getGithubId(), supervisorPresent.getMail(),
-              supervisorTags));
-    });
-  }
-
-  public List<SupervisorMatch> findMatchingSupervisors(List<String> studentTags) {
+  public List<SupervisorMatch> findMatchingSupervisors(String interestsInput) {
+    List<String> studentTags = List.of();
+    if (interestsInput != null && !interestsInput.isBlank()) {
+      studentTags =
+          Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+              .toList();
+    }
     return supervisorRepository.findMatchingSupervisors(String.join(",", studentTags));
   }
 }

@@ -1,7 +1,11 @@
 package thesis.web;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -51,5 +55,41 @@ public class SupervisorControllerTest {
     when(supervisorService.findByGithubId(666666)).thenReturn(
         new Supervisor(666666, "Test", "test@example.com"));
     mockMvc.perform(get("/dashboard")).andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("Die Änderungsseiten ist für Supervisor erreichbar")
+  @WithMockOAuth2User(roles = "SUPERVISOR")
+  void test_4() throws Exception {
+    when(supervisorService.findByGithubId(666666)).thenReturn(
+        new Supervisor(666666, "Test", "test@example.com"));
+
+    mockMvc.perform(get("/addTopic")).andExpect(status().isOk());
+    mockMvc.perform(get("/addLink")).andExpect(status().isOk());
+
+    mockMvc.perform(post("/updateMail").with(csrf())).andExpect(status().is3xxRedirection());
+    mockMvc.perform(post("/addTopic").with(csrf())).andExpect(status().is3xxRedirection());
+    mockMvc.perform(post("/addTag").with(csrf())).andExpect(status().is3xxRedirection());
+  }
+
+  @Test
+  @DisplayName("Das Hinzufügen von Links gibt die richtigen Messages zurück")
+  @WithMockOAuth2User(roles = "SUPERVISOR")
+  void test_5() throws Exception {
+    when(supervisorService.findByGithubId(666666)).thenReturn(
+        new Supervisor(666666, "Test", "test@example.com"));
+    when(supervisorService.createLink(any(), any(), any())).thenReturn(
+        "Link erfolgreich zum Betreuer-Profil hinzugefügt");
+    when(topicService.createLink(any(), any(), any())).thenReturn(
+        "Link erfolgreich zum Thema hinzugefügt");
+
+    mockMvc.perform(post("/addLink").with(csrf())).andExpect(status().is3xxRedirection())
+        .andExpect(flash().attribute("message", "Kein gültiger Typ angegeben"));
+    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "SUPERVISOR"))
+        .andExpect(status().is3xxRedirection()).andExpect(
+            flash().attribute("message", "Link erfolgreich zum Betreuer-Profil hinzugefügt"));
+    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "TOPIC"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(flash().attribute("message", "Link erfolgreich zum Thema hinzugefügt"));
   }
 }

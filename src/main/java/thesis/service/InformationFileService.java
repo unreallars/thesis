@@ -35,43 +35,43 @@ public class InformationFileService {
   }
 
 
-  public void uploadFile(MultipartFile file, String title, String description, OAuth2User user,
-                         String targetType, String topicId) throws IOException {
+  public String uploadFile(MultipartFile file, String title, String description, OAuth2User user,
+                           String targetType, String topicId) {
 
-    String filename = file.getOriginalFilename();
-    if (filename == null || filename.isEmpty() || title.isEmpty()) {
-      throw new IOException("Ungültiger Eingabe");
-    }
+    try {
+      String filename = file.getOriginalFilename();
+      if (filename == null || filename.isEmpty() || title.isEmpty()) {
+        return "Ungültiger Eingabe";
+      }
 
-    String fileType = filename.substring(filename.lastIndexOf('.') + 1);
-    if (!fileType.matches("pdf|zip|md")) {
-      throw new IOException("Ungültiger Dateityp");
-    }
+      String fileType = filename.substring(filename.lastIndexOf('.') + 1);
+      if (!fileType.matches("pdf|zip|md")) {
+        return "Ungültiger Dateityp";
+      }
 
-    String storedFilename = UUID.randomUUID() + "." + fileType;
-    Path filePath = Path.of("./uploads/" + storedFilename);
+      String storedFilename = UUID.randomUUID() + "." + fileType;
+      Path filePath = Path.of("./uploads/" + storedFilename);
 
-    Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
-    if (supervisor == null) {
-      throw new IOException("Betreuer nicht gefunden");
-    }
-    if ("SUPERVISOR".equals(targetType)) {
-      InformationFile informationFile =
-          InformationFile.createSupervisorInformationFile(fileType, filePath.toString(), title,
-              description,
-              supervisor.getId());
-      informationFileRepository.save(informationFile);
-      file.transferTo(filePath);
+      Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
+      if (supervisor == null) {
+        return "Betreuer nicht gefunden";
+      }
+      if ("SUPERVISOR".equals(targetType)) {
+        InformationFile informationFile =
+            InformationFile.createSupervisorInformationFile(fileType, filePath.toString(), title,
+                description, supervisor.getId());
+        informationFileRepository.save(informationFile);
 
-    } else if ("TOPIC".equals(targetType) && topicId != null) {
-      try {
+        file.transferTo(filePath);
+
+      } else if ("TOPIC".equals(targetType) && topicId != null) {
         UUID uuid = UUID.fromString(topicId);
         Topic topic = topicService.findById(uuid);
         if (topic == null) {
-          throw new IOException("Das Thema existiert nicht");
+          return "Das Thema existiert nicht";
         }
         if (!topic.getSupervisorId().equals(supervisor.getId())) {
-          throw new IOException("Das angegebene Thema ist von einem anderen Betreuer");
+          return "Das angegebene Thema ist von einem anderen Betreuer";
         }
         InformationFile informationFile =
             InformationFile.createTopicInformationFile(fileType, filePath.toString(), title,
@@ -79,12 +79,15 @@ public class InformationFileService {
         informationFileRepository.save(informationFile);
         file.transferTo(filePath);
 
-      } catch (IllegalArgumentException e) {
-        throw new IOException("Die eingegebene Id ist ungültig");
+      } else {
+        return "Es ist ein Fehler aufgetreten";
       }
-    } else {
-      throw new IOException("Es ist ein Fehler aufgetreten");
+    } catch (IllegalArgumentException e) {
+      return "Die eingegebene Id ist ungültig";
+    } catch (IOException e) {
+      return "Fehler: " + e.getMessage();
     }
+    return "Upload erfolgreich";
   }
 
   public ResponseEntity<Resource> downloadFile(UUID id) {
@@ -115,7 +118,7 @@ public class InformationFileService {
         headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
         headers.add(HttpHeaders.CONTENT_DISPOSITION,
             "attachment; filename=" + informationFile.getTitle() + "."
-                + informationFile.getFileType());
+                 + informationFile.getFileType());
       }
       return ResponseEntity.ok().headers(headers).body(resource);
 

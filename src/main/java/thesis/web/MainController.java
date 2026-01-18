@@ -1,10 +1,7 @@
 package thesis.web;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -14,13 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import thesis.domain.Supervisor;
-import thesis.domain.Topic;
 import thesis.domain.dto.MatchResult;
 import thesis.domain.dto.SupervisorMatch;
 import thesis.domain.dto.SupervisorProfile;
 import thesis.domain.dto.TopicProfile;
-import thesis.service.InformationFileService;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
 
@@ -28,13 +22,10 @@ import thesis.service.TopicService;
 public class MainController {
   private final SupervisorService supervisorService;
   private final TopicService topicService;
-  private final InformationFileService informationFileService;
 
-  public MainController(SupervisorService supervisorService, TopicService topicService,
-                        InformationFileService informationFileService) {
+  public MainController(SupervisorService supervisorService, TopicService topicService) {
     this.supervisorService = supervisorService;
     this.topicService = topicService;
-    this.informationFileService = informationFileService;
   }
 
   @GetMapping("/")
@@ -52,22 +43,13 @@ public class MainController {
 
   @PostMapping("/match")
   public String match(@RequestParam(value = "completedRequirements", required = false)
-                      List<String> completedRequirements,
-                      @RequestParam("interestsInput") String interestsInput,
+                      List<String> completedRequirements, String interestsInput,
                       RedirectAttributes redirectAttributes) {
-    List<String> studentTags = List.of();
-    if (completedRequirements == null) {
-      completedRequirements = List.of();
-    }
-    if (interestsInput != null && !interestsInput.isBlank()) {
-      studentTags = Arrays.stream(interestsInput.split(","))
-          .map(String::trim).filter(s -> !s.isEmpty()).toList();
-    }
 
     List<MatchResult> matches =
-        topicService.findMatchingTopics(studentTags, completedRequirements);
+        topicService.findMatchingTopics(interestsInput, completedRequirements);
     List<SupervisorMatch> matches2 =
-        supervisorService.findMatchingSupervisors(studentTags);
+        supervisorService.findMatchingSupervisors(interestsInput);
     redirectAttributes.addFlashAttribute("result", true);
     redirectAttributes.addFlashAttribute("matches", matches);
     redirectAttributes.addFlashAttribute("matches2", matches2);
@@ -76,15 +58,14 @@ public class MainController {
 
   @GetMapping("/account")
   public String account(@AuthenticationPrincipal OAuth2User user, Model model) {
-    model.addAttribute("user", user != null ? user.getAttribute("login") : null);
+    model.addAttribute("user", user.getAttribute("login"));
     return "account";
   }
 
   @GetMapping("/topic/{id}")
   public String getTopic(@PathVariable UUID id, Model model) {
-    Topic topic = topicService.findById(id);
-    if (topic != null) {
-      TopicProfile topicProfile = topicService.getTopic(id);
+    TopicProfile topicProfile = topicService.getTopic(id);
+    if (topicProfile != null) {
       model.addAttribute("topicprofile", topicProfile);
       return "topic";
     }
@@ -93,18 +74,11 @@ public class MainController {
 
   @GetMapping("/supervisor/{id}")
   public String getSupervisor(@PathVariable UUID id, Model model) {
-    Supervisor supervisor = supervisorService.findById(id);
-    if (supervisor != null) {
-      SupervisorProfile supervisorProfile = supervisorService.getSupervisorProfile(id);
+    SupervisorProfile supervisorProfile = supervisorService.getSupervisorProfile(id);
+    if (supervisorProfile != null) {
       model.addAttribute("supervisorprofile", supervisorProfile);
       return "supervisor";
     }
     return "redirect:/";
-  }
-
-  @GetMapping("/dl/{id}")
-  public ResponseEntity<Resource> download(
-      @PathVariable UUID id) {
-    return informationFileService.downloadFile(id);
   }
 }

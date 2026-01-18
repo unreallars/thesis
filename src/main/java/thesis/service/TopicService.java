@@ -7,8 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.Link;
 import thesis.domain.Topic;
-import thesis.domain.TopicRequirement;
-import thesis.domain.TopicTag;
 import thesis.domain.dto.MatchResult;
 import thesis.domain.dto.TopicProfile;
 
@@ -42,24 +40,19 @@ public class TopicService {
             linkRepository.findByTopicId(topicId))).orElse(null);
   }
 
-  public void createTopic(String title, String description, UUID supervisorId, String tags,
-                          String requirements) {
-    List<TopicTag> extractedTags =
-        Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-            .map(TopicTag::new).toList();
-    List<TopicRequirement> extractedReq =
-        Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-            .map(TopicRequirement::new).toList();
-    Topic topic = new Topic(title, description, supervisorId, extractedTags, extractedReq);
 
-    topicRepository.save(topic);
-  }
-
-  public void createLink(UUID topicId, String url, String linktext) {
-    Optional<Topic> topic = topicRepository.findById(topicId);
-    if (topic.isPresent()) {
-      linkRepository.save(Link.createTopicLink(url, linktext, topicId));
+  public String createLink(String topicId, String url, String linktext) {
+    if (topicId == null) {
+      return "Ungültige Topic-Id";
     }
+
+    UUID uuid = UUID.fromString(topicId);
+    Topic topic = findById(uuid);
+    if (topic == null || topic.getSupervisorId() == null) {
+      return "Das angegebene Thema existiert nicht";
+    }
+    linkRepository.save(Link.createTopicLink(url, linktext, uuid));
+    return "Link erfolgreich zum Thema hinzugefügt";
   }
 
 
@@ -67,8 +60,19 @@ public class TopicService {
     return topicRepository.findAllDistinctTopicRequirementNames();
   }
 
-  public List<MatchResult> findMatchingTopics(List<String> studentTags,
+  public List<MatchResult> findMatchingTopics(String interestsInput,
                                               List<String> completedRequirements) {
+
+    if (completedRequirements == null) {
+      completedRequirements = List.of();
+    }
+
+    List<String> studentTags = List.of();
+    if (interestsInput != null && !interestsInput.isBlank()) {
+      studentTags =
+          Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+              .toList();
+    }
     return topicRepository.findMatchingTopics(String.join(",", studentTags),
         String.join(",", completedRequirements));
   }
