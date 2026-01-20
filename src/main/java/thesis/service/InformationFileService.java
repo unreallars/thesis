@@ -41,7 +41,7 @@ public class InformationFileService {
     try {
       String filename = file.getOriginalFilename();
       if (filename == null || filename.isEmpty() || title.isEmpty()) {
-        return "Ungültiger Eingabe";
+        return "Ungültige Eingabe";
       }
 
       String fileType = filename.substring(filename.lastIndexOf('.') + 1);
