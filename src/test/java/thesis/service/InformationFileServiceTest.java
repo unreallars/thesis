@@ -183,5 +183,19 @@ class InformationFileServiceTest {
 
     Files.deleteIfExists(temp);
   }
+  @Test
+  @DisplayName("Download scheitert wenn Datei nicht gefunden wird")
+  void test_08() {
+    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
+    SupervisorService supervisorService = mock(SupervisorService.class);
+
+    UUID uuid = UUID.randomUUID();
+    when(informationFileRepository.findById(uuid)).thenReturn(Optional.empty());
+    InformationFileService informationFileService =
+        new InformationFileService(informationFileRepository, supervisorService, null);
+    ResponseEntity<Resource> response = informationFileService.downloadFile(uuid);
+
+    assertThat(response.getStatusCode().value()).isEqualTo(404);
+  }
 }
 

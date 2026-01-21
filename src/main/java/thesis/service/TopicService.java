@@ -1,5 +1,8 @@
 package thesis.service;
 
+import static java.util.Objects.requireNonNullElse;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -62,17 +65,12 @@ public class TopicService {
 
   public List<MatchResult> findMatchingTopics(String interestsInput,
                                               List<String> completedRequirements) {
+    completedRequirements = requireNonNullElse(completedRequirements, new ArrayList<>());
+    interestsInput = requireNonNullElse(interestsInput, "");
 
-    if (completedRequirements == null) {
-      completedRequirements = List.of();
-    }
-
-    List<String> studentTags = List.of();
-    if (interestsInput != null && !interestsInput.isBlank()) {
-      studentTags =
-          Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-              .toList();
-    }
+    List<String> studentTags =
+        Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .toList();
     return topicRepository.findMatchingTopics(String.join(",", studentTags),
         String.join(",", completedRequirements));
   }

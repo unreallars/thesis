@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import thesis.domain.Link;
 import thesis.domain.Topic;
+import thesis.domain.dto.MatchResult;
 import thesis.domain.dto.TopicProfile;
 
 class TopicServiceTest {
@@ -129,6 +130,34 @@ class TopicServiceTest {
 
     assertThat(result).isEqualTo("Link erfolgreich zum Thema hinzugefügt");
     verify(linkRepository).save(any(Link.class));
+  }
+  @Test
+  @DisplayName("findMatchingTopics - Keine Angaben")
+  void test_08() {
+    when(topicRepository.findMatchingTopics("", "")).thenReturn(List.of());
+
+    List<MatchResult> result = topicService.findMatchingTopics(null, null);
+
+    assertThat(result).isEmpty();
+    verify(topicRepository).findMatchingTopics("", "");
+  }
+  @Test
+  @DisplayName("findMatchingTopics - Angabe enthält einen leeres Feld")
+  void test_09() {
+    String interestsInput = " Spring ,  ,Rust, funktionale Programmierung ";
+
+    topicService.findMatchingTopics(interestsInput, null);
+
+    verify(topicRepository).findMatchingTopics("Spring,Rust,funktionale Programmierung", "");
+  }
+  @Test
+  @DisplayName("findMatchingTopics - Angabe besteht nur aus Leerzeichen")
+  void test_10() {
+    String interestsInput = "  ";
+
+    topicService.findMatchingTopics(interestsInput, null);
+
+    verify(topicRepository).findMatchingTopics("", "");
   }
 }
 

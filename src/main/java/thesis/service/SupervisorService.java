@@ -1,8 +1,11 @@
 package thesis.service;
 
+import static java.util.Objects.requireNonNullElse;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -101,24 +104,27 @@ public class SupervisorService {
 
   public void createTags(Integer supervisorGithubId, String tags) {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
-    if (supervisor != null && tags != null && !tags.isBlank()) {
+
+    tags = requireNonNullElse(tags, "");
+    if (supervisor != null) {
       List<String> extractedTags =
           Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
       List<SupervisorTag> supervisorTags = new ArrayList<>(supervisor.getSupervisorTags());
       extractedTags.stream().map(SupervisorTag::new).forEach(supervisorTags::add);
-      supervisorRepository.save(
-          new Supervisor(supervisor.getId(), supervisor.getUsername(),
-              supervisor.getGithubId(), supervisor.getMail(), supervisorTags));
+      if (!supervisorTags.isEmpty()) {
+        supervisorRepository.save(
+            new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
+                supervisor.getMail(), supervisorTags));
+      }
+
     }
   }
 
   public List<SupervisorMatch> findMatchingSupervisors(String interestsInput) {
-    List<String> studentTags = List.of();
-    if (interestsInput != null && !interestsInput.isBlank()) {
-      studentTags =
-          Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-              .toList();
-    }
+    interestsInput = Objects.requireNonNull(interestsInput, "");
+    List<String> studentTags =
+        Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+            .toList();
     return supervisorRepository.findMatchingSupervisors(String.join(",", studentTags));
   }
 }
