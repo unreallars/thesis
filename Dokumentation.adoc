@@ -1,0 +1,133 @@
+= Thesis Dokumentation
+
+
+[[section-introduction-and-goals]]
+==	Einführung und Ziele
+
+Das Ziel ist, eine Plattform zu schaffen, wo Bachelor-Studenten Themenvorschläge und Betreuer finden können für ihre Bachelorarbeit. Betreuer können auf dieser Plattform ihre Themen anbieten, Fachgebiete festlegen, Dateien hochladen und auch Kontaktinformationen angeben. Studierende können über dann ein Matching passende Betreuer und Themen finden und sich auch alles in einer Übersicht darstellen lassen.
+
+
+
+=== Aufgabenstellung
+
+Jeder Studierende muss am Ende des Bachelor-Studiums eine Bachelorarbeit abgeben. Dafür soll eine Plattform erstellt werden, welche alle Informationen an einem Ort bündelt, anstatt es viele Einzelsysteme gibt. Dafür kann jeder Dozent bzw. Betreuer seine Themen und zugehörige Materialien hochladen, und die Studierenden können diese finden, ansehen, herunterladen und sollen auch weitere Kontaktinformationen erhalten. Alle beteiligten Personen müssen sich über Github anmelden, und werden von Admins autorisiert.
+
+
+
+=== Qualitätsziele
+
+1. Zuverlässigkeit: Ausfälle möglichst vermeiden
+2. Nutzbarkeit: Einfache Nutzung der Plattform ermöglichen
+3. Wartbarkeit: Gute Wartbarkeit sicherstellen
+
+
+=== Stakeholder
+
+
+[cols="1,2" options="header"]
+|===
+|Rolle |Erwartungshaltung
+| _Studenten_ | _Themen und Betreuer für die Bachelorarbeit finden_
+| _Betreuer_ | _Saubere Darstellung der angebotenen Themen_ 
+| _Admins_ | _Einfache Nutzerverwaltung_
+| _Entwickler_ | _Gutes System erstellen_
+| _Jens Bendisposto_ | _Möchte das die Entwickler ein Propra-Projekt erstellen_ 
+|===
+
+[[section-architecture-constraints]]
+== Randbedingungen
+
+[cols="1,2" options="header"]
+|===
+| Randbedingung | Begründung
+|Implementierung in Spring-Boot mit Java | Vorgegeben
+|Implementierung einer Datenbank mit Docker| Vereinfacht das Starten der Anwendung
+|Einheitlicher Styleguide| Einheitliche Formatierung
+|Authentifizierung über Github| Absicherung der Anwendung und Aufteilung in verschiedene Rollen
+|===
+
+== Kontextabgrenzung
+
+:imagesdir: img
+
+image::Kontextabgrenzungsdiagramm.png[Kontextabgrenzungsdiagramm des Systems]
+
+
+
+=== Fachlicher Kontext
+Nutzer
+
+    Betreuer
+
+Die Betreuer laden Informationen und Dateien entweder auf seinem Profil oder zu einzelnen Themen hoch. Diese werden dann in der Datenbank gespeichert. Ein Betreuer kann auch Kontaktinformationen angeben und ändern.
+
+    Student
+
+Die meisten Nutzer sind Studenten, die sich ein Thema und einen Betreuer für ihre Bachelorarbeit suchen. Sie geben ihre bestandenen Kurse und Interessen an und haben dann alle passenden Vorschläge zur Verfügung.
+
+    Admin
+
+Die Admins verwalten die Rollen, das heißt es kann die Rolle Betreuer vergeben und ein Betreuer-Profil erstellt werden.
+
+
+=== Technischer Kontext
+
+Github
+
+Github wird benutzt, um die einzelnen Nutzer unseres Systems zu authentifizieren und in Rollen aufzuteilen, also den Zugang zu bestimmten Seiten zuzulassen oder einzuschränken. So sollte ein nur als Student angemeldeter User keinen Zugriff auf die Seite des Betreuers oder Admin haben, wenn er diese Rolle nicht besitzt.
+
+Datenbank
+
+Es wird eine einfache Postgres Datenbank genutzt mithilfe von Docker. Die Tabellen werden bei jedem Start mit Flyway erstellt.
+
+
+
+[[section-solution-strategy]]
+== Lösungsstrategie
+
+Ausgehend von den genannten Qualitätszielen:
+
+-Zuverlässigkeit:
+    sicheres Abspeichern von Daten,
+    verschiedene Tests zur Überprüfung
+
+-Nutzbarkeit:
+    Einfaches Menüs zum Hinzufügen von Informationen, Dateien und Kontaktinformationen
+
+-Wartbarkeit:
+    Entkopplung von Tests vom Produktivcode,
+    Einhaltung der Onion-Architektur
+
+
+[[section-building-block-view]]
+== Bausteinsicht
+
+image::Bausteinsicht.jpg[Bausteinsicht des Systems]
+
+-config:
+
+Erfüllt die Sicherheitsanforderungen an unser System und schützt die Daten der Nutzer.
+
+-controller:
+
+Kontrollieren die Eingabe von den HTML-Websites und ermöglichen das Weitergeben der Daten an die Services, sowie das Weitergeben der Daten aus den Services an die Templates.
+
+-tests:
+
+Stellen die fachliche und technische Korrektheit sicher und erleichtern die Wartbarkeit.
+
+-service:
+
+Bieten die Schnittstelle zwischen Controller und Repository, also zwischen der Website und der Datenbank. Die Geschäftslogik befindet sich in diesem Baustein.
+
+-persistence:
+
+Lesen und schreiben Daten direkt aus der Datenbank. Es wird Spring Data JDBC verwendet, bei denen wir die Methodennamen so anpassen, dass die Queries nicht selber geschrieben werden müssen. Außerdem befinden sich Klassen zur Konvertierung von Datenbankobjekten in Domain-Objekte, um die Onion-Architektur einzuhalten.
+
+-domain:
+
+Die Struktur der einzelnen fachlichen Bausteine wird hier festgelegt.
+
+-resources:
+
+Speichert die HTML-Dateien, die Bootstrap-CSS Dateien sowie Flyway Migrationsskripte.
