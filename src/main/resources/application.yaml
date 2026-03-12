@@ -12,4 +12,4 @@ spring:
     password: ${DB_PASS}
     url: jdbc:postgresql://localhost:5432/postgres
 app:
-  admins: 184363268, 1010
+  admins: ${ADMINS}
