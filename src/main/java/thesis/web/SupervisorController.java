@@ -1,14 +1,17 @@
 package thesis.web;
 
+import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
+import thesis.domain.dto.EmailForm;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
 
@@ -29,12 +32,19 @@ public class SupervisorController {
   public String dashboard(@AuthenticationPrincipal OAuth2User user, Model model) {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
     model.addAttribute("supervisor", supervisor);
+    EmailForm emailForm = new EmailForm();
+    emailForm.setEmail(supervisor.getMail());
+    model.addAttribute("emailForm", emailForm);
     return "dashboard";
   }
 
   @PostMapping("/updateMail")
-  public String updateSupervisors(@AuthenticationPrincipal OAuth2User user, String mail) {
-    supervisorService.updateMail(user.getAttribute("id"), mail);
+  public String updateMail(@AuthenticationPrincipal OAuth2User user, @Valid EmailForm emailForm,
+                           BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "dashboard";
+    }
+    supervisorService.updateMail(user.getAttribute("id"), emailForm.getEmail());
     return "redirect:/dashboard";
   }
 

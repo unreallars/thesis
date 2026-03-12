@@ -48,20 +48,24 @@
                     </h2>
                 </div>
                 <div class="card-body p-4">
-                    <form method="POST" th:action="@{/updateMail}" th:object="${supervisor}">
+                    <form method="POST" th:action="@{/updateMail}" th:object="${emailForm}">
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="form-floating">
                                     <input type="email"
                                            class="form-control form-control-lg"
                                            id="mail"
-                                           th:field="*{mail}"
+                                           th:field="*{email}"
                                            placeholder="Ihre Kontakt E-Mail-Adresse">
                                     <label for="mail" class="text-muted">
                                         <i class="bi bi-envelope me-1"></i>
                                         Kontakt-Mail
                                     </label>
-                                </div>
+                                    <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}"
+                                         th:errors="*{email}">
+                                        Ungültige Email
+                                    </div>
+                                    <br>
                             </div>
                         </div>
 
