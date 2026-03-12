@@ -20,8 +20,8 @@ class SupervisorServiceTest {
 
   private SupervisorRepository supervisorRepository;
   private LinkRepository linkRepository;
-
   private SupervisorService supervisorService;
+  private Supervisor supervisor;
 
   @BeforeEach
   void setUp() {
@@ -29,6 +29,7 @@ class SupervisorServiceTest {
     TopicRepository topicRepository = mock(TopicRepository.class);
     InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
     linkRepository = mock(LinkRepository.class);
+    supervisor = mock(Supervisor.class);
 
     supervisorService =
         new SupervisorService(supervisorRepository, topicRepository, informationFileRepository,
@@ -49,7 +50,6 @@ class SupervisorServiceTest {
   @DisplayName("createTopic – Thema wird erfolreich gespeichert")
   void test_02() {
     UUID supervisorId = UUID.randomUUID();
-    Supervisor supervisor = mock(Supervisor.class);
     when(supervisorRepository.findByGithubId(123)).thenReturn(Optional.of(supervisor));
     when(supervisor.getId()).thenReturn(supervisorId);
 
@@ -63,7 +63,6 @@ class SupervisorServiceTest {
   @DisplayName("findById – Supervisor vorhanden")
   void test_03() {
     UUID id = UUID.randomUUID();
-    Supervisor supervisor = mock(Supervisor.class);
     when(supervisorRepository.findById(id)).thenReturn(Optional.of(supervisor));
 
     Supervisor result = supervisorService.findById(id);
@@ -127,7 +126,6 @@ class SupervisorServiceTest {
   @DisplayName("createLink – Link wird gespeichert")
   void test_09() {
     UUID supervisorId = UUID.randomUUID();
-    Supervisor supervisor = mock(Supervisor.class);
     when(supervisorRepository.findByGithubId(123)).thenReturn(Optional.of(supervisor));
     when(supervisor.getId()).thenReturn(supervisorId);
 
@@ -150,7 +148,6 @@ class SupervisorServiceTest {
   @Test
   @DisplayName("createTags – Nur Leerzeichen")
   void test_11() {
-    Supervisor supervisor = mock(Supervisor.class);
     when(supervisorRepository.findByGithubId(123)).thenReturn(Optional.of(supervisor));
 
     supervisorService.createTags(123, " ");

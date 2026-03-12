@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
@@ -24,14 +25,30 @@ import thesis.domain.Topic;
 
 class InformationFileServiceTest {
 
+  private InformationFileService informationFileService;
+
+  private MultipartFile multipartFile;
+  private OAuth2User oAuth2User;
+  private SupervisorService supervisorService;
+  private InformationFileRepository informationFileRepository;
+  private TopicService topicService;
+
+  @BeforeEach
+  void setUp() {
+    informationFileRepository = mock(InformationFileRepository.class);
+    supervisorService = mock(SupervisorService.class);
+    topicService = mock(TopicService.class);
+    multipartFile = mock(MultipartFile.class);
+    oAuth2User = mock(OAuth2User.class);
+
+    informationFileService =
+        new InformationFileService(informationFileRepository, supervisorService, topicService);
+  }
 
   @Test
   @DisplayName("Falscher Dateiname wird erkannt")
   void test_01() {
-    OAuth2User oAuth2User = mock(OAuth2User.class);
-    MultipartFile multipartFile = mock(MultipartFile.class);
     when(multipartFile.getOriginalFilename()).thenReturn(null);
-    InformationFileService informationFileService = new InformationFileService(null, null, null);
     String result =
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
@@ -42,10 +59,7 @@ class InformationFileServiceTest {
   @Test
   @DisplayName("Falscher Dateityp wird erkannt")
   void test_2() {
-    MultipartFile multipartFile = mock(MultipartFile.class);
-    OAuth2User oAuth2User = mock(OAuth2User.class);
     when(multipartFile.getOriginalFilename()).thenReturn("file.txt");
-    InformationFileService informationFileService = new InformationFileService(null, null, null);
     String result =
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
@@ -56,14 +70,9 @@ class InformationFileServiceTest {
   @Test
   @DisplayName("Falsche Betreuer-Id wird erkannt")
   void test_03() {
-    SupervisorService supervisorService = mock(SupervisorService.class);
-    MultipartFile multipartFile = mock(MultipartFile.class);
-    OAuth2User oAuth2User = mock(OAuth2User.class);
     when(multipartFile.getOriginalFilename()).thenReturn("file.pdf");
     when(oAuth2User.getAttribute("id")).thenReturn(66);
     when(supervisorService.findByGithubId(66)).thenReturn(null);
-    InformationFileService informationFileService =
-        new InformationFileService(null, supervisorService, null);
     String result =
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
@@ -74,20 +83,12 @@ class InformationFileServiceTest {
   @Test
   @DisplayName("Upload funktioniert für Betreuer")
   void test_04() throws Exception {
-    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
-    SupervisorService supervisorService = mock(SupervisorService.class);
-    MultipartFile multipartFile = mock(MultipartFile.class);
-    OAuth2User oAuth2User = mock(OAuth2User.class);
 
     when(multipartFile.getOriginalFilename()).thenReturn("file.pdf");
     when(oAuth2User.getAttribute("id")).thenReturn(66);
 
     Supervisor supervisor = new Supervisor(66, "Username", "Mail");
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
-
-    InformationFileService informationFileService =
-        new InformationFileService(informationFileRepository, supervisorService, null);
-
     String result =
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
@@ -96,26 +97,19 @@ class InformationFileServiceTest {
     verify(informationFileRepository).save(any(InformationFile.class));
     verify(multipartFile).transferTo(any(Path.class));
   }
+
   @Test
   @DisplayName("Upload funktioniert für Themen")
   void test_07() throws Exception {
-    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
-    TopicService topicService = mock(TopicService.class);
-    SupervisorService supervisorService = mock(SupervisorService.class);
-    MultipartFile multipartFile = mock(MultipartFile.class);
-    OAuth2User oAuth2User = mock(OAuth2User.class);
 
     when(multipartFile.getOriginalFilename()).thenReturn("file.pdf");
     when(oAuth2User.getAttribute("id")).thenReturn(66);
-    UUID id=UUID.randomUUID();
+    UUID id = UUID.randomUUID();
 
     Supervisor supervisor = new Supervisor(66, "Username", "Mail");
 
-    when(topicService.findById(id)).thenReturn(new Topic("Titel","Desc",supervisor.getId()));
+    when(topicService.findById(id)).thenReturn(new Topic("Titel", "Desc", supervisor.getId()));
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
-
-    InformationFileService informationFileService =
-        new InformationFileService(informationFileRepository, supervisorService, topicService);
 
     String result =
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
@@ -129,9 +123,6 @@ class InformationFileServiceTest {
   @Test
   @DisplayName("PDF-Download funktioniert")
   void test_05() throws Exception {
-    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
-    SupervisorService supervisorService = mock(SupervisorService.class);
-
     Path temp = Files.createTempFile("test-file", ".pdf");
     Files.writeString(temp, "PDF content");
 
@@ -140,8 +131,6 @@ class InformationFileServiceTest {
             UUID.randomUUID());
 
     when(informationFileRepository.findById(infoFile.getId())).thenReturn(Optional.of(infoFile));
-    InformationFileService informationFileService =
-        new InformationFileService(informationFileRepository, supervisorService, null);
 
     ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.getId());
 
@@ -158,8 +147,6 @@ class InformationFileServiceTest {
   @Test
   @DisplayName("Markdown-Download funktioniert")
   void test_06() throws Exception {
-    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
-    SupervisorService supervisorService = mock(SupervisorService.class);
 
     Path temp = Files.createTempFile("test-md", ".md");
     String mdContent = "# Überschrift\n\nText";
@@ -170,8 +157,6 @@ class InformationFileServiceTest {
             UUID.randomUUID());
 
     when(informationFileRepository.findById(infoFile.getId())).thenReturn(Optional.of(infoFile));
-    InformationFileService informationFileService =
-        new InformationFileService(informationFileRepository, supervisorService, null);
     ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.getId());
 
     assertThat(response.getStatusCode().value()).isEqualTo(200);
@@ -183,16 +168,12 @@ class InformationFileServiceTest {
 
     Files.deleteIfExists(temp);
   }
+
   @Test
   @DisplayName("Download scheitert wenn Datei nicht gefunden wird")
   void test_08() {
-    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
-    SupervisorService supervisorService = mock(SupervisorService.class);
-
     UUID uuid = UUID.randomUUID();
     when(informationFileRepository.findById(uuid)).thenReturn(Optional.empty());
-    InformationFileService informationFileService =
-        new InformationFileService(informationFileRepository, supervisorService, null);
     ResponseEntity<Resource> response = informationFileService.downloadFile(uuid);
 
     assertThat(response.getStatusCode().value()).isEqualTo(404);

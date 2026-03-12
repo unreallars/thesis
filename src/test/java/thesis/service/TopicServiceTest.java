@@ -10,11 +10,9 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import thesis.domain.Link;
 import thesis.domain.Topic;
 import thesis.domain.dto.MatchResult;
@@ -25,27 +23,23 @@ class TopicServiceTest {
   private TopicRepository topicRepository;
   private InformationFileRepository informationFileRepository;
   private LinkRepository linkRepository;
-
   private TopicService topicService;
+  private Topic topic;
 
   @BeforeEach
   void setUp() {
     topicRepository = mock(TopicRepository.class);
     informationFileRepository = mock(InformationFileRepository.class);
     linkRepository = mock(LinkRepository.class);
+    topic = mock(Topic.class);
 
-    topicService = new TopicService(
-        topicRepository,
-        informationFileRepository,
-        linkRepository
-    );
+    topicService = new TopicService(topicRepository, informationFileRepository, linkRepository);
   }
 
   @Test
   @DisplayName("findById – Topic vorhanden")
   void test_01() {
     UUID id = UUID.randomUUID();
-    Topic topic = mock(Topic.class);
     when(topicRepository.findById(id)).thenReturn(Optional.of(topic));
 
     Topic result = topicService.findById(id);
@@ -80,7 +74,6 @@ class TopicServiceTest {
   @DisplayName("getTopic – TopicProfile wird korrekt aufgebaut")
   void test_04() {
     UUID id = UUID.randomUUID();
-    Topic topic = mock(Topic.class);
     when(topicRepository.findById(id)).thenReturn(Optional.of(topic));
     when(informationFileRepository.findByTopicId(id)).thenReturn(List.of());
     when(linkRepository.findByTopicId(id)).thenReturn(List.of(mock(Link.class)));
@@ -122,7 +115,6 @@ class TopicServiceTest {
   @DisplayName("createLink – Link wird gespeichert")
   void test_07() {
     UUID id = UUID.randomUUID();
-    Topic topic = mock(Topic.class);
     when(topicRepository.findById(id)).thenReturn(Optional.of(topic));
     when(topic.getSupervisorId()).thenReturn(UUID.randomUUID());
 
@@ -131,6 +123,7 @@ class TopicServiceTest {
     assertThat(result).isEqualTo("Link erfolgreich zum Thema hinzugefügt");
     verify(linkRepository).save(any(Link.class));
   }
+
   @Test
   @DisplayName("findMatchingTopics - Keine Angaben")
   void test_08() {
@@ -141,6 +134,7 @@ class TopicServiceTest {
     assertThat(result).isEmpty();
     verify(topicRepository).findMatchingTopics("", "");
   }
+
   @Test
   @DisplayName("findMatchingTopics - Angabe enthält einen leeres Feld")
   void test_09() {
@@ -150,6 +144,7 @@ class TopicServiceTest {
 
     verify(topicRepository).findMatchingTopics("Spring,Rust,funktionale Programmierung", "");
   }
+
   @Test
   @DisplayName("findMatchingTopics - Angabe besteht nur aus Leerzeichen")
   void test_10() {
