@@ -15,8 +15,9 @@
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-5">Thema: <span th:text="*{topic.title}">Titel</span></h1>
+            <a class="lead" th:href="@{/supervisor/{id}(id=*{topic.supervisorId})}"
+               th:text="'Zum Betreuer dieses Themas'">Supervisor-Id</a>
             <p class="lead"><strong>Beschreibung:</strong> <span th:text="*{topic.description}">Beschreibung</span></p>
-            <p class="lead"><strong>Betreuer-ID:</strong> <span th:text="*{topic.supervisorId}">ID</span></p>
         </div>
     </div>
 
