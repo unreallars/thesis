@@ -78,19 +78,23 @@
                     </form>
                 </div>
                 <div class="card-body p-4">
-                    <form method="POST" th:action="@{/addTag}">
+                    <form method="POST" th:action="@{/addTags}" th:object="${tagForm}">
                         <div class="row mb-4">
                             <div class="col-12">
                                 <div class="form-floating">
                                     <input type="text"
                                            class="form-control form-control-lg"
                                            id="tags"
-                                           name="tags"
+                                           th:field="*{tags}"
                                            placeholder="newtag1, newtag2, newtag3">
                                     <label for="tags" class="text-muted">
                                         <i class="bi bi-envelope me-1"></i>
                                         Fachgebite / Tags hinzufügen
                                     </label>
+                                    <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('tags')}"
+                                         th:errors="*{tags}">
+                                        Ungültige Tags
+                                    </div>
                                 </div>
                             </div>
                         </div>

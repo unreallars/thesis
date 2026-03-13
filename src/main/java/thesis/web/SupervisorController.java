@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
 import thesis.domain.dto.EmailForm;
+import thesis.domain.dto.TagForm;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
 
@@ -31,17 +32,21 @@ public class SupervisorController {
   @GetMapping("/dashboard")
   public String dashboard(@AuthenticationPrincipal OAuth2User user, Model model) {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
-    model.addAttribute("supervisor", supervisor);
+
     EmailForm emailForm = new EmailForm();
     emailForm.setEmail(supervisor.getMail());
     model.addAttribute("emailForm", emailForm);
+    TagForm tagForm = new TagForm();
+    model.addAttribute("tagForm", tagForm);
     return "dashboard";
   }
 
   @PostMapping("/updateMail")
   public String updateMail(@AuthenticationPrincipal OAuth2User user, @Valid EmailForm emailForm,
-                           BindingResult bindingResult) {
+                           BindingResult bindingResult, Model model) {
     if (bindingResult.hasErrors()) {
+      TagForm tagForm = new TagForm();
+      model.addAttribute("tagForm", tagForm);
       return "dashboard";
     }
     supervisorService.updateMail(user.getAttribute("id"), emailForm.getEmail());
@@ -64,9 +69,17 @@ public class SupervisorController {
     return "redirect:/addTopic";
   }
 
-  @PostMapping("/addTag")
-  public String addTags(@AuthenticationPrincipal OAuth2User user, String tags) {
-    supervisorService.createTags(user.getAttribute("id"), tags);
+  @PostMapping("/addTags")
+  public String addTags(@AuthenticationPrincipal OAuth2User user, @Valid TagForm tagForm,
+                        BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+      Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
+      EmailForm emailForm = new EmailForm();
+      emailForm.setEmail(supervisor.getMail());
+      model.addAttribute("emailForm", emailForm);
+      return "dashboard";
+    }
+    supervisorService.createTags(user.getAttribute("id"), tagForm.getTags());
     return "redirect:/dashboard";
   }
 
