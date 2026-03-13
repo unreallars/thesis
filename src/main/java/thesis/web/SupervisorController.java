@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
 import thesis.domain.dto.EmailForm;
 import thesis.domain.dto.TagForm;
+import thesis.domain.dto.TopicForm;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
 
@@ -54,17 +55,20 @@ public class SupervisorController {
   }
 
   @GetMapping("/addTopic")
-  public String addTopic() {
+  public String addTopic(Model model) {
+    model.addAttribute("topicForm", new TopicForm());
     return "addtopic";
   }
 
   @PostMapping("/addTopic")
-  public String addTopic(@AuthenticationPrincipal OAuth2User user, String title, String description,
-                         RedirectAttributes redirectAttributes, String tags, String requirements) {
-
-    String message =
-        supervisorService.createTopic(title, description, user.getAttribute("id"), tags,
-            requirements);
+  public String addTopic(@AuthenticationPrincipal OAuth2User user,
+                         RedirectAttributes redirectAttributes, @Valid TopicForm topicForm,
+                         BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "addtopic";
+    }
+    String message = supervisorService.createTopic(topicForm.getTitle(), topicForm.getDescription(),
+        user.getAttribute("id"), topicForm.getTags(), topicForm.getRequirements());
     redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/addTopic";
   }

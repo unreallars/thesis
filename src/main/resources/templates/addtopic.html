@@ -25,16 +25,20 @@
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form method="POST" th:action="@{/addTopic}">
+                    <form method="POST" th:action="@{/addTopic}" th:object="${topicForm}">
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Titel (Pflichtfeld)</label>
                             <input type="text"
                                    class="form-control"
                                    id="title"
-                                   name="title"
+                                   th:field="*{title}"
                                    placeholder="Titel eingeben..."
                                    required>
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}"
+                             th:errors="*{title}">
+                            Ungültiger Titel
                         </div>
 
                         <div class="mb-3">
@@ -46,14 +50,14 @@
                                       placeholder="Beschreibung eingeben..."></textarea>
                         </div>
                         <div>
-                            <label for="tags">Tags / Fachgebiete (kommagetrennt):</label>
+                            <label for="tags">Tags / Fachgebiete (optional):</label>
                             <input id="tags" name="tags" type="text"
-                                   placeholder="java, spring, backend">
+                                   placeholder="z.B. java, spring, backend">
                         </div>
                         <div>
-                            <label for="requirements">Vorraussetzungen (kommagetrennt):</label>
+                            <label for="requirements">Vorraussetzungen (optional):</label>
                             <input id="requirements" name="requirements" type="text"
-                                   placeholder="propra, database">
+                                   placeholder="z.B. propra, database">
                         </div>
 
                         <div class="d-grid">
