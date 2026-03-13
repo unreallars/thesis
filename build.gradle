@@ -66,3 +66,10 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+test {
+    jvmArgs '-javaagent:' + configurations.testRuntimeClasspath.find {
+        it.name.contains('byte-buddy-agent') }.absolutePath
+}
+test {
+    jvmArgs '-Xshare:off'
+}
