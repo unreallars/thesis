@@ -4,7 +4,8 @@
     <title>Datei-Upload</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container py-5">
@@ -29,23 +30,27 @@
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form method="POST" th:action="@{/upload}" enctype="multipart/form-data">
+                    <form method="POST" th:action="@{/upload}" enctype="multipart/form-data" th:object="${uploadForm}">
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Titel (Pflichtfeld)</label>
                             <input type="text"
                                    class="form-control"
                                    id="title"
-                                   name="title"
+                                   th:field="*{title}"
                                    placeholder="Titel eingeben..."
                                    required>
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}"
+                             th:errors="*{title}">
+                            Ungültiger Titel
                         </div>
 
                         <div class="mb-3">
                             <label for="description" class="form-label">Beschreibung (optional)</label>
                             <textarea class="form-control"
                                       id="description"
-                                      name="description"
+                                      th:field="*{description}"
                                       rows="3"
                                       placeholder="Beschreibung eingeben..."></textarea>
                         </div>
@@ -54,33 +59,41 @@
                             <label for="file" class="form-label">Datei auswählen</label>
                             <input type="file"
                                    class="form-control"
-                                   name="file"
+                                   th:field="*{file}"
                                    id="file"
                                    accept="application/pdf, application/zip, text/markdown, .md, .markdown"
                                    required>
                         </div>
+
                         <div>
                             <span>Verknüpfen mit:</span><br>
 
                             <label>
                                 <input type="radio"
-                                       name="targetType"
-                                       value="SUPERVISOR"
-                                       checked="checked">
+                                       th:field="*{targetType}"
+                                       value="SUPERVISOR">
                                 Eigenes Betreuer-Profil
                             </label><br>
 
                             <label>
                                 <input type="radio"
-                                       name="targetType"
+                                       th:field="*{targetType}"
                                        value="TOPIC">
                                 Topic
                             </label>
                         </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('targetType')}"
+                             th:errors="*{targetType}">
+                            Ungültige Verknüpfung
+                        </div>
 
                         <div>
                             <label for="topicId">Topic-ID (nur wenn Topic ausgewählt):</label>
-                            <input id="topicId" name="topicId" type="text">
+                            <input id="topicId" th:field="*{topicId}" type="text">
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('topicId')}"
+                             th:errors="*{topicId}">
+                            Ungültige UUID
                         </div>
 
                         <div class="d-grid">

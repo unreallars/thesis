@@ -39,10 +39,11 @@ public class InformationFileService {
                            String targetType, String topicId) {
 
     try {
-      String filename = file.getOriginalFilename();
-      if (filename == null || filename.isEmpty() || title.isEmpty()) {
-        return "Ungültige Eingabe";
+      if (file == null || file.getOriginalFilename() == null
+          || file.getOriginalFilename().isBlank()) {
+        return "Ungültige Datei";
       }
+      String filename = file.getOriginalFilename();
 
       String fileType = filename.substring(filename.lastIndexOf('.') + 1);
       if (!fileType.matches("pdf|zip|md")) {
@@ -64,7 +65,7 @@ public class InformationFileService {
 
         file.transferTo(filePath);
 
-      } else if ("TOPIC".equals(targetType) && topicId != null) {
+      } else if ("TOPIC".equals(targetType) && !topicId.isEmpty()) {
         UUID uuid = UUID.fromString(topicId);
         Topic topic = topicService.findById(uuid);
         if (topic == null) {
@@ -117,8 +118,8 @@ public class InformationFileService {
       } else {
         headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
         headers.add(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=" + informationFile.getTitle() + "."
-                 + informationFile.getFileType());
+            "attachment; filename=" + informationFile.getTitle()
+                + "." + informationFile.getFileType());
       }
       return ResponseEntity.ok().headers(headers).body(resource);
 

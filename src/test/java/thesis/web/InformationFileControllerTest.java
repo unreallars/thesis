@@ -52,7 +52,7 @@ public class InformationFileControllerTest {
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_3() throws Exception {
     mockMvc.perform(get("/upload")).andExpect(status().isOk());
-    mockMvc.perform(post("/upload").with(csrf())).andExpect(status().is3xxRedirection());
+    mockMvc.perform(post("/upload").with(csrf())).andExpect(status().isOk());
   }
 
   @Test
