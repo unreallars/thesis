@@ -67,9 +67,10 @@ public class SupervisorControllerTest {
     mockMvc.perform(get("/addTopic")).andExpect(status().isOk());
     mockMvc.perform(get("/addLink")).andExpect(status().isOk());
 
-    mockMvc.perform(post("/updateMail").with(csrf())).andExpect(status().is3xxRedirection());
-    mockMvc.perform(post("/addTopic").with(csrf())).andExpect(status().is3xxRedirection());
-    mockMvc.perform(post("/addTag").with(csrf())).andExpect(status().is3xxRedirection());
+    mockMvc.perform(post("/updateMail").param("email", "a@b.de").with(csrf()))
+        .andExpect(status().is3xxRedirection());
+    mockMvc.perform(post("/addTopic").with(csrf())).andExpect(status().isOk());
+    mockMvc.perform(post("/addTags").with(csrf())).andExpect(status().isOk());
   }
 
   @Test
@@ -83,12 +84,13 @@ public class SupervisorControllerTest {
     when(topicService.createLink(any(), any(), any())).thenReturn(
         "Link erfolgreich zum Thema hinzugefügt");
 
-    mockMvc.perform(post("/addLink").with(csrf())).andExpect(status().is3xxRedirection())
-        .andExpect(flash().attribute("message", "Kein gültiger Typ angegeben"));
-    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "SUPERVISOR"))
-        .andExpect(status().is3xxRedirection()).andExpect(
-            flash().attribute("message", "Link erfolgreich zum Betreuer-Profil hinzugefügt"));
-    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "TOPIC"))
+    mockMvc.perform(post("/addLink").with(csrf())).andExpect(status().isOk());
+    mockMvc.perform(
+        post("/addLink").with(csrf()).param("targetType", "SUPERVISOR").param("url", "https://a.de")
+            .param("linkText", "Test")).andExpect(status().is3xxRedirection()).andExpect(
+        flash().attribute("message", "Link erfolgreich zum Betreuer-Profil hinzugefügt"));
+    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "TOPIC").param("url", "https://a.de")
+            .param("linkText", "Test"))
         .andExpect(status().is3xxRedirection())
         .andExpect(flash().attribute("message", "Link erfolgreich zum Thema hinzugefügt"));
   }

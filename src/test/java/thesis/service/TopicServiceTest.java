@@ -86,9 +86,9 @@ class TopicServiceTest {
   @Test
   @DisplayName("createLink – Topic-Id ist null")
   void test_05() {
-    String result = topicService.createLink(null, "https://example.com", "Example");
+    String result = topicService.createLink("", "https://example.com", "Example");
 
-    assertThat(result).isEqualTo("Ungültige Topic-Id");
+    assertThat(result).isEqualTo("Keine gültige Topic-Id angegeben");
     verify(linkRepository, never()).save(any());
   }
 

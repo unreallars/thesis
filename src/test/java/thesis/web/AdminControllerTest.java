@@ -50,9 +50,8 @@ public class AdminControllerTest {
         "User wurde erfolgreich die Rolle Betreuer zugewiesen");
 
     mockMvc.perform(get("/manage")).andExpect(status().isOk());
-    mockMvc.perform(post("/manage").with(csrf())).andExpect(status().is3xxRedirection())
-        .andExpect(flash().attribute("message", "User nicht gefunden"));
-    mockMvc.perform(post(("/manage")).param("userId", "66").with(csrf()))
+    mockMvc.perform(post("/manage").with(csrf())).andExpect(status().isOk());
+    mockMvc.perform(post(("/manage")).param("userGithubId", "66").with(csrf()))
         .andExpect(status().is3xxRedirection()).andExpect(
             flash().attribute("message", "User wurde erfolgreich die Rolle Betreuer zugewiesen"));
   }
