@@ -45,18 +45,18 @@
                             <label for="description" class="form-label">Beschreibung (optional)</label>
                             <textarea class="form-control"
                                       id="description"
-                                      name="description"
+                                      th:field="*{description}"
                                       rows="3"
                                       placeholder="Beschreibung eingeben..."></textarea>
                         </div>
                         <div>
                             <label for="tags">Tags / Fachgebiete (optional):</label>
-                            <input id="tags" name="tags" type="text"
+                            <input id="tags" th:field="*{tags}" type="text"
                                    placeholder="z.B. java, spring, backend">
                         </div>
                         <div>
                             <label for="requirements">Vorraussetzungen (optional):</label>
-                            <input id="requirements" name="requirements" type="text"
+                            <input id="requirements" th:field="*{requirements}" type="text"
                                    placeholder="z.B. propra, database">
                         </div>
 
