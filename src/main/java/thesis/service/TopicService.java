@@ -44,17 +44,16 @@ public class TopicService {
   }
 
 
-  public String createLink(String topicId, String url, String linktext) {
-    if (topicId == null) {
-      return "Ungültige Topic-Id";
+  public String createLink(String uuid, String url, String linktext) {
+    if (uuid.isEmpty()) {
+      return "Keine gültige Topic-Id angegeben";
     }
 
-    UUID uuid = UUID.fromString(topicId);
-    Topic topic = findById(uuid);
+    Topic topic = findById(UUID.fromString(uuid));
     if (topic == null || topic.getSupervisorId() == null) {
       return "Das angegebene Thema existiert nicht";
     }
-    linkRepository.save(Link.createTopicLink(url, linktext, uuid));
+    linkRepository.save(Link.createTopicLink(url, linktext, UUID.fromString(uuid)));
     return "Link erfolgreich zum Thema hinzugefügt";
   }
 

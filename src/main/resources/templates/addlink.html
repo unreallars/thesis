@@ -25,25 +25,33 @@
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form method="POST" th:action="@{/addLink}">
+                    <form method="POST" th:action="@{/addLink}" th:object="${linkForm}">
 
                         <div class="mb-3">
                             <label for="url" class="form-label">Url eingeben (Pflichtfeld)</label>
                             <input type="text"
                                    class="form-control"
                                    id="url"
-                                   name="url"
+                                   th:field="*{url}"
                                    placeholder="Url eingeben..."
                                    required>
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('url')}"
+                             th:errors="*{url}">
+                            Ungültige Url
                         </div>
 
                         <div class="mb-3">
                             <label for="linkText" class="form-label">Link-Text (Pflichtfeld)</label>
                             <input type="text" class="form-control"
                                       id="linkText"
-                                      name="linkText"
+                                      th:field="*{linkText}"
                                       placeholder="Linktext eingeben..."
                                       required>
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('linkText')}"
+                             th:errors="*{linkText}">
+                            Ungültiger Linktext
                         </div>
 
                         <div>
@@ -51,23 +59,30 @@
 
                             <label>
                                 <input type="radio"
-                                       name="targetType"
-                                       value="SUPERVISOR"
-                                       checked="checked">
+                                       th:field="*{targetType}"
+                                       value="SUPERVISOR">
                                 Eigenes Betreuer-Profil
                             </label><br>
 
                             <label>
                                 <input type="radio"
-                                       name="targetType"
+                                       th:field="*{targetType}"
                                        value="TOPIC">
                                 Topic
                             </label>
                         </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('targetType')}"
+                             th:errors="*{targetType}">
+                            Ungültige Verknüpfung
+                        </div>
 
                         <div>
                             <label for="topicId">Topic-ID (nur wenn Topic ausgewählt):</label>
-                            <input id="topicId" name="topicId" type="text">
+                            <input id="topicId" th:field="*{topicId}" type="text">
+                        </div>
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('topicId')}"
+                             th:errors="*{topicId}">
+                            Ungültige UUID
                         </div>
 
                         <div class="d-grid">

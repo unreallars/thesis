@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import thesis.domain.Supervisor;
 import thesis.domain.dto.EmailForm;
+import thesis.domain.dto.LinkForm;
 import thesis.domain.dto.TagForm;
 import thesis.domain.dto.TopicForm;
 import thesis.service.SupervisorService;
@@ -88,19 +89,25 @@ public class SupervisorController {
   }
 
   @GetMapping("/addLink")
-  public String showForm() {
+  public String showForm(Model model) {
+    model.addAttribute("linkForm", new LinkForm());
     return "addlink";
   }
 
   @PostMapping("/addLink")
-  public String submitForm(String url, String linkText, String targetType, String topicId,
-                           RedirectAttributes redirectAttributes,
-                           @AuthenticationPrincipal OAuth2User user) {
+  public String submitForm(RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal OAuth2User user, @Valid LinkForm linkForm,
+                           BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return "addlink";
+    }
     String message;
-    if ("SUPERVISOR".equals(targetType)) {
-      message = supervisorService.createLink(user.getAttribute("id"), url, linkText);
-    } else if ("TOPIC".equals(targetType)) {
-      message = topicService.createLink(topicId, url, linkText);
+    if ("SUPERVISOR".equals(linkForm.getTargetType())) {
+      message = supervisorService.createLink(user.getAttribute("id"), linkForm.getUrl(),
+          linkForm.getLinkText());
+    } else if ("TOPIC".equals(linkForm.getTargetType())) {
+      message =
+          topicService.createLink(linkForm.getTopicId(), linkForm.getUrl(), linkForm.getLinkText());
     } else {
       message = "Kein gültiger Typ angegeben";
     }
