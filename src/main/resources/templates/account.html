@@ -36,9 +36,12 @@
 </nav>
 <div class="card container">
     <div class="card-body">
-        <h3 class="card-title">Account Information</h3>
+        <h3 class="card-title">Account Informationen</h3>
         <p class="card-text">
-            <strong>Github-Benutzername:</strong> <span th:text="${user}">Username</span>
+            <strong>Github-Benutzername:</strong> <span th:text="${username}">Github-Benutzername</span>
+        </p>
+        <p class="card-text">
+            <strong>Github-Id:</strong> <span th:text="${githubId}">Github-Id</span>
         </p>
         <form th:action="@{/logout}" method="post">
             <input class="btn btn-primary" type="submit" value="Logout">

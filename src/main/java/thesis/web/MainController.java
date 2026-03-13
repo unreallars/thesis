@@ -58,7 +58,8 @@ public class MainController {
 
   @GetMapping("/account")
   public String account(@AuthenticationPrincipal OAuth2User user, Model model) {
-    model.addAttribute("user", user.getAttribute("login"));
+    model.addAttribute("username", user.getAttribute("login"));
+    model.addAttribute("githubId", user.getAttribute("id"));
     return "account";
   }
 

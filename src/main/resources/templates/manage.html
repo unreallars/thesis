@@ -39,23 +39,27 @@
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">Verwaltung</h2>
+                    <h2 class="mb-0">Betreuer-Verwaltung</h2>
                 </div>
                 <div class="card-body">
                     <div th:if="${message}">
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form th:action="@{/manage}" method="post">
+                    <form th:action="@{/manage}" method="post" th:object="${supervisorCreationForm}">
                         <div class="mb-3">
-                            <label for="userId" class="form-label">User ID eingeben</label>
-                            <input type="number"
-                                   name="userId"
+                            <label for="userGithubId" class="form-label">User Github-ID eingeben</label>
+                            <input type="text"
+                                   th:field="*{userGithubId}"
                                    class="form-control"
-                                   id="userId"
-                                   placeholder="z.B. 123"
+                                   id="userGithubId"
+                                   placeholder="z.B. 111111111"
                                    required>
-                            <div class="form-text">Gib die ID des Users ein, den du zum Betreuer machen möchtest.</div>
+                            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('userGithubId')}"
+                                 th:errors="*{userGithubId}">
+                                Ungültige Github-Id
+                            </div>
+                            <div class="form-text">Gib die Github-ID des Users ein, den du zum Betreuer machen möchtest.</div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Zum Betreuer befördern</button>
                     </form>
