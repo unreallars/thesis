@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import thesis.domain.dto.MatchResult;
 import thesis.domain.dto.SupervisorMatch;
 import thesis.domain.dto.SupervisorProfile;
+import thesis.domain.dto.TopicMatch;
 import thesis.domain.dto.TopicProfile;
 import thesis.service.SupervisorService;
 import thesis.service.TopicService;
@@ -46,13 +46,13 @@ public class MainController {
                       List<String> completedRequirements, String interestsInput,
                       RedirectAttributes redirectAttributes) {
 
-    List<MatchResult> matches =
+    List<TopicMatch> topicMatches =
         topicService.findMatchingTopics(interestsInput, completedRequirements);
-    List<SupervisorMatch> matches2 =
+    List<SupervisorMatch> supervisorMatches =
         supervisorService.findMatchingSupervisors(interestsInput);
     redirectAttributes.addFlashAttribute("result", true);
-    redirectAttributes.addFlashAttribute("matches", matches);
-    redirectAttributes.addFlashAttribute("matches2", matches2);
+    redirectAttributes.addFlashAttribute("topicMatches", topicMatches);
+    redirectAttributes.addFlashAttribute("supervisorMatches", supervisorMatches);
     return "redirect:/match";
   }
 

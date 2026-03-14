@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import thesis.domain.Topic;
 import thesis.domain.TopicRequirement;
 import thesis.domain.TopicTag;
-import thesis.domain.dto.MatchResult;
-import thesis.persistence.dto.MatchResultDto;
+import thesis.domain.dto.TopicMatch;
 import thesis.persistence.dto.TopicDto;
+import thesis.persistence.dto.TopicMatchDto;
 import thesis.persistence.dto.TopicRequirementDto;
 import thesis.persistence.dto.TopicTagDto;
 import thesis.service.TopicRepository;
@@ -62,15 +62,15 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
-  public List<MatchResult> findMatchingTopics(String tagsCsv, String requirementsCsv) {
+  public List<TopicMatch> findMatchingTopics(String tagsCsv, String requirementsCsv) {
     return topicDataRepository.findMatchingTopics(tagsCsv, requirementsCsv).stream()
         .map(this::toMatchResult).toList();
   }
 
-  private MatchResult toMatchResult(MatchResultDto matchResultDto) {
-    return new MatchResult(matchResultDto.supervisorId(), matchResultDto.supervisorName(),
-        matchResultDto.topicTitle(),
-        matchResultDto.topicDescription(), matchResultDto.matchScore());
+  private TopicMatch toMatchResult(TopicMatchDto topicMatchDto) {
+    return new TopicMatch(topicMatchDto.supervisorId(), topicMatchDto.supervisorName(),
+        topicMatchDto.topicTitle(),
+        topicMatchDto.topicDescription(), topicMatchDto.matchScore());
   }
 
   @Override

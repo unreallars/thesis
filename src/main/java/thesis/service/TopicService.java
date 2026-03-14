@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import thesis.domain.Link;
 import thesis.domain.Topic;
-import thesis.domain.dto.MatchResult;
+import thesis.domain.dto.TopicMatch;
 import thesis.domain.dto.TopicProfile;
 
 @Service
@@ -62,8 +62,8 @@ public class TopicService {
     return topicRepository.findAllDistinctTopicRequirementNames();
   }
 
-  public List<MatchResult> findMatchingTopics(String interestsInput,
-                                              List<String> completedRequirements) {
+  public List<TopicMatch> findMatchingTopics(String interestsInput,
+                                             List<String> completedRequirements) {
     completedRequirements = requireNonNullElse(completedRequirements, new ArrayList<>());
     interestsInput = requireNonNullElse(interestsInput, "");
 

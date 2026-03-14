@@ -42,17 +42,13 @@
                 <div class="card-header bg-primary text-white">
                     <h3 class="mb-0">Matching</h3>
                 </div>
-                <div th:if="${result !=null}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                    Matching erfolgreich abgeschlossen!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
 
-                <div th:if="${matches != null && !matches.isEmpty()}" class="mb-5">
+                <div th:if="${topicMatches != null && !topicMatches.isEmpty()}" class="mb-5">
                     <h3 class="mb-4">
-                        <span th:text="${matches.size()}"></span> passende Themen gefunden:
+                        <span th:text="${topicMatches.size()}"></span> passende Themen gefunden:
                     </h3>
                     <div class="row g-4">
-                        <div th:each="match : ${matches}" class="col-lg-6 col-xl-4">
+                        <div th:each="match : ${topicMatches}" class="col-lg-6 col-xl-4">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="card-header bg-primary text-white">
                                     <h6 class="mb-0 fw-bold" th:text="${match.supervisorName}">Supervisor</h6>
@@ -69,35 +65,30 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="card-footer bg-light text-center">
-                                    <span class="badge bg-success"
-                                          th:text="'Score: ' + ${match.matchScore}">Score</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div th:if="${result !=null && (matches == null || matches.isEmpty())}"
+                <div th:if="${result !=null && (topicMatches == null || topicMatches.isEmpty())}"
                      class="text-center py-5">
                     <div class="display-5 mb-3">😔</div>
                     <h4>Keine passenden Themen gefunden</h4>
                 </div>
 
 
-                <div th:if="${matches2 != null && !matches2.isEmpty()}" class="mb-5">
+                <div th:if="${supervisorMatches != null && !supervisorMatches.isEmpty()}" class="mb-5">
                     <h3 class="mb-4">
-                        <span th:text="${matches2.size()}"></span> passende Betreuer gefunden:
+                        <span th:text="${supervisorMatches.size()}"></span> passende Betreuer gefunden:
                     </h3>
                     <div class="row g-4">
-                        <div th:each="match2 : ${matches2}" class="col-lg-6 col-xl-4">
+                        <div th:each="match2 : ${supervisorMatches}" class="col-lg-6 col-xl-4">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="card-header bg-primary text-white">
                                     <h6 class="mb-0 fw-bold" th:text="${match2.supervisorUsername}">Supervisor</h6>
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title" th:text="${match2.supervisorUsername}">Topic Titel</h5>
+                                    <h5 class="card-title" th:text="${match2.supervisorUsername}">Supervisor Username</h5>
                                     <hr class="my-3">
                                     <div class="row text-center">
                                         <div class="col-6">
@@ -106,16 +97,11 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="card-footer bg-light text-center">
-                                    <span class="badge bg-success"
-                                          th:text="'Score: ' + ${match2.matchScore}">Score</span>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div th:if="${result !=null && (matches2 == null || matches2.isEmpty())}"
+                <div th:if="${result !=null && (supervisorMatches == null || supervisorMatches.isEmpty())}"
                      class="text-center py-5">
                     <div class="display-5 mb-3">😔</div>
                     <h4>Keine passenden Betreuer gefunden</h4>

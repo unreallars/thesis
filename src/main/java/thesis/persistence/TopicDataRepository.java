@@ -8,6 +8,7 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import thesis.persistence.dto.TopicDto;
+import thesis.persistence.dto.TopicMatchDto;
 
 public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
   @NonNull
@@ -39,7 +40,7 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
           ORDER BY match_score DESC
           LIMIT 10
       """)
-  List<MatchResultDto> findMatchingTopics(
+  List<TopicMatchDto> findMatchingTopics(
       @Param("tagsCsv") String tagsCsv,
       @Param("requirementsCsv") String requirementsCsv
   );

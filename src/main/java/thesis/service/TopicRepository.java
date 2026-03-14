@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import thesis.domain.Topic;
-import thesis.domain.dto.MatchResult;
+import thesis.domain.dto.TopicMatch;
 
 public interface TopicRepository {
   List<Topic> findAll();
@@ -13,7 +13,7 @@ public interface TopicRepository {
 
   List<String> findAllDistinctTopicRequirementNames();
 
-  List<MatchResult> findMatchingTopics(String tagsCsv, String requirementsCsv);
+  List<TopicMatch> findMatchingTopics(String tagsCsv, String requirementsCsv);
 
   Optional<Topic> findById(UUID id);
 

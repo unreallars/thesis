@@ -15,7 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import thesis.domain.Link;
 import thesis.domain.Topic;
-import thesis.domain.dto.MatchResult;
+import thesis.domain.dto.TopicMatch;
 import thesis.domain.dto.TopicProfile;
 
 class TopicServiceTest {
@@ -129,7 +129,7 @@ class TopicServiceTest {
   void test_08() {
     when(topicRepository.findMatchingTopics("", "")).thenReturn(List.of());
 
-    List<MatchResult> result = topicService.findMatchingTopics(null, null);
+    List<TopicMatch> result = topicService.findMatchingTopics(null, null);
 
     assertThat(result).isEmpty();
     verify(topicRepository).findMatchingTopics("", "");
