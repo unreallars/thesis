@@ -3,10 +3,10 @@ package thesis.persistence;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNull;
 import thesis.persistence.dto.SupervisorDto;
 import thesis.persistence.dto.SupervisorMatchDto;
 
