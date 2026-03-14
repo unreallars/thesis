@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
+                    <a class="nav-link" th:href="@{/}">Startseite</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/match}">Suche</a>
@@ -34,18 +34,26 @@
         </div>
     </div>
 </nav>
-<div class="card container">
-    <div class="card-body">
-        <h3 class="card-title">Account Informationen</h3>
-        <p class="card-text">
-            <strong>Github-Benutzername:</strong> <span th:text="${username}">Github-Benutzername</span>
-        </p>
-        <p class="card-text">
-            <strong>Github-Id:</strong> <span th:text="${githubId}">Github-Id</span>
-        </p>
-        <form th:action="@{/logout}" method="post">
-            <input class="btn btn-primary" type="submit" value="Logout">
-        </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Account</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Github-Benutzername:</strong> <span th:text="${username}">Github-Benutzername</span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Github-ID:</strong> <span th:text="${githubId}">Github-ID</span>
+                    </p>
+                    <form th:action="@{/logout}" method="post">
+                        <input class="btn btn-primary" type="submit" value="Abmelden">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>

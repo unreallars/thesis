@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
+                    <a class="nav-link" th:href="@{/}">Startseite</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/match}">Suche</a>
@@ -48,7 +48,7 @@
 
                     <form th:action="@{/manage}" method="post" th:object="${supervisorCreationForm}">
                         <div class="mb-3">
-                            <label for="userGithubId" class="form-label">User Github-ID eingeben</label>
+                            <label for="userGithubId" class="form-label">Github-ID eingeben</label>
                             <input type="text"
                                    th:field="*{userGithubId}"
                                    class="form-control"
@@ -59,7 +59,7 @@
                                  th:errors="*{userGithubId}">
                                 Ungültige Github-Id
                             </div>
-                            <div class="form-text">Gib die Github-ID des Users ein, den du zum Betreuer machen möchtest.</div>
+                            <div class="form-text">Bitte geben Sie die GitHub-ID des Benutzers ein, den Sie als Betreuer hinzufügen möchten</div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Zum Betreuer befördern</button>
                     </form>

@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
+                    <a class="nav-link" th:href="@{/}">Startseite</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/match}">Suche</a>
@@ -38,8 +38,6 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-6">
-            <h1 class="mb-4 text-center text-primary">Dashboard</h1>
-
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-primary text-white">
                     <h2 class="mb-0">
@@ -56,23 +54,22 @@
                                            class="form-control form-control-lg"
                                            id="mail"
                                            th:field="*{email}"
-                                           placeholder="Ihre Kontakt E-Mail-Adresse">
+                                           placeholder="Kontakt-Email" required>
                                     <label for="mail" class="text-muted">
                                         <i class="bi bi-envelope me-1"></i>
-                                        Kontakt-Mail
+                                        Kontakt-Email
                                     </label>
                                     <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}"
                                          th:errors="*{email}">
                                         Ungültige Email
                                     </div>
-                                    <br>
                                 </div>
                             </div>
                         </div>
                         <div class="d-grid">
                              <button type="submit" class="btn btn-primary btn-lg">
                                  <i class="bi bi-save me-2"></i>
-                                 Speichern
+                                 Kontakt-Email aktualisieren
                              </button>
                         </div>
                     </form>
@@ -86,10 +83,10 @@
                                            class="form-control form-control-lg"
                                            id="tags"
                                            th:field="*{tags}"
-                                           placeholder="newtag1, newtag2, newtag3">
+                                           placeholder="newtag1, newtag2, newtag3" required>
                                     <label for="tags" class="text-muted">
                                         <i class="bi bi-envelope me-1"></i>
-                                        Fachgebite / Tags hinzufügen
+                                        Fachgebiete hinzufügen
                                     </label>
                                     <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('tags')}"
                                          th:errors="*{tags}">
@@ -102,7 +99,7 @@
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="bi bi-save me-2"></i>
-                                Speichern
+                                Fachgebiete hinzufügen
                             </button>
                         </div>
                     </form>

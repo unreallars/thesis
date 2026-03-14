@@ -50,16 +50,17 @@
                                       placeholder="Beschreibung eingeben..."></textarea>
                         </div>
                         <div>
-                            <label for="tags">Tags / Fachgebiete (optional):</label>
-                            <input id="tags" th:field="*{tags}" type="text"
+                            <label for="tags">Fachgebiete (optional):</label>
+                            <input class="form-control" id="tags" th:field="*{tags}" type="text"
                                    placeholder="z.B. java, spring, backend">
                         </div>
+                        <br>
                         <div>
                             <label for="requirements">Vorraussetzungen (optional):</label>
-                            <input id="requirements" th:field="*{requirements}" type="text"
+                            <input class="form-control" id="requirements" th:field="*{requirements}" type="text"
                                    placeholder="z.B. propra, database">
                         </div>
-
+                        <br>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
                                Thema hinzufügen

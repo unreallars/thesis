@@ -79,7 +79,7 @@
                                 <input type="radio"
                                        th:field="*{targetType}"
                                        value="TOPIC">
-                                Topic
+                                Thema
                             </label>
                         </div>
                         <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('targetType')}"
@@ -88,14 +88,14 @@
                         </div>
 
                         <div>
-                            <label for="topicId">Topic-ID (nur wenn Topic ausgewählt):</label>
-                            <input id="topicId" th:field="*{topicId}" type="text">
+                            <label for="topicId">Thema-ID (nur wenn Thema ausgewählt):</label>
+                            <input class="form-control" id="topicId" th:field="*{topicId}" type="text">
                         </div>
                         <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('topicId')}"
                              th:errors="*{topicId}">
                             Ungültige UUID
                         </div>
-
+                        <br>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 Datei hochladen
