@@ -17,21 +17,19 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
   List<TopicDto> findBySupervisorId(UUID supervisorId);
 
   @Query("SELECT DISTINCT tr.name FROM topic_requirement tr JOIN topic ON tr.topic=topic.id")
-  List<String> findAllDistinctTopicRequirementNames();
+  List<String> findAllTopicRequirements();
 
   @Query("""
-          SELECT s.fach_id as supervisor_id,
-                 s.username as supervisor_username,
+          SELECT t.fach_id as topic_id,
                  t.title as topic_title,
                  t.description as topic_description,
                  COUNT(DISTINCT tt.tag) * 10 as match_score
-          FROM supervisor s
-          JOIN topic t ON s.fach_id = t.supervisor_id
+          FROM topic t
           JOIN topic_tag tt ON t.id = tt.topic
           JOIN topic_requirement tr ON t.id = tr.topic
           WHERE LOWER(tt.tag) = ANY(string_to_array(:tagsCsv, ','))
           AND tr.name = ANY(string_to_array(:requirementsCsv, ','))
-          GROUP BY s.fach_id, s.username, t.id, t.title, t.description
+          GROUP BY t.id, t.title, t.description
           HAVING COUNT(DISTINCT tr.name) = (
               SELECT COUNT(*)
               FROM topic_requirement tr2

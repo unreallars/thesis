@@ -58,8 +58,8 @@ public class TopicService {
   }
 
 
-  public List<String> findAllRequirements() {
-    return topicRepository.findAllDistinctTopicRequirementNames();
+  public List<String> findAllTopicRequirements() {
+    return topicRepository.findAllTopicRequirements();
   }
 
   public List<TopicMatch> findMatchingTopics(String interestsInput,

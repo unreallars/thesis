@@ -57,8 +57,8 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
-  public List<String> findAllDistinctTopicRequirementNames() {
-    return topicDataRepository.findAllDistinctTopicRequirementNames();
+  public List<String> findAllTopicRequirements() {
+    return topicDataRepository.findAllTopicRequirements();
   }
 
   @Override

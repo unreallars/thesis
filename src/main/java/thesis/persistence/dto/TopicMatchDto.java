@@ -2,6 +2,6 @@ package thesis.persistence.dto;
 
 import java.util.UUID;
 
-public record TopicMatchDto(UUID supervisorId, String supervisorName, String topicTitle,
+public record TopicMatchDto(UUID topicId, String topicTitle,
                             String topicDescription, Integer matchScore) {
 }

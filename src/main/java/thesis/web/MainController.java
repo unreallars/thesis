@@ -37,20 +37,18 @@ public class MainController {
 
   @GetMapping("/match")
   public String match(Model model) {
-    model.addAttribute("requirements", topicService.findAllRequirements());
+    model.addAttribute("requirements", topicService.findAllTopicRequirements());
     return "match";
   }
 
   @PostMapping("/match")
-  public String match(@RequestParam(value = "completedRequirements", required = false)
-                      List<String> completedRequirements, String interestsInput,
-                      RedirectAttributes redirectAttributes) {
+  public String match(@RequestParam(required = false) List<String> completedRequirements,
+                      String interests, RedirectAttributes redirectAttributes) {
 
     List<TopicMatch> topicMatches =
-        topicService.findMatchingTopics(interestsInput, completedRequirements);
+        topicService.findMatchingTopics(interests, completedRequirements);
     List<SupervisorMatch> supervisorMatches =
-        supervisorService.findMatchingSupervisors(interestsInput);
-    redirectAttributes.addFlashAttribute("result", true);
+        supervisorService.findMatchingSupervisors(interests);
     redirectAttributes.addFlashAttribute("topicMatches", topicMatches);
     redirectAttributes.addFlashAttribute("supervisorMatches", supervisorMatches);
     return "redirect:/match";

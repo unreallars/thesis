@@ -11,7 +11,7 @@ public interface TopicRepository {
 
   List<Topic> findBySupervisorId(UUID supervisorId);
 
-  List<String> findAllDistinctTopicRequirementNames();
+  List<String> findAllTopicRequirements();
 
   List<TopicMatch> findMatchingTopics(String tagsCsv, String requirementsCsv);
 
