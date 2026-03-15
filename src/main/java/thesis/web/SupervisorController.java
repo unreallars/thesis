@@ -36,7 +36,7 @@ public class SupervisorController {
     Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
 
     EmailForm emailForm = new EmailForm();
-    emailForm.setEmail(supervisor.getMail());
+    emailForm.setEmail(supervisor.mail());
     model.addAttribute("emailForm", emailForm);
     TagForm tagForm = new TagForm();
     model.addAttribute("tagForm", tagForm);
@@ -80,7 +80,7 @@ public class SupervisorController {
     if (bindingResult.hasErrors()) {
       Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
       EmailForm emailForm = new EmailForm();
-      emailForm.setEmail(supervisor.getMail());
+      emailForm.setEmail(supervisor.mail());
       model.addAttribute("emailForm", emailForm);
       return "dashboard";
     }

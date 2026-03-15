@@ -60,7 +60,7 @@ public class InformationFileService {
       if ("SUPERVISOR".equals(targetType)) {
         InformationFile informationFile =
             InformationFile.createSupervisorInformationFile(fileType, filePath.toString(), title,
-                description, supervisor.getId());
+                description, supervisor.id());
         informationFileRepository.save(informationFile);
 
         file.transferTo(filePath);
@@ -71,7 +71,7 @@ public class InformationFileService {
         if (topic == null) {
           return "Das Thema existiert nicht";
         }
-        if (!topic.getSupervisorId().equals(supervisor.getId())) {
+        if (!topic.getSupervisorId().equals(supervisor.id())) {
           return "Das angegebene Thema ist von einem anderen Betreuer";
         }
         InformationFile informationFile =
@@ -98,12 +98,12 @@ public class InformationFileService {
         return ResponseEntity.notFound().build();
       }
 
-      Path filePath = Path.of(informationFile.getFilePath());
+      Path filePath = Path.of(informationFile.filePath());
       byte[] fileContent = Files.readAllBytes(filePath);
       ByteArrayResource resource = new ByteArrayResource(fileContent);
       HttpHeaders headers = new HttpHeaders();
 
-      if (informationFile.getFileType().equals("md")) {
+      if (informationFile.fileType().equals("md")) {
 
         Parser parser = Parser.builder().build();
         Node document = parser.parse(new String(fileContent, StandardCharsets.UTF_8));
@@ -114,12 +114,12 @@ public class InformationFileService {
 
         headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
         headers.add(HttpHeaders.CONTENT_DISPOSITION,
-            "inline; filename=" + informationFile.getTitle() + "." + informationFile.getFileType());
+            "inline; filename=" + informationFile.title() + "." + informationFile.fileType());
       } else {
         headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
         headers.add(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=" + informationFile.getTitle()
-                + "." + informationFile.getFileType());
+            "attachment; filename=" + informationFile.title()
+                + "." + informationFile.fileType());
       }
       return ResponseEntity.ok().headers(headers).body(resource);
 

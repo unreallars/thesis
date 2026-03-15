@@ -108,7 +108,7 @@ class InformationFileServiceTest {
 
     Supervisor supervisor = new Supervisor(66, "Username", "Mail");
 
-    when(topicService.findById(id)).thenReturn(new Topic("Titel", "Desc", supervisor.getId()));
+    when(topicService.findById(id)).thenReturn(new Topic("Titel", "Desc", supervisor.id()));
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
 
     String result =
@@ -130,9 +130,9 @@ class InformationFileServiceTest {
         InformationFile.createSupervisorInformationFile("pdf", temp.toString(), "test-file", "Desc",
             UUID.randomUUID());
 
-    when(informationFileRepository.findById(infoFile.getId())).thenReturn(Optional.of(infoFile));
+    when(informationFileRepository.findById(infoFile.id())).thenReturn(Optional.of(infoFile));
 
-    ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.getId());
+    ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.id());
 
     assertThat(response.getStatusCode().value()).isEqualTo(200);
 
@@ -156,8 +156,8 @@ class InformationFileServiceTest {
         InformationFile.createSupervisorInformationFile("md", temp.toString(), "test-md", "Desc",
             UUID.randomUUID());
 
-    when(informationFileRepository.findById(infoFile.getId())).thenReturn(Optional.of(infoFile));
-    ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.getId());
+    when(informationFileRepository.findById(infoFile.id())).thenReturn(Optional.of(infoFile));
+    ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.id());
 
     assertThat(response.getStatusCode().value()).isEqualTo(200);
 

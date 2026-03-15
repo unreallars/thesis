@@ -51,7 +51,7 @@ class SupervisorServiceTest {
   void test_02() {
     UUID supervisorId = UUID.randomUUID();
     when(supervisorRepository.findByGithubId(123)).thenReturn(Optional.of(supervisor));
-    when(supervisor.getId()).thenReturn(supervisorId);
+    when(supervisor.id()).thenReturn(supervisorId);
 
     String result =
         supervisorService.createTopic("Titel", "Beschreibung", 123, "tag1, tag2 , ", "req1,req2");
@@ -127,7 +127,7 @@ class SupervisorServiceTest {
   void test_09() {
     UUID supervisorId = UUID.randomUUID();
     when(supervisorRepository.findByGithubId(123)).thenReturn(Optional.of(supervisor));
-    when(supervisor.getId()).thenReturn(supervisorId);
+    when(supervisor.id()).thenReturn(supervisorId);
 
     String result = supervisorService.createLink(123, "https://example.com", "Example");
 

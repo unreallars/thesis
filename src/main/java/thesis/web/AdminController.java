@@ -42,7 +42,7 @@ public class AdminController {
     if (user == null) {
       message = "User nicht gefunden";
     } else {
-      message = supervisorService.createSupervisor(user.getGithubId(), user.getUsername());
+      message = supervisorService.createSupervisor(user.githubId(), user.username());
     }
     redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/manage";

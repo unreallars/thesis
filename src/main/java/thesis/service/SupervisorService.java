@@ -48,7 +48,7 @@ public class SupervisorService {
     List<TopicRequirement> extractedReq =
         Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
             .map(TopicRequirement::new).toList();
-    Topic topic = new Topic(title, description, supervisor.getId(), extractedTags, extractedReq);
+    Topic topic = new Topic(title, description, supervisor.id(), extractedTags, extractedReq);
 
     topicRepository.save(topic);
     return "Thema erfolgreich hinzugefügt";
@@ -84,8 +84,8 @@ public class SupervisorService {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
     if (supervisor != null) {
       supervisorRepository.save(
-          new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
-              mail, supervisor.getSupervisorTags()));
+          new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
+              mail, supervisor.supervisorTags()));
     }
   }
 
@@ -96,7 +96,7 @@ public class SupervisorService {
   public String createLink(Integer supervisorGithubId, String url, String linktext) {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
     if (supervisor != null) {
-      linkRepository.save(Link.createSupervisorLink(url, linktext, supervisor.getId()));
+      linkRepository.save(Link.createSupervisorLink(url, linktext, supervisor.id()));
       return "Link erfolgreich zum Betreuer-Profil hinzugefügt";
     }
     return "Betreuer nicht gefunden";
@@ -109,12 +109,12 @@ public class SupervisorService {
     if (supervisor != null) {
       List<String> extractedTags =
           Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
-      List<SupervisorTag> supervisorTags = new ArrayList<>(supervisor.getSupervisorTags());
+      List<SupervisorTag> supervisorTags = new ArrayList<>(supervisor.supervisorTags());
       extractedTags.stream().map(SupervisorTag::new).forEach(supervisorTags::add);
       if (!supervisorTags.isEmpty()) {
         supervisorRepository.save(
-            new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
-                supervisor.getMail(), supervisorTags));
+            new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
+                supervisor.mail(), supervisorTags));
       }
 
     }

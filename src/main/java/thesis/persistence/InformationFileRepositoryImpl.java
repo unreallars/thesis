@@ -54,13 +54,13 @@ public class InformationFileRepositoryImpl implements InformationFileRepository 
 
   private InformationFileDto toInformationFileDto(InformationFile informationFile) {
     Integer existingDbKey =
-        informationFileDataRepository.findByFachId(informationFile.getId())
+        informationFileDataRepository.findByFachId(informationFile.id())
             .map(InformationFileDto::id)
             .orElse(null);
-    return new InformationFileDto(existingDbKey, informationFile.getId(),
-        informationFile.getUploadTime(),
-        informationFile.getFileType(), informationFile.getFilePath(), informationFile.getTitle(),
-        informationFile.getDescription(),
-        informationFile.getSupervisorId(), informationFile.getTopicId());
+    return new InformationFileDto(existingDbKey, informationFile.id(),
+        informationFile.uploadTime(),
+        informationFile.fileType(), informationFile.filePath(), informationFile.title(),
+        informationFile.description(),
+        informationFile.supervisorId(), informationFile.topicId());
   }
 }

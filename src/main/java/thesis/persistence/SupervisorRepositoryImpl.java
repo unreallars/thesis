@@ -68,11 +68,11 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
 
   private SupervisorDto toSupervisorDto(Supervisor supervisor) {
     Integer existingDbKey =
-        supervisorDataRepository.findByFachId(supervisor.getId()).map(SupervisorDto::id)
+        supervisorDataRepository.findByFachId(supervisor.id()).map(SupervisorDto::id)
             .orElse(null);
-    return new SupervisorDto(existingDbKey, supervisor.getId(), supervisor.getUsername(),
-        supervisor.getGithubId(),
-        supervisor.getMail(), translateSupervisorTagsDto(supervisor.getSupervisorTags()));
+    return new SupervisorDto(existingDbKey, supervisor.id(), supervisor.username(),
+        supervisor.githubId(),
+        supervisor.mail(), translateSupervisorTagsDto(supervisor.supervisorTags()));
   }
 
   private List<SupervisorTagDto> translateSupervisorTagsDto(List<SupervisorTag> supervisorTags) {

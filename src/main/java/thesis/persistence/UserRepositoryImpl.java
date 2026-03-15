@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
 
   private UserDto toUserDto(User user) {
     Integer existingDbKey =
-        userDataRepository.findByFachId(user.getId()).map(UserDto::id).orElse(null);
-    return new UserDto(existingDbKey, user.getId(), user.getGithubId(), user.getUsername());
+        userDataRepository.findByFachId(user.id()).map(UserDto::id).orElse(null);
+    return new UserDto(existingDbKey, user.id(), user.githubId(), user.username());
   }
 }

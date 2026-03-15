@@ -43,9 +43,9 @@ public class LinkRepositoryImpl implements LinkRepository {
 
   private LinkDto toLinkDto(Link link) {
     Integer existingDbKey =
-        linkDataRepository.findByFachId(link.getId()).map(LinkDto::id).orElse(null);
-    return new LinkDto(existingDbKey, link.getId(), link.getUrl(), link.getText(),
-        link.getSupervisorId(),
-        link.getTopicId());
+        linkDataRepository.findByFachId(link.id()).map(LinkDto::id).orElse(null);
+    return new LinkDto(existingDbKey, link.id(), link.url(), link.text(),
+        link.supervisorId(),
+        link.topicId());
   }
 }

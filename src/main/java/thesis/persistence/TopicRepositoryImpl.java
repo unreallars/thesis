@@ -68,7 +68,7 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   private TopicMatch toMatchResult(TopicMatchDto topicMatchDto) {
-    return new TopicMatch(topicMatchDto.supervisorId(), topicMatchDto.supervisorName(),
+    return new TopicMatch(topicMatchDto.topicId(),
         topicMatchDto.topicTitle(),
         topicMatchDto.topicDescription(), topicMatchDto.matchScore());
   }

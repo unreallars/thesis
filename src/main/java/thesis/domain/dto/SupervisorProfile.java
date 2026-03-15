@@ -12,8 +12,8 @@ public record SupervisorProfile(Supervisor supervisor, List<Topic> topics,
                            List<InformationFile> files,
                            List<Link> links) {
     this.supervisor =
-        new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
-            supervisor.getMail(), List.copyOf(supervisor.getSupervisorTags()));
+        new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
+            supervisor.mail(), List.copyOf(supervisor.supervisorTags()));
     this.topics = List.copyOf(topics);
     this.files = List.copyOf(files);
     this.links = List.copyOf(links);
@@ -21,7 +21,7 @@ public record SupervisorProfile(Supervisor supervisor, List<Topic> topics,
 
   @Override
   public Supervisor supervisor() {
-    return new Supervisor(supervisor.getId(), supervisor.getUsername(), supervisor.getGithubId(),
-        supervisor.getMail(), List.copyOf(supervisor.getSupervisorTags()));
+    return new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
+        supervisor.mail(), List.copyOf(supervisor.supervisorTags()));
   }
 }
