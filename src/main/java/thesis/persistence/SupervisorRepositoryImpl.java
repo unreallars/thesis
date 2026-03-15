@@ -45,8 +45,8 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
   }
 
   @Override
-  public List<SupervisorMatch> findMatchingSupervisors(String tagsCsv) {
-    return supervisorDataRepository.findMatchingSupervisors(tagsCsv).stream()
+  public List<SupervisorMatch> findMatchingSupervisors(List<String> tags) {
+    return supervisorDataRepository.findMatchingSupervisors(tags).stream()
         .map(this::toSupervisorMatch).toList();
   }
 

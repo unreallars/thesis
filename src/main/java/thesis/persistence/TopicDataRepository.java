@@ -11,8 +11,7 @@ import thesis.persistence.dto.TopicDto;
 import thesis.persistence.dto.TopicMatchDto;
 
 public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
-  @NonNull
-  List<TopicDto> findAll();
+  @NonNull List<TopicDto> findAll();
 
   List<TopicDto> findBySupervisorId(UUID supervisorId);
 
@@ -20,28 +19,35 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
   List<String> findAllTopicRequirements();
 
   @Query("""
-          SELECT t.fach_id as topic_id,
-                 t.title as topic_title,
-                 t.description as topic_description,
-                 COUNT(DISTINCT tt.tag) * 10 as match_score
+      SELECT topic_id, topic_title, topic_description
+      FROM (
+          SELECT DISTINCT
+              t.fach_id AS topic_id,
+              t.title AS topic_title,
+              t.description AS topic_description,
+              t.id AS topic_internal_id
           FROM topic t
-          JOIN topic_tag tt ON t.id = tt.topic
-          JOIN topic_requirement tr ON t.id = tr.topic
-          WHERE LOWER(tt.tag) = ANY(string_to_array(:tagsCsv, ','))
-          AND tr.name = ANY(string_to_array(:requirementsCsv, ','))
-          GROUP BY t.id, t.title, t.description
-          HAVING COUNT(DISTINCT tr.name) = (
-              SELECT COUNT(*)
-              FROM topic_requirement tr2
-              WHERE tr2.topic = t.id
+          WHERE EXISTS (
+              SELECT 1 FROM topic_tag tt
+              WHERE tt.topic = t.id AND tt.tag IN (:tags)
           )
-          ORDER BY match_score DESC
-          LIMIT 10
+          AND (
+              SELECT COUNT(*) FROM topic_requirement tr
+              WHERE tr.topic = t.id
+          ) = (
+              SELECT COUNT(*) FROM topic_requirement tr2
+              WHERE tr2.topic = t.id AND tr2.name IN (:requirements)
+          )
+      ) ranked_topics
+      ORDER BY (
+          SELECT COUNT(DISTINCT tt2.tag)
+          FROM topic_tag tt2
+          WHERE tt2.topic = ranked_topics.topic_internal_id AND tt2.tag IN (:tags)
+      ) DESC, topic_title
+      LIMIT 10
       """)
-  List<TopicMatchDto> findMatchingTopics(
-      @Param("tagsCsv") String tagsCsv,
-      @Param("requirementsCsv") String requirementsCsv
-  );
+  List<TopicMatchDto> findMatchingTopics(@Param("tags") List<String> tags,
+                                         @Param("requirements") List<String> requirements);
 
   Optional<TopicDto> findByFachId(UUID id);
 

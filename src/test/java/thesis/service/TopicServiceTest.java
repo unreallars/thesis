@@ -127,32 +127,30 @@ class TopicServiceTest {
   @Test
   @DisplayName("findMatchingTopics - Keine Angaben")
   void test_08() {
-    when(topicRepository.findMatchingTopics("", "")).thenReturn(List.of());
 
-    List<TopicMatch> result = topicService.findMatchingTopics(null, null);
+    List<TopicMatch> result = topicService.findMatchingTopics("", null);
 
     assertThat(result).isEmpty();
-    verify(topicRepository).findMatchingTopics("", "");
   }
 
   @Test
-  @DisplayName("findMatchingTopics - Angabe enthält einen leeres Feld")
+  @DisplayName("findMatchingTopics - Angabe enthält ein leeres Feld")
   void test_09() {
-    String interestsInput = " Spring ,  ,Rust, funktionale Programmierung ";
+    String interests = " Spring ,  ,Rust, Programmierung ";
 
-    topicService.findMatchingTopics(interestsInput, null);
+    topicService.findMatchingTopics(interests, List.of("Test"));
 
-    verify(topicRepository).findMatchingTopics("Spring,Rust,funktionale Programmierung", "");
+    verify(topicRepository).findMatchingTopics(List.of("Spring", "Rust", "Programmierung"), List.of("Test"));
   }
 
   @Test
   @DisplayName("findMatchingTopics - Angabe besteht nur aus Leerzeichen")
   void test_10() {
-    String interestsInput = "  ";
+    String interests = "  ";
 
-    topicService.findMatchingTopics(interestsInput, null);
+    List<TopicMatch> result = topicService.findMatchingTopics(interests, null);
 
-    verify(topicRepository).findMatchingTopics("", "");
+    assertThat(result).isEmpty();
   }
 }
 

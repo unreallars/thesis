@@ -62,8 +62,8 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   @Override
-  public List<TopicMatch> findMatchingTopics(String tagsCsv, String requirementsCsv) {
-    return topicDataRepository.findMatchingTopics(tagsCsv, requirementsCsv).stream()
+  public List<TopicMatch> findMatchingTopics(List<String> tags, List<String> requirements) {
+    return topicDataRepository.findMatchingTopics(tags, requirements).stream()
         .map(this::toMatchResult).toList();
   }
 

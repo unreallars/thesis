@@ -1,11 +1,8 @@
 package thesis.service;
 
-import static java.util.Objects.requireNonNullElse;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -104,8 +101,6 @@ public class SupervisorService {
 
   public void createTags(Integer supervisorGithubId, String tags) {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
-
-    tags = requireNonNullElse(tags, "");
     if (supervisor != null) {
       List<String> extractedTags =
           Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
@@ -120,12 +115,13 @@ public class SupervisorService {
     }
   }
 
-  public List<SupervisorMatch> findMatchingSupervisors(String interestsInput) {
-    interestsInput = Objects.requireNonNull(interestsInput, "");
-    List<String> studentTags =
-        Arrays.stream(interestsInput.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-            .toList();
-    return supervisorRepository.findMatchingSupervisors(String.join(",", studentTags));
+  public List<SupervisorMatch> findMatchingSupervisors(String interests) {
+    List<String> tags = Arrays.stream(interests.split(",")).map(String::trim)
+        .filter(s -> !s.isEmpty()).toList();
+    if (tags.isEmpty()) {
+      return List.of();
+    }
+    return supervisorRepository.findMatchingSupervisors(tags);
   }
 }
 

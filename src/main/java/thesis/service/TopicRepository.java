@@ -13,7 +13,7 @@ public interface TopicRepository {
 
   List<String> findAllTopicRequirements();
 
-  List<TopicMatch> findMatchingTopics(String tagsCsv, String requirementsCsv);
+  List<TopicMatch> findMatchingTopics(List<String> tags, List<String> requirements);
 
   Optional<Topic> findById(UUID id);
 

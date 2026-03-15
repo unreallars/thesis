@@ -11,7 +11,7 @@ public interface SupervisorRepository {
 
   Optional<Supervisor> findByGithubId(Integer id);
 
-  List<SupervisorMatch> findMatchingSupervisors(String tagsCsv);
+  List<SupervisorMatch> findMatchingSupervisors(List<String> tags);
 
   Optional<Supervisor> findById(UUID id);
 

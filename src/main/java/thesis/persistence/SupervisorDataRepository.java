@@ -11,30 +11,24 @@ import thesis.persistence.dto.SupervisorDto;
 import thesis.persistence.dto.SupervisorMatchDto;
 
 public interface SupervisorDataRepository extends CrudRepository<SupervisorDto, Integer> {
-  @NonNull
-  List<SupervisorDto> findAll();
+  @NonNull List<SupervisorDto> findAll();
 
   Optional<SupervisorDto> findByGithubId(Integer id);
 
-  @Query
-      ("""
-              SELECT s.fach_id as supervisor_id,
-                     s.username as supervisor_username,
-                     COUNT(DISTINCT st.tag) * 10 as match_score
-              FROM supervisor s
-              JOIN supervisor_tag st ON s.id = st.supervisor
-              WHERE st.tag = ANY(string_to_array(:tagsCsv, ','))
-              GROUP BY s.fach_id, s.username
-              HAVING COUNT(DISTINCT st.tag) = (
-                  SELECT cardinality(string_to_array(:tagsCsv, ','))
-                  WHERE cardinality(string_to_array(:tagsCsv, ',')) > 0
-              )
-              ORDER BY match_score DESC
-              LIMIT 10
-          """)
-  List<SupervisorMatchDto> findMatchingSupervisors(
-      @Param("tagsCsv") String tagsCsv
-  );
+  @Query("""
+      SELECT DISTINCT
+          s.fach_id AS supervisor_id,
+          s.username AS supervisor_username,
+          COUNT(DISTINCT st.tag) AS match_score
+      FROM supervisor s
+      JOIN supervisor_tag st ON s.id = st.supervisor
+      WHERE st.tag IN (:tags)
+      GROUP BY s.fach_id, s.username
+      ORDER BY COUNT(DISTINCT st.tag) DESC
+      LIMIT 10
+      """)
+  List<SupervisorMatchDto> findMatchingSupervisors(@Param("tags") List<String> tags);
+
 
   Optional<SupervisorDto> findByFachId(UUID id);
 }
