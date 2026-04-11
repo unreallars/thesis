@@ -101,16 +101,15 @@ public class SupervisorController {
     if (bindingResult.hasErrors()) {
       return "addlink";
     }
-    String message;
-    if ("SUPERVISOR".equals(linkForm.getTargetType())) {
-      message = supervisorService.createLink(user.getAttribute("id"), linkForm.getUrl(),
+
+    String message = switch (linkForm.getTargetType()) {
+      case "SUPERVISOR" -> supervisorService.createLink(user.getAttribute("id"), linkForm.getUrl(),
           linkForm.getLinkText());
-    } else if ("TOPIC".equals(linkForm.getTargetType())) {
-      message =
-          topicService.createLink(linkForm.getTopicId(), linkForm.getUrl(), linkForm.getLinkText());
-    } else {
-      message = "Kein gültiger Typ angegeben";
-    }
+      case "TOPIC" -> topicService.createLink(linkForm.getTopicId(), linkForm.getUrl(),
+          linkForm.getLinkText());
+      default -> "Kein gültiger Typ angegeben";
+    };
+
     redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/addLink";
   }
