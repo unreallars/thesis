@@ -48,7 +48,7 @@ class TopicServiceTest {
   }
 
   @Test
-  @DisplayName("test_02: findById – Topic nicht vorhanden")
+  @DisplayName("findById – Topic nicht vorhanden")
   void test_02() {
     UUID id = UUID.randomUUID();
     when(topicRepository.findById(id)).thenReturn(Optional.empty());
@@ -153,4 +153,3 @@ class TopicServiceTest {
     assertThat(result).isEmpty();
   }
 }
-

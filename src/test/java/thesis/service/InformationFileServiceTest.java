@@ -1,7 +1,6 @@
 package thesis.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -69,7 +68,7 @@ class InformationFileServiceTest {
 
   @Test
   @DisplayName("Falsche Betreuer-Id wird erkannt")
-  void test_03() {
+  void testUploadWithInvalidSupervisorId() {
     when(multipartFile.getOriginalFilename()).thenReturn("file.pdf");
     when(oAuth2User.getAttribute("id")).thenReturn(66);
     when(supervisorService.findByGithubId(66)).thenReturn(null);
@@ -77,7 +76,7 @@ class InformationFileServiceTest {
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
 
-    assertEquals("Betreuer nicht gefunden", result);
+    assertThat(result).isEqualTo("Betreuer nicht gefunden");
   }
 
   @Test
@@ -93,7 +92,7 @@ class InformationFileServiceTest {
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "SUPERVISOR", null);
 
-    assertEquals("Upload erfolgreich", result);
+    assertThat(result).isEqualTo("Upload erfolgreich");
     verify(informationFileRepository).save(any(InformationFile.class));
     verify(multipartFile).transferTo(any(Path.class));
   }
@@ -115,7 +114,7 @@ class InformationFileServiceTest {
         informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
             "TOPIC", id.toString());
 
-    assertEquals("Upload erfolgreich", result);
+    assertThat(result).isEqualTo("Upload erfolgreich");
     verify(informationFileRepository).save(any(InformationFile.class));
     verify(multipartFile).transferTo(any(Path.class));
   }
@@ -179,4 +178,3 @@ class InformationFileServiceTest {
     assertThat(response.getStatusCode().value()).isEqualTo(404);
   }
 }
-
