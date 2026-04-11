@@ -46,7 +46,7 @@ public class InformationFileService {
       String filename = file.getOriginalFilename();
 
       String fileType = filename.substring(filename.lastIndexOf('.') + 1);
-      if (!fileType.matches("pdf|zip|md")) {
+      if (!fileType.toLowerCase().matches("pdf|zip|md")) {
         return "Ungültiger Dateityp";
       }
 
