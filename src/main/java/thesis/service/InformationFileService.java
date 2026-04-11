@@ -103,7 +103,7 @@ public class InformationFileService {
       ByteArrayResource resource = new ByteArrayResource(fileContent);
       HttpHeaders headers = new HttpHeaders();
 
-      if (informationFile.fileType().equals("md")) {
+      if (informationFile.fileType().equalsIgnoreCase("md")) {
 
         Parser parser = Parser.builder().build();
         Node document = parser.parse(new String(fileContent, StandardCharsets.UTF_8));
