@@ -15,7 +15,7 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
 
   List<TopicDto> findBySupervisorId(UUID supervisorId);
 
-  @Query("SELECT DISTINCT tr.name FROM topic_requirement tr JOIN topic ON tr.topic=topic.id")
+  @Query("SELECT DISTINCT tr.name FROM topic_requirement tr ORDER BY tr.name")
   List<String> findAllTopicRequirements();
 
   @Query("""
