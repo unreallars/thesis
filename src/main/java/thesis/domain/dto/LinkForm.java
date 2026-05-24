@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.UUID;
 
+@SuppressWarnings("unused")
 public class LinkForm {
 
   @NotBlank(message = "Bitte gültige URL angeben")

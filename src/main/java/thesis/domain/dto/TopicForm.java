@@ -2,6 +2,7 @@ package thesis.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
+@SuppressWarnings("unused")
 public class TopicForm {
 
   @NotBlank(message = "Bitte einen Titel für das Thema angeben")

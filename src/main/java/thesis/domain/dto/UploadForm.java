@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
+@SuppressWarnings("unused")
 public class UploadForm {
 
   private MultipartFile file;

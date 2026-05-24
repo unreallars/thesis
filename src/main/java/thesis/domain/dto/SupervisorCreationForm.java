@@ -3,6 +3,7 @@ package thesis.domain.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+@SuppressWarnings("unused")
 public class SupervisorCreationForm {
 
   @NotNull(message = "Bitte gebe eine gültige Github-Id ein")

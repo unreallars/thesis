@@ -3,6 +3,7 @@ package thesis.domain.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+@SuppressWarnings("unused")
 public class EmailForm {
 
   @Email(message = "Bitte eine gültige E-Mail-Adresse angeben")
