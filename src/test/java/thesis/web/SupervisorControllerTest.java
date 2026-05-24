@@ -26,14 +26,11 @@ import thesis.service.config.SecurityConfig;
 @WebMvcTest(SupervisorController.class)
 @Import({SecurityConfig.class, MethodSecurityConfig.class})
 public class SupervisorControllerTest {
-  @Autowired
-  MockMvc mockMvc;
-  @MockitoBean
-  AppUserService appUserService;
-  @MockitoBean
-  SupervisorService supervisorService;
-  @MockitoBean
-  TopicService topicService;
+
+  @Autowired MockMvc mockMvc;
+  @MockitoBean AppUserService appUserService;
+  @MockitoBean SupervisorService supervisorService;
+  @MockitoBean TopicService topicService;
 
   @Test
   @DisplayName("Die Dashboardseite ist unangemeldet nicht erreichbar")
@@ -52,8 +49,8 @@ public class SupervisorControllerTest {
   @DisplayName("Die Dashboardseite ist für Supervisor erreichbar")
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_3() throws Exception {
-    when(supervisorService.findByGithubId(666666)).thenReturn(
-        new Supervisor(666666, "Test", "test@example.com"));
+    when(supervisorService.findByGithubId(666666))
+        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
     mockMvc.perform(get("/dashboard")).andExpect(status().isOk());
   }
 
@@ -61,13 +58,14 @@ public class SupervisorControllerTest {
   @DisplayName("Die Änderungsseiten ist für Supervisor erreichbar")
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_4() throws Exception {
-    when(supervisorService.findByGithubId(666666)).thenReturn(
-        new Supervisor(666666, "Test", "test@example.com"));
+    when(supervisorService.findByGithubId(666666))
+        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
 
     mockMvc.perform(get("/addTopic")).andExpect(status().isOk());
     mockMvc.perform(get("/addLink")).andExpect(status().isOk());
 
-    mockMvc.perform(post("/updateMail").param("email", "a@b.de").with(csrf()))
+    mockMvc
+        .perform(post("/updateMail").param("email", "a@b.de").with(csrf()))
         .andExpect(status().is3xxRedirection());
     mockMvc.perform(post("/addTopic").with(csrf())).andExpect(status().isOk());
     mockMvc.perform(post("/addTags").with(csrf())).andExpect(status().isOk());
@@ -77,20 +75,31 @@ public class SupervisorControllerTest {
   @DisplayName("Das Hinzufügen von Links gibt die richtigen Messages zurück")
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_5() throws Exception {
-    when(supervisorService.findByGithubId(666666)).thenReturn(
-        new Supervisor(666666, "Test", "test@example.com"));
-    when(supervisorService.createLink(any(), any(), any())).thenReturn(
-        "Link erfolgreich zum Betreuer-Profil hinzugefügt");
-    when(topicService.createLink(any(), any(), any())).thenReturn(
-        "Link erfolgreich zum Thema hinzugefügt");
+    when(supervisorService.findByGithubId(666666))
+        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
+    when(supervisorService.createLink(any(), any(), any()))
+        .thenReturn("Link erfolgreich zum Betreuer-Profil hinzugefügt");
+    when(topicService.createLink(any(), any(), any()))
+        .thenReturn("Link erfolgreich zum Thema hinzugefügt");
 
     mockMvc.perform(post("/addLink").with(csrf())).andExpect(status().isOk());
-    mockMvc.perform(
-        post("/addLink").with(csrf()).param("targetType", "SUPERVISOR").param("url", "https://a.de")
-            .param("linkText", "Test")).andExpect(status().is3xxRedirection()).andExpect(
-        flash().attribute("message", "Link erfolgreich zum Betreuer-Profil hinzugefügt"));
-    mockMvc.perform(post("/addLink").with(csrf()).param("targetType", "TOPIC").param("url", "https://a.de")
-            .param("linkText", "Test"))
+    mockMvc
+        .perform(
+            post("/addLink")
+                .with(csrf())
+                .param("targetType", "SUPERVISOR")
+                .param("url", "https://a.de")
+                .param("linkText", "Test"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(
+            flash().attribute("message", "Link erfolgreich zum Betreuer-Profil hinzugefügt"));
+    mockMvc
+        .perform(
+            post("/addLink")
+                .with(csrf())
+                .param("targetType", "TOPIC")
+                .param("url", "https://a.de")
+                .param("linkText", "Test"))
         .andExpect(status().is3xxRedirection())
         .andExpect(flash().attribute("message", "Link erfolgreich zum Thema hinzugefügt"));
   }

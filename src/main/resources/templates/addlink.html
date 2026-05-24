@@ -4,7 +4,8 @@
     <title>Link hinzufügen</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container py-5">
@@ -36,7 +37,8 @@
                                    placeholder="Url eingeben..."
                                    required>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('url')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('url')}"
                              th:errors="*{url}">
                             Ungültige Url
                         </div>
@@ -44,12 +46,13 @@
                         <div class="mb-3">
                             <label for="linkText" class="form-label">Link-Text (Pflichtfeld)</label>
                             <input type="text" class="form-control"
-                                      id="linkText"
-                                      th:field="*{linkText}"
-                                      placeholder="Linktext eingeben..."
-                                      required>
+                                   id="linkText"
+                                   th:field="*{linkText}"
+                                   placeholder="Linktext eingeben..."
+                                   required>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('linkText')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('linkText')}"
                              th:errors="*{linkText}">
                             Ungültiger Linktext
                         </div>
@@ -71,16 +74,19 @@
                                 Thema
                             </label>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('targetType')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('targetType')}"
                              th:errors="*{targetType}">
                             Ungültige Verknüpfung
                         </div>
 
                         <div>
                             <label for="topicId">Thema-ID (nur wenn Thema ausgewählt):</label>
-                            <input class="form-control" id="topicId" th:field="*{topicId}" type="text">
+                            <input class="form-control" id="topicId" th:field="*{topicId}"
+                                   type="text">
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('topicId')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('topicId')}"
                              th:errors="*{topicId}">
                             Ungültige UUID
                         </div>

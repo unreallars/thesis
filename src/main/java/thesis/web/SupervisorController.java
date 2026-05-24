@@ -21,6 +21,7 @@ import thesis.service.TopicService;
 @Controller
 @Secured("ROLE_SUPERVISOR")
 public class SupervisorController {
+
   private final SupervisorService supervisorService;
   private final TopicService topicService;
 
@@ -29,7 +30,6 @@ public class SupervisorController {
     this.supervisorService = supervisorService;
     this.topicService = topicService;
   }
-
 
   @GetMapping("/dashboard")
   public String dashboard(@AuthenticationPrincipal OAuth2User user, Model model) {
@@ -44,8 +44,11 @@ public class SupervisorController {
   }
 
   @PostMapping("/updateMail")
-  public String updateMail(@AuthenticationPrincipal OAuth2User user, @Valid EmailForm emailForm,
-                           BindingResult bindingResult, Model model) {
+  public String updateMail(
+      @AuthenticationPrincipal OAuth2User user,
+      @Valid EmailForm emailForm,
+      BindingResult bindingResult,
+      Model model) {
     if (bindingResult.hasErrors()) {
       TagForm tagForm = new TagForm();
       model.addAttribute("tagForm", tagForm);
@@ -62,21 +65,31 @@ public class SupervisorController {
   }
 
   @PostMapping("/addTopic")
-  public String addTopic(@AuthenticationPrincipal OAuth2User user,
-                         RedirectAttributes redirectAttributes, @Valid TopicForm topicForm,
-                         BindingResult bindingResult) {
+  public String addTopic(
+      @AuthenticationPrincipal OAuth2User user,
+      RedirectAttributes redirectAttributes,
+      @Valid TopicForm topicForm,
+      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return "addtopic";
     }
-    String message = supervisorService.createTopic(topicForm.getTitle(), topicForm.getDescription(),
-        user.getAttribute("id"), topicForm.getTags(), topicForm.getRequirements());
+    String message =
+        supervisorService.createTopic(
+            topicForm.getTitle(),
+            topicForm.getDescription(),
+            user.getAttribute("id"),
+            topicForm.getTags(),
+            topicForm.getRequirements());
     redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/addTopic";
   }
 
   @PostMapping("/addTags")
-  public String addTags(@AuthenticationPrincipal OAuth2User user, @Valid TagForm tagForm,
-                        BindingResult bindingResult, Model model) {
+  public String addTags(
+      @AuthenticationPrincipal OAuth2User user,
+      @Valid TagForm tagForm,
+      BindingResult bindingResult,
+      Model model) {
     if (bindingResult.hasErrors()) {
       Supervisor supervisor = supervisorService.findByGithubId(user.getAttribute("id"));
       EmailForm emailForm = new EmailForm();
@@ -95,20 +108,25 @@ public class SupervisorController {
   }
 
   @PostMapping("/addLink")
-  public String submitForm(RedirectAttributes redirectAttributes,
-                           @AuthenticationPrincipal OAuth2User user, @Valid LinkForm linkForm,
-                           BindingResult bindingResult) {
+  public String submitForm(
+      RedirectAttributes redirectAttributes,
+      @AuthenticationPrincipal OAuth2User user,
+      @Valid LinkForm linkForm,
+      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return "addlink";
     }
 
-    String message = switch (linkForm.getTargetType()) {
-      case "SUPERVISOR" -> supervisorService.createLink(user.getAttribute("id"), linkForm.getUrl(),
-          linkForm.getLinkText());
-      case "TOPIC" -> topicService.createLink(linkForm.getTopicId(), linkForm.getUrl(),
-          linkForm.getLinkText());
-      default -> "Kein gültiger Typ angegeben";
-    };
+    String message =
+        switch (linkForm.getTargetType()) {
+          case "SUPERVISOR" ->
+              supervisorService.createLink(
+                  user.getAttribute("id"), linkForm.getUrl(), linkForm.getLinkText());
+          case "TOPIC" ->
+              topicService.createLink(
+                  linkForm.getTopicId(), linkForm.getUrl(), linkForm.getLinkText());
+          default -> "Kein gültiger Typ angegeben";
+        };
 
     redirectAttributes.addFlashAttribute("message", message);
     return "redirect:/addLink";

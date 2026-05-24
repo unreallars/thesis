@@ -15,7 +15,9 @@
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-5">Profil: <span th:text="*{supervisor.username}">Name</span></h1>
-            <p class="lead"><strong>E-Mail:</strong> <span th:text="*{supervisor.mail}">mail@example.com</span></p>
+            <p class="lead"><strong>E-Mail:</strong> <span
+                    th:text="*{supervisor.mail}">mail@example.com</span>
+            </p>
         </div>
     </div>
 
@@ -29,7 +31,8 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text small" th:text="${file.description}">Beschreibung</p>
-                    <small class="text-muted" th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
+                    <small class="text-muted"
+                           th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
                 </div>
             </div>
         </div>

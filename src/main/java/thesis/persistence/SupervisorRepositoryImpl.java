@@ -14,6 +14,7 @@ import thesis.service.SupervisorRepository;
 
 @Repository
 public class SupervisorRepositoryImpl implements SupervisorRepository {
+
   private final SupervisorDataRepository supervisorDataRepository;
 
   public SupervisorRepositoryImpl(SupervisorDataRepository supervisorDataRepository) {
@@ -26,9 +27,12 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
   }
 
   private Supervisor toSupervisor(SupervisorDto supervisorDto) {
-    return new Supervisor(supervisorDto.fachId(), supervisorDto.username(),
+    return new Supervisor(
+        supervisorDto.fachId(),
+        supervisorDto.username(),
         supervisorDto.githubId(),
-        supervisorDto.mail(), translateSupervisorTags(supervisorDto.supervisorTags()));
+        supervisorDto.mail(),
+        translateSupervisorTags(supervisorDto.supervisorTags()));
   }
 
   private List<SupervisorTag> translateSupervisorTags(List<SupervisorTagDto> supervisorTagDtos) {
@@ -47,12 +51,15 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
   @Override
   public List<SupervisorMatch> findMatchingSupervisors(List<String> tags) {
     return supervisorDataRepository.findMatchingSupervisors(tags).stream()
-        .map(this::toSupervisorMatch).toList();
+        .map(this::toSupervisorMatch)
+        .toList();
   }
 
   private SupervisorMatch toSupervisorMatch(SupervisorMatchDto supervisorMatchDto) {
-    return new SupervisorMatch(supervisorMatchDto.supervisorId(),
-        supervisorMatchDto.supervisorUsername(), supervisorMatchDto.matchScore());
+    return new SupervisorMatch(
+        supervisorMatchDto.supervisorId(),
+        supervisorMatchDto.supervisorUsername(),
+        supervisorMatchDto.matchScore());
   }
 
   @Override
@@ -68,11 +75,14 @@ public class SupervisorRepositoryImpl implements SupervisorRepository {
 
   private SupervisorDto toSupervisorDto(Supervisor supervisor) {
     Integer existingDbKey =
-        supervisorDataRepository.findByFachId(supervisor.id()).map(SupervisorDto::id)
-            .orElse(null);
-    return new SupervisorDto(existingDbKey, supervisor.id(), supervisor.username(),
+        supervisorDataRepository.findByFachId(supervisor.id()).map(SupervisorDto::id).orElse(null);
+    return new SupervisorDto(
+        existingDbKey,
+        supervisor.id(),
+        supervisor.username(),
         supervisor.githubId(),
-        supervisor.mail(), translateSupervisorTagsDto(supervisor.supervisorTags()));
+        supervisor.mail(),
+        translateSupervisorTagsDto(supervisor.supervisorTags()));
   }
 
   private List<SupervisorTagDto> translateSupervisorTagsDto(List<SupervisorTag> supervisorTags) {

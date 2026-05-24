@@ -15,6 +15,7 @@ java {
     }
 }
 import com.github.spotbugs.snom.Effort
+
 spotbugs {
     effort = Effort.MAX
 }
@@ -68,7 +69,8 @@ tasks.named('test') {
 }
 test {
     jvmArgs '-javaagent:' + configurations.testRuntimeClasspath.find {
-        it.name.contains('byte-buddy-agent') }.absolutePath
+        it.name.contains('byte-buddy-agent')
+    }.absolutePath
 }
 test {
     jvmArgs '-Xshare:off'

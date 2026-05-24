@@ -17,7 +17,8 @@
             <h1 class="display-5">Thema: <span th:text="*{topic.title}">Titel</span></h1>
             <a class="lead" th:href="@{/supervisor/{id}(id=*{topic.supervisorId})}"
                th:text="'Zum Betreuer dieses Themas'">Supervisor-Id</a>
-            <p class="lead"><strong>Beschreibung:</strong> <span th:text="*{topic.description}">Beschreibung</span></p>
+            <p class="lead"><strong>Beschreibung:</strong> <span th:text="*{topic.description}">Beschreibung</span>
+            </p>
         </div>
     </div>
 
@@ -31,7 +32,8 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text small" th:text="${file.description}">Beschreibung</p>
-                    <small class="text-muted" th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
+                    <small class="text-muted"
+                           th:text="${#temporals.format(file.uploadTime, 'dd.MM.yyyy HH:mm')}">Datum</small>
                 </div>
             </div>
         </div>

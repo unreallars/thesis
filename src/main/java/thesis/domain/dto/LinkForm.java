@@ -6,13 +6,17 @@ import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.UUID;
 
 public class LinkForm {
+
   @NotBlank(message = "Bitte gültige URL angeben")
   @URL(message = "Bitte gültige URL angeben")
   private String url;
+
   @NotBlank(message = "Bitte gültigen Linktext angeben")
   private String linkText;
+
   @NotNull(message = "Bitte eine Verknüpfung auswählen")
   private String targetType;
+
   @UUID(allowEmpty = true, message = "Bitte gültige UUID angeben")
   private String topicId;
 

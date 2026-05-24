@@ -17,15 +17,17 @@ import thesis.domain.dto.SupervisorProfile;
 
 @Service
 public class SupervisorService {
+
   private final SupervisorRepository supervisorRepository;
   private final TopicRepository topicRepository;
   private final InformationFileRepository informationFileRepository;
   private final LinkRepository linkRepository;
 
-  public SupervisorService(SupervisorRepository supervisorRepository,
-                           TopicRepository topicRepository,
-                           InformationFileRepository informationFileRepository,
-                           LinkRepository linkRepository) {
+  public SupervisorService(
+      SupervisorRepository supervisorRepository,
+      TopicRepository topicRepository,
+      InformationFileRepository informationFileRepository,
+      LinkRepository linkRepository) {
 
     this.supervisorRepository = supervisorRepository;
     this.linkRepository = linkRepository;
@@ -33,18 +35,28 @@ public class SupervisorService {
     this.informationFileRepository = informationFileRepository;
   }
 
-  public String createTopic(String title, String description, Integer supervisorGithubId,
-                            String tags, String requirements) {
+  public String createTopic(
+      String title,
+      String description,
+      Integer supervisorGithubId,
+      String tags,
+      String requirements) {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
     if (supervisor == null) {
       return "Betreuer nicht gefunden";
     }
     List<TopicTag> extractedTags =
-        Arrays.stream(tags.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-            .map(TopicTag::new).toList();
+        Arrays.stream(tags.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .map(TopicTag::new)
+            .toList();
     List<TopicRequirement> extractedReq =
-        Arrays.stream(requirements.split(",")).map(String::trim).filter(s -> !s.isEmpty())
-            .map(TopicRequirement::new).toList();
+        Arrays.stream(requirements.split(","))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .map(TopicRequirement::new)
+            .toList();
     Topic topic = new Topic(title, description, supervisor.id(), extractedTags, extractedReq);
 
     topicRepository.save(topic);
@@ -61,10 +73,15 @@ public class SupervisorService {
 
   public SupervisorProfile getSupervisorProfile(UUID supervisorId) {
     Optional<Supervisor> supervisor = supervisorRepository.findById(supervisorId);
-    return supervisor.map(
-        value -> new SupervisorProfile(value, topicRepository.findBySupervisorId(supervisorId),
-            informationFileRepository.findBySupervisorId(supervisorId),
-            linkRepository.findBySupervisorId(supervisorId))).orElse(null);
+    return supervisor
+        .map(
+            value ->
+                new SupervisorProfile(
+                    value,
+                    topicRepository.findBySupervisorId(supervisorId),
+                    informationFileRepository.findBySupervisorId(supervisorId),
+                    linkRepository.findBySupervisorId(supervisorId)))
+        .orElse(null);
   }
 
   public String createSupervisor(Integer githubId, String username) {
@@ -81,8 +98,12 @@ public class SupervisorService {
     Supervisor supervisor = findByGithubId(supervisorGithubId);
     if (supervisor != null) {
       supervisorRepository.save(
-          new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
-              mail, supervisor.supervisorTags()));
+          new Supervisor(
+              supervisor.id(),
+              supervisor.username(),
+              supervisor.githubId(),
+              mail,
+              supervisor.supervisorTags()));
     }
   }
 
@@ -108,20 +129,22 @@ public class SupervisorService {
       extractedTags.stream().map(SupervisorTag::new).forEach(supervisorTags::add);
       if (!supervisorTags.isEmpty()) {
         supervisorRepository.save(
-            new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
-                supervisor.mail(), supervisorTags));
+            new Supervisor(
+                supervisor.id(),
+                supervisor.username(),
+                supervisor.githubId(),
+                supervisor.mail(),
+                supervisorTags));
       }
-
     }
   }
 
   public List<SupervisorMatch> findMatchingSupervisors(String interests) {
-    List<String> tags = Arrays.stream(interests.split(",")).map(String::trim)
-        .filter(s -> !s.isEmpty()).toList();
+    List<String> tags =
+        Arrays.stream(interests.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
     if (tags.isEmpty()) {
       return List.of();
     }
     return supervisorRepository.findMatchingSupervisors(tags);
   }
 }
-

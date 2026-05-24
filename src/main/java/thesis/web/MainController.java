@@ -20,6 +20,7 @@ import thesis.service.TopicService;
 
 @Controller
 public class MainController {
+
   private final SupervisorService supervisorService;
   private final TopicService topicService;
 
@@ -42,13 +43,14 @@ public class MainController {
   }
 
   @PostMapping("/match")
-  public String match(@RequestParam(required = false) List<String> completedRequirements,
-                      String interests, RedirectAttributes redirectAttributes) {
+  public String match(
+      @RequestParam(required = false) List<String> completedRequirements,
+      String interests,
+      RedirectAttributes redirectAttributes) {
 
     List<TopicMatch> topicMatches =
         topicService.findMatchingTopics(interests, completedRequirements);
-    List<SupervisorMatch> supervisorMatches =
-        supervisorService.findMatchingSupervisors(interests);
+    List<SupervisorMatch> supervisorMatches = supervisorService.findMatchingSupervisors(interests);
     redirectAttributes.addFlashAttribute("topicMatches", topicMatches);
     redirectAttributes.addFlashAttribute("supervisorMatches", supervisorMatches);
     return "redirect:/match";

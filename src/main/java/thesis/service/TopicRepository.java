@@ -7,6 +7,7 @@ import thesis.domain.Topic;
 import thesis.domain.dto.TopicMatch;
 
 public interface TopicRepository {
+
   List<Topic> findAll();
 
   List<Topic> findBySupervisorId(UUID supervisorId);

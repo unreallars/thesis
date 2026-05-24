@@ -16,6 +16,7 @@ import thesis.service.TopicRepository;
 
 @Repository
 public class TopicRepositoryImpl implements TopicRepository {
+
   private final TopicDataRepository topicDataRepository;
 
   public TopicRepositoryImpl(TopicDataRepository topicDataRepository) {
@@ -28,8 +29,12 @@ public class TopicRepositoryImpl implements TopicRepository {
   }
 
   private Topic toTopic(TopicDto topicDto) {
-    return new Topic(topicDto.fachId(), topicDto.title(), topicDto.description(),
-        topicDto.supervisorId(), translateTopicRequirements(topicDto.requirements()),
+    return new Topic(
+        topicDto.fachId(),
+        topicDto.title(),
+        topicDto.description(),
+        topicDto.supervisorId(),
+        translateTopicRequirements(topicDto.requirements()),
         translateTopicTags(topicDto.topicTags()));
   }
 
@@ -52,7 +57,8 @@ public class TopicRepositoryImpl implements TopicRepository {
 
   @Override
   public List<Topic> findBySupervisorId(UUID supervisorId) {
-    return topicDataRepository.findBySupervisorId(supervisorId).stream().map(this::toTopic)
+    return topicDataRepository.findBySupervisorId(supervisorId).stream()
+        .map(this::toTopic)
         .toList();
   }
 
@@ -64,13 +70,16 @@ public class TopicRepositoryImpl implements TopicRepository {
   @Override
   public List<TopicMatch> findMatchingTopics(List<String> tags, List<String> requirements) {
     return topicDataRepository.findMatchingTopics(tags, requirements).stream()
-        .map(this::toMatchResult).toList();
+        .map(this::toMatchResult)
+        .toList();
   }
 
   private TopicMatch toMatchResult(TopicMatchDto topicMatchDto) {
-    return new TopicMatch(topicMatchDto.topicId(),
+    return new TopicMatch(
+        topicMatchDto.topicId(),
         topicMatchDto.topicTitle(),
-        topicMatchDto.topicDescription(), topicMatchDto.matchScore());
+        topicMatchDto.topicDescription(),
+        topicMatchDto.matchScore());
   }
 
   @Override
@@ -87,8 +96,13 @@ public class TopicRepositoryImpl implements TopicRepository {
   private TopicDto toTopicDto(Topic topic) {
     Integer existingDbKey =
         topicDataRepository.findByFachId(topic.getId()).map(TopicDto::id).orElse(null);
-    return new TopicDto(existingDbKey, topic.getId(), topic.getTitle(), topic.getDescription(),
-        topic.getSupervisorId(), translateTopicRequierementsDto(topic.getRequirements()),
+    return new TopicDto(
+        existingDbKey,
+        topic.getId(),
+        topic.getTitle(),
+        topic.getDescription(),
+        topic.getSupervisorId(),
+        translateTopicRequierementsDto(topic.getRequirements()),
         translateTopicTagsDto(topic.getTopicTags()));
   }
 

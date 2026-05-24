@@ -6,14 +6,18 @@ import thesis.domain.Link;
 import thesis.domain.Supervisor;
 import thesis.domain.Topic;
 
-public record SupervisorProfile(Supervisor supervisor, List<Topic> topics,
-                                List<InformationFile> files, List<Link> links) {
-  public SupervisorProfile(Supervisor supervisor, List<Topic> topics,
-                           List<InformationFile> files,
-                           List<Link> links) {
+public record SupervisorProfile(
+    Supervisor supervisor, List<Topic> topics, List<InformationFile> files, List<Link> links) {
+
+  public SupervisorProfile(
+      Supervisor supervisor, List<Topic> topics, List<InformationFile> files, List<Link> links) {
     this.supervisor =
-        new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
-            supervisor.mail(), List.copyOf(supervisor.supervisorTags()));
+        new Supervisor(
+            supervisor.id(),
+            supervisor.username(),
+            supervisor.githubId(),
+            supervisor.mail(),
+            List.copyOf(supervisor.supervisorTags()));
     this.topics = List.copyOf(topics);
     this.files = List.copyOf(files);
     this.links = List.copyOf(links);
@@ -21,7 +25,11 @@ public record SupervisorProfile(Supervisor supervisor, List<Topic> topics,
 
   @Override
   public Supervisor supervisor() {
-    return new Supervisor(supervisor.id(), supervisor.username(), supervisor.githubId(),
-        supervisor.mail(), List.copyOf(supervisor.supervisorTags()));
+    return new Supervisor(
+        supervisor.id(),
+        supervisor.username(),
+        supervisor.githubId(),
+        supervisor.mail(),
+        List.copyOf(supervisor.supervisorTags()));
   }
 }

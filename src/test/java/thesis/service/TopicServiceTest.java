@@ -58,7 +58,6 @@ class TopicServiceTest {
     assertThat(result).isNull();
   }
 
-
   @Test
   @DisplayName("getTopic – Topic nicht gefunden")
   void test_03() {
@@ -140,7 +139,8 @@ class TopicServiceTest {
 
     topicService.findMatchingTopics(interests, List.of("Test"));
 
-    verify(topicRepository).findMatchingTopics(List.of("Spring", "Rust", "Programmierung"), List.of("Test"));
+    verify(topicRepository)
+        .findMatchingTopics(List.of("Spring", "Rust", "Programmierung"), List.of("Test"));
   }
 
   @Test

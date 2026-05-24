@@ -3,6 +3,7 @@ package thesis.domain.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class TagForm {
+
   @NotBlank(message = "Bitte ein Fachgebiet angeben")
   private String tags;
 

@@ -9,6 +9,7 @@ import thesis.service.LinkRepository;
 
 @Repository
 public class LinkRepositoryImpl implements LinkRepository {
+
   private final LinkDataRepository linkDataRepository;
 
   public LinkRepositoryImpl(LinkDataRepository linkDataRepository) {
@@ -21,8 +22,8 @@ public class LinkRepositoryImpl implements LinkRepository {
   }
 
   private Link toLink(LinkDto linkDto) {
-    return new Link(linkDto.fachId(), linkDto.url(), linkDto.text(), linkDto.supervisorId(),
-        linkDto.topicId());
+    return new Link(
+        linkDto.fachId(), linkDto.url(), linkDto.text(), linkDto.supervisorId(), linkDto.topicId());
   }
 
   @Override
@@ -44,8 +45,7 @@ public class LinkRepositoryImpl implements LinkRepository {
   private LinkDto toLinkDto(Link link) {
     Integer existingDbKey =
         linkDataRepository.findByFachId(link.id()).map(LinkDto::id).orElse(null);
-    return new LinkDto(existingDbKey, link.id(), link.url(), link.text(),
-        link.supervisorId(),
-        link.topicId());
+    return new LinkDto(
+        existingDbKey, link.id(), link.url(), link.text(), link.supervisorId(), link.topicId());
   }
 }

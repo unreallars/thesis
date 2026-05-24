@@ -49,8 +49,8 @@ class InformationFileServiceTest {
   void test_01() {
     when(multipartFile.getOriginalFilename()).thenReturn(null);
     String result =
-        informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
-            "SUPERVISOR", null);
+        informationFileService.uploadFile(
+            multipartFile, "Titel", "Beschreibung", oAuth2User, "SUPERVISOR", null);
 
     assertThat(result).isEqualTo("Ungültige Datei");
   }
@@ -60,8 +60,8 @@ class InformationFileServiceTest {
   void test_2() {
     when(multipartFile.getOriginalFilename()).thenReturn("file.txt");
     String result =
-        informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
-            "SUPERVISOR", null);
+        informationFileService.uploadFile(
+            multipartFile, "Titel", "Beschreibung", oAuth2User, "SUPERVISOR", null);
 
     assertThat(result).isEqualTo("Ungültiger Dateityp");
   }
@@ -73,8 +73,8 @@ class InformationFileServiceTest {
     when(oAuth2User.getAttribute("id")).thenReturn(66);
     when(supervisorService.findByGithubId(66)).thenReturn(null);
     String result =
-        informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
-            "SUPERVISOR", null);
+        informationFileService.uploadFile(
+            multipartFile, "Titel", "Beschreibung", oAuth2User, "SUPERVISOR", null);
 
     assertThat(result).isEqualTo("Betreuer nicht gefunden");
   }
@@ -89,8 +89,8 @@ class InformationFileServiceTest {
     Supervisor supervisor = new Supervisor(66, "Username", "Mail");
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
     String result =
-        informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
-            "SUPERVISOR", null);
+        informationFileService.uploadFile(
+            multipartFile, "Titel", "Beschreibung", oAuth2User, "SUPERVISOR", null);
 
     assertThat(result).isEqualTo("Upload erfolgreich");
     verify(informationFileRepository).save(any(InformationFile.class));
@@ -111,8 +111,8 @@ class InformationFileServiceTest {
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
 
     String result =
-        informationFileService.uploadFile(multipartFile, "Titel", "Beschreibung", oAuth2User,
-            "TOPIC", id.toString());
+        informationFileService.uploadFile(
+            multipartFile, "Titel", "Beschreibung", oAuth2User, "TOPIC", id.toString());
 
     assertThat(result).isEqualTo("Upload erfolgreich");
     verify(informationFileRepository).save(any(InformationFile.class));
@@ -126,8 +126,8 @@ class InformationFileServiceTest {
     Files.writeString(temp, "PDF content");
 
     InformationFile infoFile =
-        InformationFile.createSupervisorInformationFile("pdf", temp.toString(), "test-file", "Desc",
-            UUID.randomUUID());
+        InformationFile.createSupervisorInformationFile(
+            "pdf", temp.toString(), "test-file", "Desc", UUID.randomUUID());
 
     when(informationFileRepository.findById(infoFile.id())).thenReturn(Optional.of(infoFile));
 
@@ -137,8 +137,8 @@ class InformationFileServiceTest {
 
     HttpHeaders headers = response.getHeaders();
     assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo("application/octet-stream");
-    assertThat(headers.getFirst(HttpHeaders.CONTENT_DISPOSITION)).startsWith(
-        "attachment; filename=test-file.pdf");
+    assertThat(headers.getFirst(HttpHeaders.CONTENT_DISPOSITION))
+        .startsWith("attachment; filename=test-file.pdf");
 
     Files.deleteIfExists(temp);
   }
@@ -152,8 +152,8 @@ class InformationFileServiceTest {
     Files.writeString(temp, mdContent);
 
     InformationFile infoFile =
-        InformationFile.createSupervisorInformationFile("md", temp.toString(), "test-md", "Desc",
-            UUID.randomUUID());
+        InformationFile.createSupervisorInformationFile(
+            "md", temp.toString(), "test-md", "Desc", UUID.randomUUID());
 
     when(informationFileRepository.findById(infoFile.id())).thenReturn(Optional.of(infoFile));
     ResponseEntity<Resource> response = informationFileService.downloadFile(infoFile.id());
@@ -162,8 +162,8 @@ class InformationFileServiceTest {
 
     HttpHeaders headers = response.getHeaders();
     assertThat(headers.getFirst(HttpHeaders.CONTENT_TYPE)).isEqualTo("text/html; charset=UTF-8");
-    assertThat(headers.getFirst(HttpHeaders.CONTENT_DISPOSITION)).startsWith(
-        "inline; filename=test-md.md");
+    assertThat(headers.getFirst(HttpHeaders.CONTENT_DISPOSITION))
+        .startsWith("inline; filename=test-md.md");
 
     Files.deleteIfExists(temp);
   }

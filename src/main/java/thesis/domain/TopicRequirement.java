@@ -1,4 +1,3 @@
 package thesis.domain;
 
-public record TopicRequirement(String name) {
-}
+public record TopicRequirement(String name) {}

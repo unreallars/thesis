@@ -5,5 +5,4 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
-public class MethodSecurityConfig {
-}
+public class MethodSecurityConfig {}

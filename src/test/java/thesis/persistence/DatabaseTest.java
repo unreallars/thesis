@@ -26,12 +26,9 @@ import thesis.service.UserRepository;
 @Import(TestcontainersConfiguration.class)
 public class DatabaseTest {
 
-  @Autowired
-  UserDataRepository userDataRepository;
-  @Autowired
-  SupervisorDataRepository supervisorDataRepository;
-  @Autowired
-      TopicDataRepository topicDataRepository;
+  @Autowired UserDataRepository userDataRepository;
+  @Autowired SupervisorDataRepository supervisorDataRepository;
+  @Autowired TopicDataRepository topicDataRepository;
 
   UserRepository userRepository;
   SupervisorRepository supervisorRepository;
@@ -43,32 +40,34 @@ public class DatabaseTest {
     supervisorRepository = new SupervisorRepositoryImpl(supervisorDataRepository);
     topicRepository = new TopicRepositoryImpl(topicDataRepository);
   }
+
   @Test
   @DisplayName("Die Datenbank kann Benutzer speichern und laden")
-  void test1(){
-    User user=new User(666,"TestUser");
+  void test1() {
+    User user = new User(666, "TestUser");
     userRepository.save(user);
-    Optional<User> loadedUser=userRepository.findByGithubId(666);
+    Optional<User> loadedUser = userRepository.findByGithubId(666);
     assertThat(loadedUser).isPresent();
-  }
-  @Test
-  @DisplayName("Die Datenbank kann Betreuer speichern und laden")
-  void test2(){
-    Supervisor supervisor=new Supervisor(666,"Tes","Mail");
-    supervisorRepository.save(supervisor);
-    Optional<Supervisor> loadedUser=supervisorRepository.findByGithubId(666);
-    assertThat(loadedUser).isPresent();
-  }
-  @Test
-  @DisplayName("Die Datenbank kann Themen speichern und laden")
-  void test3(){
-    UUID id=UUID.randomUUID();
-    Supervisor supervisor=new Supervisor(id,"Username",666,"Test",new ArrayList<>());
-    supervisorRepository.save(supervisor);
-    Topic topic=new Topic("Titel","Test", id);
-    topicRepository.save(topic);
-    List<Topic> loadedUser=topicRepository.findBySupervisorId(id);
-    assertThat(loadedUser).isNotEmpty();
   }
 
+  @Test
+  @DisplayName("Die Datenbank kann Betreuer speichern und laden")
+  void test2() {
+    Supervisor supervisor = new Supervisor(666, "Tes", "Mail");
+    supervisorRepository.save(supervisor);
+    Optional<Supervisor> loadedUser = supervisorRepository.findByGithubId(666);
+    assertThat(loadedUser).isPresent();
+  }
+
+  @Test
+  @DisplayName("Die Datenbank kann Themen speichern und laden")
+  void test3() {
+    UUID id = UUID.randomUUID();
+    Supervisor supervisor = new Supervisor(id, "Username", 666, "Test", new ArrayList<>());
+    supervisorRepository.save(supervisor);
+    Topic topic = new Topic("Titel", "Test", id);
+    topicRepository.save(topic);
+    List<Topic> loadedUser = topicRepository.findBySupervisorId(id);
+    assertThat(loadedUser).isNotEmpty();
+  }
 }

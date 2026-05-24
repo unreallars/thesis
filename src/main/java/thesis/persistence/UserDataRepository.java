@@ -8,8 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import thesis.persistence.dto.UserDto;
 
 public interface UserDataRepository extends CrudRepository<UserDto, Integer> {
-  @NonNull
-  List<UserDto> findAll();
+
+  @NonNull List<UserDto> findAll();
 
   Optional<UserDto> findByGithubId(Integer githubId);
 

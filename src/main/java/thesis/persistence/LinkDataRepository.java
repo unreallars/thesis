@@ -8,8 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import thesis.persistence.dto.LinkDto;
 
 public interface LinkDataRepository extends CrudRepository<LinkDto, Integer> {
-  @NonNull
-  List<LinkDto> findAll();
+
+  @NonNull List<LinkDto> findAll();
 
   List<LinkDto> findBySupervisorId(UUID supervisorId);
 

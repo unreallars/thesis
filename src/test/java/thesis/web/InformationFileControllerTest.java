@@ -25,12 +25,10 @@ import thesis.service.config.SecurityConfig;
 @WebMvcTest(InformationFileController.class)
 @Import({SecurityConfig.class, MethodSecurityConfig.class})
 public class InformationFileControllerTest {
-  @Autowired
-  MockMvc mockMvc;
-  @MockitoBean
-  AppUserService appUserService;
-  @MockitoBean
-  InformationFileService informationFileService;
+
+  @Autowired MockMvc mockMvc;
+  @MockitoBean AppUserService appUserService;
+  @MockitoBean InformationFileService informationFileService;
 
   @Test
   @DisplayName("Der Upload ist unangemeldet nicht erreichbar")
@@ -60,17 +58,17 @@ public class InformationFileControllerTest {
   @WithMockOAuth2User(roles = "STUDENT")
   void test_4() throws Exception {
     UUID id = UUID.randomUUID();
-    when(informationFileService.downloadFile(id)).thenReturn(new ResponseEntity<>(
-        HttpStatusCode.valueOf(200)));
-    mockMvc.perform(get("/dl/{id}",id)).andExpect(status().isOk());
+    when(informationFileService.downloadFile(id))
+        .thenReturn(new ResponseEntity<>(HttpStatusCode.valueOf(200)));
+    mockMvc.perform(get("/dl/{id}", id)).andExpect(status().isOk());
   }
 
   @Test
   @DisplayName("Der Download ist unangemeldet nicht erreichbar")
   void test_5() throws Exception {
     UUID id = UUID.randomUUID();
-    when(informationFileService.downloadFile(id)).thenReturn(new ResponseEntity<>(
-        HttpStatusCode.valueOf(200)));
-    mockMvc.perform(get("/dl/{id}",id)).andExpect(status().is3xxRedirection());
+    when(informationFileService.downloadFile(id))
+        .thenReturn(new ResponseEntity<>(HttpStatusCode.valueOf(200)));
+    mockMvc.perform(get("/dl/{id}", id)).andExpect(status().is3xxRedirection());
   }
 }

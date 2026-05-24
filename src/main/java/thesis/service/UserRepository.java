@@ -6,6 +6,7 @@ import java.util.UUID;
 import thesis.domain.User;
 
 public interface UserRepository {
+
   List<User> findAll();
 
   Optional<User> findByGithubId(Integer githubId);

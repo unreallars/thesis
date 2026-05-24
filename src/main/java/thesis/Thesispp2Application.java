@@ -9,5 +9,4 @@ public class Thesispp2Application {
   static void main(String[] args) {
     SpringApplication.run(Thesispp2Application.class, args);
   }
-
 }

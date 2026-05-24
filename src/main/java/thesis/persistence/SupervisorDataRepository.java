@@ -11,11 +11,13 @@ import thesis.persistence.dto.SupervisorDto;
 import thesis.persistence.dto.SupervisorMatchDto;
 
 public interface SupervisorDataRepository extends CrudRepository<SupervisorDto, Integer> {
+
   @NonNull List<SupervisorDto> findAll();
 
   Optional<SupervisorDto> findByGithubId(Integer id);
 
-  @Query("""
+  @Query(
+      """
       SELECT DISTINCT
           s.fach_id AS supervisor_id,
           s.username AS supervisor_username,
@@ -28,7 +30,6 @@ public interface SupervisorDataRepository extends CrudRepository<SupervisorDto, 
       LIMIT 10
       """)
   List<SupervisorMatchDto> findMatchingSupervisors(@Param("tags") List<String> tags);
-
 
   Optional<SupervisorDto> findByFachId(UUID id);
 }

@@ -11,7 +11,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <h1>Thesis</h1>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -55,19 +56,23 @@
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1" th:text="${tMatch.topicTitle}">Topic Titel</h5>
                             </div>
-                            <p class="mb-1 text-muted" th:text="${tMatch.topicDescription}">Themenbeschreibung...</p>
+                            <p class="mb-1 text-muted" th:text="${tMatch.topicDescription}">
+                                Themenbeschreibung...</p>
                         </a>
                     </div>
                 </div>
 
-                <div th:if="${topicMatches != null && topicMatches.isEmpty()}" class="text-center py-5">
+                <div th:if="${topicMatches != null && topicMatches.isEmpty()}"
+                     class="text-center py-5">
                     <div class="display-5 mb-3">😔</div>
                     <h4>Keine passenden Themen gefunden</h4>
                 </div>
 
-                <div th:if="${supervisorMatches != null && !supervisorMatches.isEmpty()}" class="mb-5">
+                <div th:if="${supervisorMatches != null && !supervisorMatches.isEmpty()}"
+                     class="mb-5">
                     <h3 class="mb-3">
-                        <span th:text="${supervisorMatches.size()}"></span> passende Betreuer gefunden:
+                        <span th:text="${supervisorMatches.size()}"></span> passende Betreuer
+                        gefunden:
                     </h3>
 
                     <div class="list-group">
@@ -75,13 +80,15 @@
                            th:href="@{'/supervisor/' + ${sMatch.supervisorId}}"
                            class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1" th:text="${sMatch.supervisorUsername}">Supervisor Username</h5>
+                                <h5 class="mb-1" th:text="${sMatch.supervisorUsername}">Supervisor
+                                    Username</h5>
                             </div>
                         </a>
                     </div>
                 </div>
 
-                <div th:if="${supervisorMatches != null && supervisorMatches.isEmpty()}" class="text-center py-5">
+                <div th:if="${supervisorMatches != null && supervisorMatches.isEmpty()}"
+                     class="text-center py-5">
                     <div class="display-5 mb-3">😔</div>
                     <h4>Keine passenden Betreuer gefunden</h4>
                 </div>
@@ -93,7 +100,8 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Bestandene Kurse auswählen</label>
                         <div class="row">
-                            <div th:each="req,reqStat : ${requirements}" class="col-md-6 col-lg-4 mb-3">
+                            <div th:each="req,reqStat : ${requirements}"
+                                 class="col-md-6 col-lg-4 mb-3">
                                 <div class="form-check">
                                     <!--suppress HtmlFormInputWithoutLabel -->
                                     <input type="checkbox"
@@ -119,13 +127,15 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg">Matching starten</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Matching starten
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

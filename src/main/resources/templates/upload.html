@@ -30,7 +30,8 @@
                         <div class="alert alert-info" th:text="${message}"></div>
                     </div>
 
-                    <form method="POST" th:action="@{/upload}" enctype="multipart/form-data" th:object="${uploadForm}">
+                    <form method="POST" th:action="@{/upload}" enctype="multipart/form-data"
+                          th:object="${uploadForm}">
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Titel (Pflichtfeld)</label>
@@ -41,13 +42,15 @@
                                    placeholder="Titel eingeben..."
                                    required>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('title')}"
                              th:errors="*{title}">
                             Ungültiger Titel
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Beschreibung (optional)</label>
+                            <label for="description" class="form-label">Beschreibung
+                                (optional)</label>
                             <textarea class="form-control"
                                       id="description"
                                       th:field="*{description}"
@@ -82,16 +85,19 @@
                                 Thema
                             </label>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('targetType')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('targetType')}"
                              th:errors="*{targetType}">
                             Ungültige Verknüpfung
                         </div>
 
                         <div>
                             <label for="topicId">Thema-ID (nur wenn Thema ausgewählt):</label>
-                            <input class="form-control" id="topicId" th:field="*{topicId}" type="text">
+                            <input class="form-control" id="topicId" th:field="*{topicId}"
+                                   type="text">
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('topicId')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('topicId')}"
                              th:errors="*{topicId}">
                             Ungültige UUID
                         </div>

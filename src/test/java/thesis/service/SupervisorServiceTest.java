@@ -34,8 +34,8 @@ class SupervisorServiceTest {
     supervisor = mock(Supervisor.class);
 
     supervisorService =
-        new SupervisorService(supervisorRepository, topicRepository, informationFileRepository,
-            linkRepository);
+        new SupervisorService(
+            supervisorRepository, topicRepository, informationFileRepository, linkRepository);
   }
 
   @Test

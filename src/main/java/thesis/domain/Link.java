@@ -11,5 +11,4 @@ public record Link(UUID id, String url, String text, UUID supervisorId, UUID top
   public static Link createTopicLink(String url, String text, UUID topicId) {
     return new Link(UUID.randomUUID(), url, text, null, topicId);
   }
-
 }

@@ -11,6 +11,7 @@ import thesis.persistence.dto.TopicDto;
 import thesis.persistence.dto.TopicMatchDto;
 
 public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
+
   @NonNull List<TopicDto> findAll();
 
   List<TopicDto> findBySupervisorId(UUID supervisorId);
@@ -18,7 +19,8 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
   @Query("SELECT DISTINCT tr.name FROM topic_requirement tr ORDER BY tr.name")
   List<String> findAllTopicRequirements();
 
-  @Query("""
+  @Query(
+      """
       SELECT topic_id, topic_title, topic_description
       FROM (
           SELECT DISTINCT
@@ -46,9 +48,8 @@ public interface TopicDataRepository extends CrudRepository<TopicDto, Integer> {
       ) DESC, topic_title
       LIMIT 10
       """)
-  List<TopicMatchDto> findMatchingTopics(@Param("tags") List<String> tags,
-                                         @Param("requirements") List<String> requirements);
+  List<TopicMatchDto> findMatchingTopics(
+      @Param("tags") List<String> tags, @Param("requirements") List<String> requirements);
 
   Optional<TopicDto> findByFachId(UUID id);
-
 }

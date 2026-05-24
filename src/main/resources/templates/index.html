@@ -4,14 +4,16 @@
     <title>Thesis</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <h1>Thesis</h1>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -19,7 +21,8 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Startseite</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
+                <li class="nav-item"
+                    sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
                     <a class="nav-link" th:href="@{/match}">Suche</a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_SUPERVISOR')">
@@ -28,7 +31,8 @@
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
                     <a class="nav-link" th:href="@{/manage}">Verwaltung</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
+                <li class="nav-item"
+                    sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_SUPERVISOR')">
                     <a class="nav-link" th:href="@{/account}">Account</a>
                 </li>
             </ul>
@@ -38,7 +42,8 @@
 <header class="bg-light text-center py-5">
     <div class="container">
         <h1 class="display-4">Finde die passende Betreuung für deine Abschlussarbeit</h1>
-        <p class="lead">Durchsuche Betreuerprofile, entdecke Themenangebote und erhalte passende Matches auf Basis deiner Interessen und absolvierten Veranstaltungen</p>
+        <p class="lead">Durchsuche Betreuerprofile, entdecke Themenangebote und erhalte passende
+            Matches auf Basis deiner Interessen und absolvierten Veranstaltungen</p>
         <div sec:authorize="isAnonymous()">
             <a th:href="@{/oauth2/authorization/github}" class="btn btn-primary btn-lg">Anmelden</a>
         </div>
@@ -87,6 +92,7 @@
 
     <br><br><br><br><br><br><br><br>
 </div>
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

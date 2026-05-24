@@ -8,14 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import thesis.persistence.dto.InformationFileDto;
 
 public interface InformationFileDataRepository extends CrudRepository<InformationFileDto, Integer> {
-  @NonNull
-  List<InformationFileDto> findAll();
+
+  @NonNull List<InformationFileDto> findAll();
 
   List<InformationFileDto> findBySupervisorId(UUID supervisorId);
 
   List<InformationFileDto> findByTopicId(UUID topicId);
 
   Optional<InformationFileDto> findByFachId(UUID id);
-
-
 }

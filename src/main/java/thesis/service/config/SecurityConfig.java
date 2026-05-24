@@ -7,6 +7,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
   private final AppUserService appUserService;
 
   public SecurityConfig(final AppUserService appUserService) {
@@ -15,14 +16,18 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain configure(HttpSecurity chainBuilder) {
-    chainBuilder.authorizeHttpRequests(
-            configurer -> configurer.requestMatchers("/", "/bootstrap/**").permitAll().anyRequest()
-                .authenticated())
+    chainBuilder
+        .authorizeHttpRequests(
+            configurer ->
+                configurer
+                    .requestMatchers("/", "/bootstrap/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .oauth2Login(
             config ->
-                config.userInfoEndpoint(info -> info.userService(appUserService))
-                    .loginPage("/")
-        ).logout(l -> l.logoutSuccessUrl("/").permitAll());
+                config.userInfoEndpoint(info -> info.userService(appUserService)).loginPage("/"))
+        .logout(l -> l.logoutSuccessUrl("/").permitAll());
     return chainBuilder.build();
   }
 }

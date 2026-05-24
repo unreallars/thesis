@@ -23,23 +23,31 @@ import thesis.domain.Topic;
 
 @Service
 public class InformationFileService {
+
   private final InformationFileRepository informationFileRepository;
   private final SupervisorService supervisorService;
   private final TopicService topicService;
 
-  public InformationFileService(InformationFileRepository informationFileRepository,
-                                SupervisorService supervisorService, TopicService topicService) {
+  public InformationFileService(
+      InformationFileRepository informationFileRepository,
+      SupervisorService supervisorService,
+      TopicService topicService) {
     this.informationFileRepository = informationFileRepository;
     this.supervisorService = supervisorService;
     this.topicService = topicService;
   }
 
-
-  public String uploadFile(MultipartFile file, String title, String description, OAuth2User user,
-                           String targetType, String topicId) {
+  public String uploadFile(
+      MultipartFile file,
+      String title,
+      String description,
+      OAuth2User user,
+      String targetType,
+      String topicId) {
 
     try {
-      if (file == null || file.getOriginalFilename() == null
+      if (file == null
+          || file.getOriginalFilename() == null
           || file.getOriginalFilename().isBlank()) {
         return "Ungültige Datei";
       }
@@ -59,8 +67,8 @@ public class InformationFileService {
       }
       if ("SUPERVISOR".equals(targetType)) {
         InformationFile informationFile =
-            InformationFile.createSupervisorInformationFile(fileType, filePath.toString(), title,
-                description, supervisor.id());
+            InformationFile.createSupervisorInformationFile(
+                fileType, filePath.toString(), title, description, supervisor.id());
         informationFileRepository.save(informationFile);
 
         file.transferTo(filePath);
@@ -75,8 +83,8 @@ public class InformationFileService {
           return "Das angegebene Thema ist von einem anderen Betreuer";
         }
         InformationFile informationFile =
-            InformationFile.createTopicInformationFile(fileType, filePath.toString(), title,
-                description, topic.getId());
+            InformationFile.createTopicInformationFile(
+                fileType, filePath.toString(), title, description, topic.getId());
         informationFileRepository.save(informationFile);
         file.transferTo(filePath);
 
@@ -113,13 +121,14 @@ public class InformationFileService {
         resource = new ByteArrayResource(html.getBytes(StandardCharsets.UTF_8));
 
         headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
-        headers.add(HttpHeaders.CONTENT_DISPOSITION,
+        headers.add(
+            HttpHeaders.CONTENT_DISPOSITION,
             "inline; filename=" + informationFile.title() + "." + informationFile.fileType());
       } else {
         headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
-        headers.add(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=" + informationFile.title()
-                + "." + informationFile.fileType());
+        headers.add(
+            HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=" + informationFile.title() + "." + informationFile.fileType());
       }
       return ResponseEntity.ok().headers(headers).body(resource);
 

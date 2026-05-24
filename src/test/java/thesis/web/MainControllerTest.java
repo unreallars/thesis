@@ -1,6 +1,5 @@
 package thesis.web;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -35,14 +34,10 @@ import thesis.service.config.SecurityConfig;
 @Import({SecurityConfig.class, MethodSecurityConfig.class})
 public class MainControllerTest {
 
-  @Autowired
-  MockMvc mockMvc;
-  @MockitoBean
-  AppUserService appUserService;
-  @MockitoBean
-  SupervisorService supervisorService;
-  @MockitoBean
-  TopicService topicService;
+  @Autowired MockMvc mockMvc;
+  @MockitoBean AppUserService appUserService;
+  @MockitoBean SupervisorService supervisorService;
+  @MockitoBean TopicService topicService;
 
   @Test
   @DisplayName("Startseite ist unangemeldet erreichbar")
@@ -83,16 +78,20 @@ public class MainControllerTest {
   void test_5() throws Exception {
     UUID uuid = UUID.randomUUID();
     Supervisor supervisor = new Supervisor(0, "Username", "a@b.de");
-    when(supervisorService.getSupervisorProfile(uuid)).thenReturn(
-        new SupervisorProfile(supervisor, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+    when(supervisorService.getSupervisorProfile(uuid))
+        .thenReturn(
+            new SupervisorProfile(
+                supervisor, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
     Topic topic = new Topic("Topic", "Desc", UUID.randomUUID());
-    when(topicService.getTopic(uuid)).thenReturn(
-        new TopicProfile(topic, new ArrayList<>(), new ArrayList<>()));
+    when(topicService.getTopic(uuid))
+        .thenReturn(new TopicProfile(topic, new ArrayList<>(), new ArrayList<>()));
 
     mockMvc.perform(get("/topic/{id}", uuid)).andExpect(status().isOk());
     mockMvc.perform(get("/supervisor/{id}", uuid)).andExpect(status().isOk());
 
     mockMvc.perform(get("/topic/{id}", UUID.randomUUID())).andExpect(status().is3xxRedirection());
-    mockMvc.perform(get("/supervisor/{id}", UUID.randomUUID())).andExpect(status().is3xxRedirection());
+    mockMvc
+        .perform(get("/supervisor/{id}", UUID.randomUUID()))
+        .andExpect(status().is3xxRedirection());
   }
 }

@@ -1,5 +1,3 @@
 package thesis.domain;
 
-
-public record SupervisorTag(String tag) {
-}
+public record SupervisorTag(String tag) {}

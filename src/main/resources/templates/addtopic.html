@@ -4,7 +4,8 @@
     <title>Thema hinzufügen</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container py-5">
@@ -36,13 +37,15 @@
                                    placeholder="Titel eingeben..."
                                    required>
                         </div>
-                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}"
+                        <div class="alert alert-danger" role="alert"
+                             th:if="${#fields.hasErrors('title')}"
                              th:errors="*{title}">
                             Ungültiger Titel
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Beschreibung (optional)</label>
+                            <label for="description" class="form-label">Beschreibung
+                                (optional)</label>
                             <textarea class="form-control"
                                       id="description"
                                       th:field="*{description}"
@@ -57,13 +60,14 @@
                         <br>
                         <div>
                             <label for="requirements">Vorraussetzungen (optional):</label>
-                            <input class="form-control" id="requirements" th:field="*{requirements}" type="text"
+                            <input class="form-control" id="requirements" th:field="*{requirements}"
+                                   type="text"
                                    placeholder="z.B. propra, database">
                         </div>
                         <br>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
-                               Thema hinzufügen
+                                Thema hinzufügen
                             </button>
                         </div>
 

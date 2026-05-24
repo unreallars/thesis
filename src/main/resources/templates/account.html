@@ -4,13 +4,15 @@
     <title>Account</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet"
+          href="../static/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <h1>Thesis</h1>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -43,7 +45,8 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        <strong>Github-Benutzername:</strong> <span th:text="${username}">Github-Benutzername</span>
+                        <strong>Github-Benutzername:</strong> <span
+                            th:text="${username}">Github-Benutzername</span>
                     </p>
                     <p class="card-text">
                         <strong>Github-ID:</strong> <span th:text="${githubId}">Github-ID</span>
@@ -56,6 +59,7 @@
         </div>
     </div>
 </div>
-<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}" src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

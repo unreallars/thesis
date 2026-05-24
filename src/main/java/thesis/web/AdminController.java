@@ -16,6 +16,7 @@ import thesis.service.UserService;
 @Controller
 @Secured("ROLE_ADMIN")
 public class AdminController {
+
   private final UserService userService;
   private final SupervisorService supervisorService;
 
@@ -31,9 +32,10 @@ public class AdminController {
   }
 
   @PostMapping("/manage")
-  public String makeSupervisor(RedirectAttributes redirectAttributes,
-                               @Valid SupervisorCreationForm supervisorCreationForm,
-                               BindingResult bindingResult) {
+  public String makeSupervisor(
+      RedirectAttributes redirectAttributes,
+      @Valid SupervisorCreationForm supervisorCreationForm,
+      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return "manage";
     }

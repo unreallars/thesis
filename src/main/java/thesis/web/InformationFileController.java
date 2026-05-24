@@ -19,6 +19,7 @@ import thesis.service.InformationFileService;
 
 @Controller
 public class InformationFileController {
+
   private final InformationFileService informationFileService;
 
   public InformationFileController(InformationFileService informationFileService) {
@@ -34,14 +35,22 @@ public class InformationFileController {
 
   @Secured("ROLE_SUPERVISOR")
   @PostMapping("/upload")
-  public String upload(@Valid UploadForm uploadForm, BindingResult bindingResult,
-                       @AuthenticationPrincipal OAuth2User user,
-                       RedirectAttributes redirectAttributes) {
+  public String upload(
+      @Valid UploadForm uploadForm,
+      BindingResult bindingResult,
+      @AuthenticationPrincipal OAuth2User user,
+      RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
       return "upload";
     }
-    String message = informationFileService.uploadFile(uploadForm.getFile(), uploadForm.getTitle(),
-        uploadForm.getDescription(), user, uploadForm.getTargetType(), uploadForm.getTopicId());
+    String message =
+        informationFileService.uploadFile(
+            uploadForm.getFile(),
+            uploadForm.getTitle(),
+            uploadForm.getDescription(),
+            user,
+            uploadForm.getTargetType(),
+            uploadForm.getTopicId());
     redirectAttributes.addFlashAttribute("message", message);
 
     return "redirect:/upload";

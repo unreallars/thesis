@@ -9,5 +9,4 @@ public class EntwicklungszeitApplication {
         .with(TestcontainersConfiguration.class)
         .run(args);
   }
-
 }

@@ -10,6 +10,7 @@ import thesis.service.InformationFileRepository;
 
 @Repository
 public class InformationFileRepositoryImpl implements InformationFileRepository {
+
   private final InformationFileDataRepository informationFileDataRepository;
 
   public InformationFileRepositoryImpl(
@@ -23,22 +24,29 @@ public class InformationFileRepositoryImpl implements InformationFileRepository 
   }
 
   private InformationFile toInformationFile(InformationFileDto informationFileDto) {
-    return new InformationFile(informationFileDto.fachId(), informationFileDto.uploadTime(),
-        informationFileDto.fileType(), informationFileDto.filePath(), informationFileDto.title(),
-        informationFileDto.description(), informationFileDto.supervisorId(),
+    return new InformationFile(
+        informationFileDto.fachId(),
+        informationFileDto.uploadTime(),
+        informationFileDto.fileType(),
+        informationFileDto.filePath(),
+        informationFileDto.title(),
+        informationFileDto.description(),
+        informationFileDto.supervisorId(),
         informationFileDto.topicId());
   }
 
   @Override
   public List<InformationFile> findBySupervisorId(UUID supervisorId) {
     return informationFileDataRepository.findBySupervisorId(supervisorId).stream()
-        .map(this::toInformationFile).toList();
+        .map(this::toInformationFile)
+        .toList();
   }
 
   @Override
   public List<InformationFile> findByTopicId(UUID topicId) {
     return informationFileDataRepository.findByTopicId(topicId).stream()
-        .map(this::toInformationFile).toList();
+        .map(this::toInformationFile)
+        .toList();
   }
 
   @Override
@@ -54,13 +62,19 @@ public class InformationFileRepositoryImpl implements InformationFileRepository 
 
   private InformationFileDto toInformationFileDto(InformationFile informationFile) {
     Integer existingDbKey =
-        informationFileDataRepository.findByFachId(informationFile.id())
+        informationFileDataRepository
+            .findByFachId(informationFile.id())
             .map(InformationFileDto::id)
             .orElse(null);
-    return new InformationFileDto(existingDbKey, informationFile.id(),
+    return new InformationFileDto(
+        existingDbKey,
+        informationFile.id(),
         informationFile.uploadTime(),
-        informationFile.fileType(), informationFile.filePath(), informationFile.title(),
+        informationFile.fileType(),
+        informationFile.filePath(),
+        informationFile.title(),
         informationFile.description(),
-        informationFile.supervisorId(), informationFile.topicId());
+        informationFile.supervisorId(),
+        informationFile.topicId());
   }
 }

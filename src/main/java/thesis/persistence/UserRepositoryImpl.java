@@ -10,6 +10,7 @@ import thesis.service.UserRepository;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
+
   private final UserDataRepository userDataRepository;
 
   public UserRepositoryImpl(UserDataRepository userDataRepository) {

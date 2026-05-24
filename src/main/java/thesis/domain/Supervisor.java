@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public record Supervisor(UUID id, String username, Integer githubId, String mail, List<SupervisorTag> supervisorTags) {
-  public Supervisor(UUID id, String username, Integer githubId, String mail,
-                    List<SupervisorTag> supervisorTags) {
+public record Supervisor(
+    UUID id, String username, Integer githubId, String mail, List<SupervisorTag> supervisorTags) {
+
+  public Supervisor(
+      UUID id, String username, Integer githubId, String mail, List<SupervisorTag> supervisorTags) {
     this.id = id;
     this.username = username;
     this.githubId = githubId;

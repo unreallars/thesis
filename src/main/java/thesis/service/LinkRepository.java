@@ -5,6 +5,7 @@ import java.util.UUID;
 import thesis.domain.Link;
 
 public interface LinkRepository {
+
   List<Link> findAll();
 
   List<Link> findBySupervisorId(UUID supervisorId);
