@@ -19,8 +19,6 @@ import thesis.domain.dto.SupervisorProfile;
 class SupervisorServiceTest {
 
   private SupervisorRepository supervisorRepository;
-  private TopicRepository topicRepository;
-  private InformationFileRepository informationFileRepository;
   private LinkRepository linkRepository;
   private SupervisorService supervisorService;
   private Supervisor supervisor;
@@ -28,8 +26,8 @@ class SupervisorServiceTest {
   @BeforeEach
   void setUp() {
     supervisorRepository = mock(SupervisorRepository.class);
-    topicRepository = mock(TopicRepository.class);
-    informationFileRepository = mock(InformationFileRepository.class);
+    TopicRepository topicRepository = mock(TopicRepository.class);
+    InformationFileRepository informationFileRepository = mock(InformationFileRepository.class);
     linkRepository = mock(LinkRepository.class);
     supervisor = mock(Supervisor.class);
 
