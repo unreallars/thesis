@@ -51,7 +51,7 @@
                     <form th:action="@{/manage}" method="post"
                           th:object="${supervisorCreationForm}">
                         <div class="mb-3">
-                            <label for="userGithubId" class="form-label">Github-ID eingeben</label>
+                            <label for="userGithubId" class="form-label">GitHub ID eingeben</label>
                             <input type="text"
                                    th:field="*{userGithubId}"
                                    class="form-control"
@@ -61,9 +61,9 @@
                             <div class="alert alert-danger" role="alert"
                                  th:if="${#fields.hasErrors('userGithubId')}"
                                  th:errors="*{userGithubId}">
-                                Ungültige Github-Id
+                                Ungültige GitHub ID
                             </div>
-                            <div class="form-text">Bitte geben Sie die GitHub-ID des Benutzers ein,
+                            <div class="form-text">Bitte geben Sie die GitHub ID des Benutzers ein,
                                 den Sie als Betreuer hinzufügen möchten
                             </div>
                         </div>

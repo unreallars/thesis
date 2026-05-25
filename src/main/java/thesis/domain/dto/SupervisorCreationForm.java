@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Positive;
 @SuppressWarnings("unused")
 public class SupervisorCreationForm {
 
-  @NotNull(message = "Bitte gebe eine gültige Github-Id ein")
-  @Positive(message = "Bitte gebe eine gültige Github-Id ein")
+  @NotNull(message = "Bitte gebe eine gültige GitHub ID ein")
+  @Positive(message = "Bitte gebe eine gültige GitHub ID ein")
   private Integer userGithubId;
 
   public Integer getUserGithubId() {
