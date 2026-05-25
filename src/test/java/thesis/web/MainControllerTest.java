@@ -77,7 +77,7 @@ public class MainControllerTest {
   @WithMockOAuth2User(roles = "STUDENT")
   void test_5() throws Exception {
     UUID uuid = UUID.randomUUID();
-    Supervisor supervisor = new Supervisor(0, "Username", "a@b.de");
+    Supervisor supervisor = new Supervisor(0, "Username");
     when(supervisorService.getSupervisorProfile(uuid))
         .thenReturn(
             new SupervisorProfile(

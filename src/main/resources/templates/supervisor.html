@@ -15,8 +15,9 @@
     <div class="row mb-4">
         <div class="col">
             <h1 class="display-5">Profil: <span th:text="*{supervisor.username}">Name</span></h1>
-            <p class="lead"><strong>E-Mail:</strong> <span
-                    th:text="*{supervisor.mail}">mail@example.com</span>
+            <p class="lead"><strong>E-Mail:</strong>
+                <span th:unless="${#strings.isEmpty(supervisorprofile.supervisor.mail)}" th:text="*{supervisor.mail}">mail@example.com</span>
+                <span th:if="${#strings.isEmpty(supervisorprofile.supervisor.mail)}">Keine E-Mail angegeben</span>
             </p>
         </div>
     </div>

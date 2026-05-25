@@ -16,7 +16,7 @@ public record Supervisor(
     this.supervisorTags = List.copyOf(supervisorTags);
   }
 
-  public Supervisor(Integer githubId, String username, String mail) {
-    this(UUID.randomUUID(), username, githubId, mail, new ArrayList<>());
+  public Supervisor(Integer githubId, String username) {
+    this(UUID.randomUUID(), username, githubId, "", new ArrayList<>());
   }
 }

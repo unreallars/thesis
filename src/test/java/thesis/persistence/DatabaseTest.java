@@ -53,7 +53,7 @@ public class DatabaseTest {
   @Test
   @DisplayName("Die Datenbank kann Betreuer speichern und laden")
   void test2() {
-    Supervisor supervisor = new Supervisor(666, "Tes", "Mail");
+    Supervisor supervisor = new Supervisor(666, "Test");
     supervisorRepository.save(supervisor);
     Optional<Supervisor> loadedUser = supervisorRepository.findByGithubId(666);
     assertThat(loadedUser).isPresent();
@@ -63,7 +63,7 @@ public class DatabaseTest {
   @DisplayName("Die Datenbank kann Themen speichern und laden")
   void test3() {
     UUID id = UUID.randomUUID();
-    Supervisor supervisor = new Supervisor(id, "Username", 666, "Test", new ArrayList<>());
+    Supervisor supervisor = new Supervisor(id, "Username", 666, "a@b.de", new ArrayList<>());
     supervisorRepository.save(supervisor);
     Topic topic = new Topic("Titel", "Test", id);
     topicRepository.save(topic);

@@ -86,7 +86,7 @@ class InformationFileServiceTest {
     when(multipartFile.getOriginalFilename()).thenReturn("file.pdf");
     when(oAuth2User.getAttribute("id")).thenReturn(66);
 
-    Supervisor supervisor = new Supervisor(66, "Username", "Mail");
+    Supervisor supervisor = new Supervisor(66, "Username");
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);
     String result =
         informationFileService.uploadFile(
@@ -105,7 +105,7 @@ class InformationFileServiceTest {
     when(oAuth2User.getAttribute("id")).thenReturn(66);
     UUID id = UUID.randomUUID();
 
-    Supervisor supervisor = new Supervisor(66, "Username", "Mail");
+    Supervisor supervisor = new Supervisor(66, "Username");
 
     when(topicService.findById(id)).thenReturn(new Topic("Titel", "Desc", supervisor.id()));
     when(supervisorService.findByGithubId(66)).thenReturn(supervisor);

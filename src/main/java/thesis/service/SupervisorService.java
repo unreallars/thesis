@@ -88,7 +88,7 @@ public class SupervisorService {
     if (findByGithubId(githubId) != null) {
       return "User ist bereits Betreuer";
     }
-    Supervisor supervisor = new Supervisor(githubId, username, "Nicht angegeben");
+    Supervisor supervisor = new Supervisor(githubId, username);
     supervisorRepository.save(supervisor);
     return "User wurde erfolgreich die Rolle Betreuer zugewiesen";
   }

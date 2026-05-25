@@ -50,7 +50,7 @@ public class SupervisorControllerTest {
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_3() throws Exception {
     when(supervisorService.findByGithubId(666666))
-        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
+        .thenReturn(new Supervisor(666666, "Test"));
     mockMvc.perform(get("/dashboard")).andExpect(status().isOk());
   }
 
@@ -59,7 +59,7 @@ public class SupervisorControllerTest {
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_4() throws Exception {
     when(supervisorService.findByGithubId(666666))
-        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
+        .thenReturn(new Supervisor(666666, "Test"));
 
     mockMvc.perform(get("/addTopic")).andExpect(status().isOk());
     mockMvc.perform(get("/addLink")).andExpect(status().isOk());
@@ -76,7 +76,7 @@ public class SupervisorControllerTest {
   @WithMockOAuth2User(roles = "SUPERVISOR")
   void test_5() throws Exception {
     when(supervisorService.findByGithubId(666666))
-        .thenReturn(new Supervisor(666666, "Test", "test@example.com"));
+        .thenReturn(new Supervisor(666666, "Test"));
     when(supervisorService.createLink(any(), any(), any()))
         .thenReturn("Link erfolgreich zum Betreuer-Profil hinzugefügt");
     when(topicService.createLink(any(), any(), any()))
