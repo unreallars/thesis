@@ -147,4 +147,8 @@ public class SupervisorService {
     }
     return supervisorRepository.findMatchingSupervisors(tags);
   }
+
+  public List<String> findAllSupervisorNames() {
+    return findAll().stream().map(Supervisor::username).toList();
+  }
 }

@@ -28,6 +28,7 @@ public class AdminController {
   @GetMapping("/manage")
   public String manage(Model model) {
     model.addAttribute("supervisorCreationForm", new SupervisorCreationForm());
+    model.addAttribute("supervisorNames", supervisorService.findAllSupervisorNames());
     return "manage";
   }
 

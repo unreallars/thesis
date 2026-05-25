@@ -70,6 +70,13 @@
                         <button type="submit" class="btn btn-primary w-100">Zum Betreuer befördern
                         </button>
                     </form>
+                    <br>
+                    <hr>
+                    <br>
+                    <h2 class="card-text">Liste der Betreuer:</h2>
+                    <ul th:if="${not #lists.isEmpty(supervisorNames)}" class="card-text">
+                        <li th:each="supervisorName : ${supervisorNames}" th:text="${supervisorName}"></li>
+                    </ul>
                 </div>
             </div>
         </div>
