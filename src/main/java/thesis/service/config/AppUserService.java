@@ -1,6 +1,7 @@
 package thesis.service.config;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,7 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
 
   @Override
   public OAuth2User loadUser(@NonNull OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-    OAuth2User originalUser = defaultService.loadUser(userRequest);
+    OAuth2User originalUser = Objects.requireNonNull(defaultService.loadUser(userRequest));
     Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
     Integer id = originalUser.getAttribute("id");
