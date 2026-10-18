@@ -46,12 +46,14 @@ public class InformationFileService {
       String topicId) {
 
     try {
-      if (file == null
-          || file.getOriginalFilename() == null
-          || file.getOriginalFilename().isBlank()) {
+      if (file == null) {
         return "Ungültige Datei";
       }
+
       String filename = file.getOriginalFilename();
+      if (filename == null || filename.isBlank()) {
+        return "Ungültiger Dateiname";
+      }
 
       String fileType = filename.substring(filename.lastIndexOf('.') + 1);
       if (!fileType.toLowerCase().matches("pdf|zip|md")) {

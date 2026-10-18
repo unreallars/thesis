@@ -52,7 +52,7 @@ class InformationFileServiceTest {
         informationFileService.uploadFile(
             multipartFile, "Titel", "Beschreibung", oAuth2User, "SUPERVISOR", null);
 
-    assertThat(result).isEqualTo("Ungültige Datei");
+    assertThat(result).isEqualTo("Ungültiger Dateiname");
   }
 
   @Test
