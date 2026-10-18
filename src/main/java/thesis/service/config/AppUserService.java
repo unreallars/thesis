@@ -2,6 +2,7 @@ package thesis.service.config;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,7 +33,7 @@ public class AppUserService implements OAuth2UserService<OAuth2UserRequest, OAut
   private Set<Integer> admins;
 
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+  public OAuth2User loadUser(@NonNull OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     OAuth2User originalUser = defaultService.loadUser(userRequest);
     Set<GrantedAuthority> authorities = new HashSet<>(originalUser.getAuthorities());
     authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
