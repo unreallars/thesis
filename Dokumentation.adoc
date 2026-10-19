@@ -101,7 +101,7 @@ Entkopplung von Tests vom Produktivcode, Einhaltung der Onion-Architektur
 [[section-building-block-view]]
 == Bausteinsicht
 
-image::Bausteinsicht.jpg[Bausteinsicht des Systems]
+image::Bausteinsicht.png[Bausteinsicht des Systems]
 
 -config:
 
