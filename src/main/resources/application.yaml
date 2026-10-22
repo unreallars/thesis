@@ -6,10 +6,10 @@ spring:
           github:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
-            scope: read:public_repo
+            scope: [read:public_repo]
   datasource:
     username: ${DB_USER}
     password: ${DB_PASS}
     url: jdbc:postgresql://localhost:5432/postgres
 app:
-  admins: ${ADMINS:100}
+  admins: ${ADMINS}
