@@ -1,3 +1,5 @@
-# Thesis
+= Thesis
 
 link:Dokumentation.adoc[]
+
+image::/img/Thesis.png[Thesis Screenshot]
